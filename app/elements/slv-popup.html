@@ -1,0 +1,194 @@
+<!--
+ -
+ - @license
+ -
+ - The MIT License (MIT)
+ -
+ - Copyright (c) 2015 Intel Corporation
+ -
+ - Permission is hereby granted, free of charge, to any person obtaining a copy
+ - of this software and associated documentation files (the "Software"), to deal
+ - in the Software without restriction, including without limitation the rights
+ - to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ - copies of the Software, and to permit persons to whom the Software is
+ - furnished to do so, subject to the following conditions:
+ -
+ - The above copyright notice and this permission notice shall be included in
+ - all copies or substantial portions of the Software.
+ -
+ - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ - IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ - FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ - AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ - LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ - THE SOFTWARE.
+ -
+ - Authors:
+ -   Elliot Smith <elliot.smith@intel.com>
+ -   Max Waterman <max.waterman@intel.com>
+ -
+ -->
+
+<!--
+popup dialog with customisable width and height and header bar
+-->
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower_components/core-header-panel/core-header-panel.html">
+<link rel="import" href="../../bower_components/core-toolbar/core-toolbar.html">
+
+<polymer-element name="slv-popup"
+                 attributes="heading heightfraction widthfraction">
+  <template>
+    <paper-dialog id="dialog" autoclosedisabled="false" backdrop="true"
+                  class="foo" data-host="slv-popup-dialog" style="border-radius: 5px;">
+      <style no-shim>
+        /* drop shadow on popup */
+        [data-host="slv-popup-dialog"] {
+          box-shadow: 13px 23px 30px 0px rgba(0, 1, 1, 0.32);
+          -webkit-box-shadow: 13px 23px 30px 0px rgba(0, 1, 1, 0.32);
+          -moz-box-shadow: 13px 23px 30px 0px rgba(0, 1, 1, 0.32);
+        }
+
+        /* remove Polymer drop shadow from popup */
+        [data-host="slv-popup-dialog"] paper-shadow {
+          display: none;
+        }
+
+        /* hides the drop shadow under the toolbar */
+        [data-host="slv-popup-panel"] div[id="dropShadow"] {
+          box-shadow: none !important;
+          -webkit-box-shadow: none !important;
+          -moz-box-shadow: none !important;
+        }
+
+        /* borders on popup: coloured bottom border, rounded corners */
+        [data-host="slv-popup-panel"] {
+          border-bottom: 4px solid #313131 !important;
+          border-radius: 4px;
+          overflow: hidden;
+        }
+
+        /* toolbar styling */
+        [data-host="slv-popup-panel"] core-toolbar {
+          display: flex;
+          display: -webkit-flex;
+          display: -moz-flex;
+          flex-direction: row;
+          -webkit-flex-direction: row;
+          -moz-flex-direction: row;
+          align-items: center;
+          -webkit-align-items: center;
+          -moz-align-items: center;
+          height: 60px !important;
+          border-bottom: 2px solid #39b8d8 !important;
+          background-color: #313131 !important;
+        }
+
+        /* styles for header text */
+        [data-host="slv-popup-panel"] [data-role="heading-text"] {
+          font-size: 24px !important;
+          color: white !important;
+        }
+      </style>
+
+      <!-- for native shadow DOM -->
+      <style>
+        /* remove Polymer drop shadow from popup */
+        [data-host="slv-popup-dialog"] /deep/ paper-shadow {
+          display: none;
+        }
+
+        /* hides the drop shadow under the toolbar */
+        :host /deep/ #dropShadow {
+          box-shadow: none !important;
+          -webkit-box-shadow: none !important;
+          -moz-box-shadow: none !important;
+        }
+      </style>
+
+      <core-header-panel data-host="slv-popup-panel" fit>
+        <core-toolbar>
+          <span data-role="heading-text">{{ heading }}</span>
+          <content select="[data-role='header-content']"></content>
+        </core-toolbar>
+
+        <content select="*:not([data-role='header-content'])"></content>
+      </core-header-panel>
+    </paper-dialog>
+  </template>
+
+  <script>
+  window.slvPopupReady = Promise.all([
+    System.import('js-signals')
+  ])
+  .then(function (imports) {
+    'use strict';
+
+    var signals = imports[0];
+
+    Polymer('slv-popup', {
+      heading: null,
+
+      signals: null,
+
+      /**
+       * Set to the element you want to size the popup with respect to
+       */
+      sizingTarget: null,
+
+      /**
+       * Fraction of the height of the sizingTarget to use for the
+       * height of the popup (0-1)
+       */
+      heightfraction: null,
+
+      /**
+       * Fraction of the width of the sizingTarget to use for the
+       * width of the popup (0-1)
+       */
+      widthfraction: null,
+
+      created: function () {
+        this.heading = '';
+        this.backdrop = false;
+        this.sizingTarget = document.body;
+        this.widthfraction = 0.5;
+        this.heightfraction = 0.5;
+
+        this.signals = {
+          opened: new signals.Signal(),
+          closed: new signals.Signal()
+        };
+      },
+
+      domReady: function () {
+        var self = this;
+
+        this.$.dialog.addEventListener('core-overlay-position', function () {
+          var height = self.sizingTarget.offsetHeight * parseFloat(self.heightfraction, 10);
+          self.$.dialog.style.height = height + 'px';
+          var width = self.sizingTarget.offsetWidth * parseFloat(self.widthfraction, 10);
+          self.$.dialog.style.width = width + 'px';
+        });
+
+        this.$.dialog.addEventListener('core-overlay-open-completed', function () {
+          self.signals.opened.dispatch();
+        });
+
+        this.$.dialog.addEventListener('core-overlay-close-completed', function () {
+          self.signals.closed.dispatch();
+        });
+      },
+
+      open: function () {
+        this.$.dialog.open();
+      },
+
+      close: function () {
+        this.$.dialog.close();
+      }
+    });
+  });
+  </script>
+</polymer-element>

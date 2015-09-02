@@ -1,0 +1,75 @@
+{
+ "servo-motor": [
+  {
+   "author": "Intel Corporation",
+   "category": "output/hw",
+   "description": "Control RC servo motors.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Set the angle of the shaft in degrees, from 0 to 180.",
+     "name": "ANGLE",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "int",
+     "description": "Set duty cycle width in microseconds. Shoudln't be less or greater than min and max values, defined on options.",
+     "name": "DUTY_CYCLE",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "servo-motor/controller",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "default": {
+       "max": 2400,
+       "min": 544,
+       "step": 1,
+       "val": 0
+      },
+      "description": "Pulse width range, in microseconds, corresponding to the minimum (0-degree) angle on the servo until the maximum (180-degree) angle.",
+      "name": "duty_cycle_range",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 22000
+      },
+      "description": "Period, in microseconds. A pulse repetition rate of 50 Hz should work with most servos.",
+      "name": "period",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "description": "PWM chip",
+      "name": "chip",
+      "required": true
+     },
+     {
+      "data_type": "int",
+      "description": "PWM pin channel",
+      "name": "pin",
+      "required": true
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_servo_motor_controller_options",
+   "symbol": "SOL_FLOW_NODE_TYPE_SERVO_MOTOR_CONTROLLER",
+   "url": "http://solettaproject.org/doc/latest/components/servo-motor.html",
+   "version": "1"
+  }
+ ]
+}

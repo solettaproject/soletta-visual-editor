@@ -1,0 +1,367 @@
+<!--
+ -
+ - @license
+ -
+ - The MIT License (MIT)
+ -
+ - Copyright (c) 2015 Intel Corporation
+ -
+ - Permission is hereby granted, free of charge, to any person obtaining a copy
+ - of this software and associated documentation files (the "Software"), to deal
+ - in the Software without restriction, including without limitation the rights
+ - to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ - copies of the Software, and to permit persons to whom the Software is
+ - furnished to do so, subject to the following conditions:
+ -
+ - The above copyright notice and this permission notice shall be included in
+ - all copies or substantial portions of the Software.
+ -
+ - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ - IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ - FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ - AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ - LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ - THE SOFTWARE.
+ -
+ - Authors:
+ -   Elliot Smith <elliot.smith@intel.com>
+ -   Max Waterman <max.waterman@intel.com>
+ -
+ -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SLV</title>
+    <meta charset="utf-8">
+
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    <!-- Bower Libraries -->
+    <script src="../bower_components/webcomponentsjs/webcomponents.js"></script>
+    <script src="../bower_components/react/react-with-addons.js"></script>
+    <script src="../bower_components/klayjs-noflo/klay-noflo.js"></script>
+    <script src="../bower_components/hammerjs/hammer.min.js"></script>
+    <script src="../bower_components/ease-djdeath/index.js"></script>
+    <script src="../bower_components/react.animate-djdeath/react.animate.js"></script>
+    <script src="../bower_components/es6-module-loader/dist/es6-module-loader.js"></script>
+    <script src="../bower_components/systemjs/dist/system.js"></script>
+    <script src="../bower_components/mousetrap/mousetrap.js"></script>
+
+    <script src="js/amd.js"></script>
+
+    <!-- Browserified Libraries -->
+    <script src="../bower_components/the-graph/build/noflo.js"></script>
+
+    <!-- NoFlo custom elements -->
+    <link rel="import" href="../bower_components/polymer/polymer.html">
+    <link rel="import" href="../bower_components/the-graph/the-graph-nav/the-graph-nav.html">
+
+    <!-- other Polymer elements -->
+    <link rel="import" href="../bower_components/core-header-panel/core-header-panel.html">
+    <link rel="import" href="../bower_components/core-toolbar/core-toolbar.html">
+    <link rel="import" href="../bower_components/paper-button/paper-button.html">
+    <link rel="import" href="../bower_components/core-item/core-item.html">
+    <link rel="import" href="../bower_components/core-icon/core-icon.html">
+    <link rel="import" href="../bower_components/core-icons/core-icons.html">
+
+    <!-- SLV custom elements -->
+    <link rel="import" href="./elements/slv-icons-svg.html">
+    <link rel="import" href="./elements/slv-editor.html">
+    <link rel="import" href="./elements/slv-members-editor.html">
+    <link rel="import" href="./elements/slv-layout.html">
+    <link rel="import" href="./elements/slv-image-button.html">
+    <link rel="import" href="./elements/slv-component-select-popup.html">
+    <link rel="import" href="./elements/slv-property-panel-menu.html">
+    <link rel="import" href="./elements/slv-file-upload.html">
+    <link rel="import" href="./elements/slv-fbp-export.html">
+    <!-- fbpimport disabled until v1
+    <link rel="import" href="./elements/slv-fbp-import.html">
+    -->
+    <link rel="import" href="./elements/slv-project-save.html">
+    <link rel="import" href="./elements/slv-project-open.html">
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
+    <style>
+      @font-face {
+        /* we want the svg version */
+        font-family: 'FontAwesomeSVG';
+        src: url('../bower_components/font-awesome/fonts/fontawesome-webfont.svg?v=4.0.3#fontawesomeregular') format('svg'),
+          url('../bower_components/font-awesome/fonts/fontawesome-webfont.eot?#iefix&v=4.0.3') format('embedded-opentype'),
+          url('../bower_components/font-awesome/fonts/fontawesome-webfont.woff?v=4.0.3') format('woff'),
+          url('../bower_components/font-awesome/fonts/fontawesome-webfont.ttf?v=4.0.3') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: 'ClearSans';
+        src: url('../bower_components/clearsans-1.00/WOFF/ClearSans-Regular.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+      }
+    </style>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+
+    <style shim-shadowdom>
+      * {
+        font-family: 'ClearSans' !important;
+      }
+      html /deep/ text:not(.icon), text:not(.icon) {
+        font-family: 'ClearSans' !important;
+      }
+      html /deep/ text.icon, text.icon {
+        font-family: 'FontAwesomeSVG' !important;
+      }
+
+      html, body {
+        width: 100%;
+        height: 100%;
+      }
+      body {
+        background-color: hsl(189, 47%, 6%);
+        font-family: Helvetica, Arial, sans-serif;
+        overflow: hidden;
+      }
+      #editor {
+        overflow: hidden;
+      }
+
+      #actions {
+        height: 87px;
+      }
+      #actions::shadow #topBar, #actions::shadow #bottomBar {
+        padding: 0;
+      }
+      #actions::shadow #topBar {
+        height: 46px;
+      }
+      #actions::shadow #bottomBar {
+        height: 41px;
+      }
+      #actions paper-button {
+        height: 100%;
+      }
+      #actions /deep/ paper-button::shadow .button-content {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        height: 100%;
+        width: 100%;
+      }
+
+      #top-actions, #bottom-actions {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      #top-actions {
+        padding-left: 31px;
+        background-color: rgb(62, 62, 62);
+        -webkit-box-shadow: 0px 1px 0px 0px rgba(41,41,41,0.2);
+        -moz-box-shadow: 0px 1px 0px 0px rgba(41,41,41,0.2);
+        box-shadow: 0px 1px 0px 0px rgba(41,41,41,0.2);
+      }
+      #top-actions .action /deep/ * {
+        color: rgb(170, 170, 170);
+        font-size: 16px;
+        text-transform: none;
+      }
+      /* fix colours on disabled items */
+      #top-actions .action /deep/ [disabled] {
+        background-color: rgba(0, 0, 0, 0) !important;
+      }
+      #top-actions /deep/ [disabled] /deep/ * {
+        color: #565656 !important;
+      }
+
+      #bottom-actions {
+        padding-left: 29px;
+        background-color: rgb(49, 49, 49);
+        -webkit-box-shadow: 0px 3px 0px 0px rgba(0,0,0,0.1);
+        -moz-box-shadow: 0px 3px 0px 0px rgba(0,0,0,0.1);
+        box-shadow: 0px 3px 0px 0px rgba(0,0,0,0.1);
+      }
+      #bottom-actions .action /deep/ * {
+        color: rgb(207, 216, 220);
+        font-size: 13px;
+      }
+      #bottom-actions .action /deep/ paper-ripple {
+        margin-left: 12px;
+      }
+
+      .action {
+        display: block;
+      }
+      .action core-item /deep/ #label {
+        margin-left: -14px;
+      }
+      .action core-icon /deep/ * {
+        fill: #41b9d7 !important;
+      }
+      .action-button-text {
+        margin-left: 8px;
+        padding-right: 4px;
+      }
+
+      slv-file-upload /deep/ #label {
+        min-width: 144px;
+      }
+
+      #properties {
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 100%;
+
+         /* must be the same as the width of #layout -> #right-panel */
+        width: 336px;
+      }
+
+      #addcomponent {
+        color: white;
+        width: 96px;
+        height: 97px;
+        position: absolute;
+        top: 26px;
+        left: 0;
+      }
+      #addcomponent core-icon {
+        position: absolute;
+        width: 42px;
+        height: 42px;
+        top: 15px;
+        left: 27px;
+      }
+      #addcomponent .text {
+        display: block;
+        position: absolute;
+        top: 62px;
+        left: 0;
+        width: 100%;
+        font-size: 14px;
+        font-weight: bold;
+        text-align: center;
+        text-transform: uppercase;
+      }
+
+      /* change backdrop colour for all popups */
+      .core-overlay-backdrop {
+        background-color: #999;
+      }
+
+      .nav {
+        background-color: #252324 !important;
+      }
+    </style>
+  </head>
+  <body unresolved fullbleed layout vertical>
+    <slv-component-select-popup id="componentselectpopup"
+                                 heading="Select type of node to add">
+    </slv-component-select-popup>
+
+    <core-header-panel flex>
+      <core-toolbar id="actions" vertical layout>
+        <div id="top-actions" class="top" horizontal layout center>
+          <slv-project-open id="projectopen" class="action"
+                             title="open project">
+            <core-item label="Open"></core-item>
+          </slv-project-open>
+
+          <slv-project-save id="projectsave" class="action"
+                             title="save project">
+            <core-item label="Save"></core-item>
+          </slv-project-save>
+
+          <!-- fbpimport disabled until v1
+          <slv-fbp-import id="fbpimport" class="action" title="import as FBP">
+            <core-item label="Import"></core-item>
+          </slv-fbp-import>
+          -->
+
+          <slv-fbp-export id="fbpexport" class="action" title="export as FBP">
+            <core-item label="Export"></core-item>
+          </slv-fbp-export>
+
+          <slv-file-upload id="fileupload"
+                            title="upload component definition JSON"
+                            class="action" >
+            <core-item label="Upload to library"></core-item>
+          </slv-file-upload>
+        </div>
+
+        <div id="bottom-actions" class="bottom" horizontal layout center>
+          <paper-button id="undo" class="action" title="undo">
+            <core-icon icon="slv-icons-svg:undo"></core-icon>
+            <span class="action-button-text">Undo</span>
+          </paper-button>
+
+          <paper-button id="redo" class="action" title="redo">
+            <core-icon icon="slv-icons-svg:redo"></core-icon>
+            <span class="action-button-text">Redo</span>
+          </paper-button>
+
+          <paper-button id="clear" class="action" title="clear">
+            <core-icon icon="slv-icons-svg:clear"></core-icon>
+            <span class="action-button-text">Clear</span>
+          </paper-button>
+
+          <paper-button id="copy" class="action" title="copy">
+            <core-icon icon="slv-icons-svg:copy"></core-icon>
+            <span class="action-button-text">Copy</span>
+          </paper-button>
+
+          <paper-button id="paste" class="action" title="paste">
+            <core-icon icon="slv-icons-svg:paste"></core-icon>
+            <span class="action-button-text">Paste</span>
+          </paper-button>
+
+          <paper-button id="rearrange" class="action" title="rearrange">
+            <core-icon icon="slv-icons-svg:rearrange"></core-icon>
+            <span class="action-button-text">Rearrange</span>
+          </paper-button>
+
+          <slv-property-panel-menu id="properties">
+          </slv-property-panel-menu>
+        </div>
+      </core-toolbar>
+
+      <slv-layout id="layout">
+        <div class="right-panel">
+          <slv-image-button id="addcomponent"
+                             normal="assets/btn_add_node_normal.png"
+                             hover="assets/btn_add_node_hover.png"
+                             press="assets/btn_add_node_pressed.png">
+            <core-icon icon="add"></core-icon>
+            <div class="text">Add node</div>
+          </slv-image-button>
+        </div>
+
+        <div class="slide-down-panel">
+          <slv-members-editor id="membersEditor"></slv-members-editor>
+        </div>
+
+        <slv-editor id="editor" class="fill"
+          width="800" height="600"
+          grid="72"
+          snap="36"
+          theme="dark">
+        </slv-editor>
+
+        <the-graph-nav id="nav" width="336" height="136" class="nav">
+        </the-graph-nav>
+      </slv-layout>
+
+    </core-header-panel>
+
+    <script>
+      document.addEventListener('polymer-ready', function () {
+        System.import('main');
+      });
+    </script>
+
+  </body>
+</html>

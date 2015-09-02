@@ -1,0 +1,57 @@
+{
+ "evdev": [
+  {
+   "author": "Intel Corporation",
+   "category": "output/sw",
+   "description": "Provides a boolean packet after an evdev event",
+   "license": "BSD 3-Clause",
+   "name": "evdev/boolean",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "description": "The event code to be monitored",
+      "name": "ev_code",
+      "required": true
+     },
+     {
+      "data_type": "string",
+      "description": "The event path to be monitored",
+      "name": "path",
+      "required": true
+     },
+     {
+      "data_type": "boolean",
+      "default": true,
+      "description": "The event is triggered on press",
+      "name": "on_press",
+      "required": false
+     },
+     {
+      "data_type": "boolean",
+      "default": true,
+      "description": "The event is triggered on release",
+      "name": "on_release",
+      "required": false
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_evdev_boolean_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "An evdev event happened",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_EVDEV_BOOLEAN",
+   "url": "http://solettaproject.org/doc/latest/components/evdev.html",
+   "version": "1"
+  }
+ ]
+}

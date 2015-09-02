@@ -1,0 +1,108 @@
+<!--
+ -
+ - @license
+ -
+ - The MIT License (MIT)
+ -
+ - Copyright (c) 2015 Intel Corporation
+ -
+ - Permission is hereby granted, free of charge, to any person obtaining a copy
+ - of this software and associated documentation files (the "Software"), to deal
+ - in the Software without restriction, including without limitation the rights
+ - to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ - copies of the Software, and to permit persons to whom the Software is
+ - furnished to do so, subject to the following conditions:
+ -
+ - The above copyright notice and this permission notice shall be included in
+ - all copies or substantial portions of the Software.
+ -
+ - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ - IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ - FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ - AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ - LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ - THE SOFTWARE.
+ -
+ - Authors:
+ -   Elliot Smith <elliot.smith@intel.com>
+ -   Max Waterman <max.waterman@intel.com>
+ -
+ -->
+
+<!--
+save a project
+-->
+
+<link rel="import" href="slv-file-download.html">
+
+<polymer-element name="slv-project-save" on-click="{{ onClick }}" extends="slv-file-download">
+  <template>
+    <shadow></shadow>
+  </template>
+
+  <script>
+  window.slvProjectSaveReady = Promise.all([
+    window.slvFileDownloadReady
+  ])
+  .then(function () {
+    'use strict';
+
+    var FILENAME = 'flow.json';
+
+    Polymer('slv-project-save', {
+
+      mimetype: 'application/json',
+
+      created: function () {
+        // assume empty new graph doesn't need to be saved
+        this.saved = true;
+      },
+
+      onClick: function () {
+        var graph = this.graph.toJSON();
+        var library = this.library;
+        var project = {
+          graph: graph,
+          library: library.map
+        };
+        this.saveFile(FILENAME, JSON.stringify(project, null, 2));
+        this.setSaved(true);
+      },
+
+      setLibrary: function (library) {
+        this.library = library;
+      },
+
+      /**
+       * Set the NoFlo graph this button exports
+       *
+       * @param {noflo.Graph} graph
+       */
+      setGraph: function (graph) {
+        var self = this;
+
+        var setUnsaved = function () {
+          self.setSaved(false);
+        };
+
+        if (this.graph) {
+          this.graph.removeListener('endTransaction', setUnsaved);
+        }
+
+        this.graph = graph;
+        this.graph.on('endTransaction', setUnsaved);
+      },
+
+      isSaved: function () {
+        return this.saved;
+      },
+
+      setSaved: function (saved) {
+        this.saved = saved;
+      }
+
+    }); // Polymer
+  }); // require
+  </script>
+</polymer-element>

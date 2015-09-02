@@ -1,0 +1,188 @@
+<!--
+ -
+ - @license
+ -
+ - The MIT License (MIT)
+ -
+ - Copyright (c) 2015 Intel Corporation
+ -
+ - Permission is hereby granted, free of charge, to any person obtaining a copy
+ - of this software and associated documentation files (the "Software"), to deal
+ - in the Software without restriction, including without limitation the rights
+ - to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ - copies of the Software, and to permit persons to whom the Software is
+ - furnished to do so, subject to the following conditions:
+ -
+ - The above copyright notice and this permission notice shall be included in
+ - all copies or substantial portions of the Software.
+ -
+ - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ - IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ - FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ - AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ - LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ - THE SOFTWARE.
+ -
+ - Authors:
+ -   Elliot Smith <elliot.smith@intel.com>
+ -   Max Waterman <max.waterman@intel.com>
+ -
+ -->
+
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>slv-component-select-popup</title>
+
+  <script src="../../bower_components/webcomponentsjs/webcomponents.min.js"></script>
+  <script src="../../node_modules/web-component-tester/browser.js"></script>
+  <script src="../../bower_components/es6-module-loader/dist/es6-module-loader.js"></script>
+  <script src="../../bower_components/systemjs/dist/system.js"></script>
+
+  <script>
+  System.config({
+    baseURL: '../../app/js',
+    paths: {
+      'lodash': '../../bower_components/lodash/lodash.js',
+      'js-signals': '../../bower_components/js-signals/dist/signals.js',
+      'mutatingami': '../../test/mutatingami/mutatingami.js'
+    },
+    meta: {
+      '../../bower_components/js-signals/dist/signals.js': {
+        format: 'global',
+        exports: 'signals'
+      }
+    }
+  });
+  </script>
+
+  <!-- element under test -->
+  <link rel="import" href="../../app/elements/slv-component-select-popup.html">
+</head>
+<body>
+  <slv-component-select-popup id="componentselector1" heading="componentselector1"></slv-component-select-popup>
+  <slv-component-select-popup id="componentselector2" heading="componentselector2"></slv-component-select-popup>
+
+  <script>
+  describe('<slv-component-select-popup>', function () {
+
+    // effectively sorted by category name ComponentGroupArray.js:33
+    var components = [
+      {name: 'boolean/and', category: 'logical/boolean'},
+      {name: 'boolean/or', category: 'logical/boolean'},
+      {name: 'calamari/7seg', category: 'output/hw'},
+      {name: 'calamari/led', category: 'output/hw'},
+      {name: 'calamari/led2', category: 'output/hw'},
+      {name: 'calamari/led3', category: 'output/hw'},
+      {name: 'calamari/led4', category: 'output/hw'},
+      {name: 'calamari/led5', category: 'output/hw'},
+      {name: 'calamari/led6', category: 'output/hw'},
+      {name: 'calamari/led7', category: 'output/hw'},
+      {name: 'calamari/led8', category: 'output/hw'},
+      {name: 'calamari/led9', category: 'output/hw'},
+      {name: 'calamari/led10', category: 'output/hw'},
+      {name: 'calamari/led11', category: 'output/hw'},
+      {name: 'calamari/led12', category: 'output/hw'},
+      {name: 'calamari/led13', category: 'output/hw'},
+      {name: 'calamari/lever', category: 'input/hw'}
+    ];
+
+    var ComponentLibrary;
+    var ComponentCategoryGrouper;
+    var MutatingAmI;
+
+    beforeEach(function (done) {
+      Promise.all([
+        System.import('ComponentLibrary'),
+        System.import('ComponentCategoryGrouper'),
+        System.import('mutatingami'),
+        slvComponentSelectPopupReady
+      ])
+      .then(function (imports) {
+        ComponentLibrary = imports[0];
+        ComponentCategoryGrouper = imports[1];
+        MutatingAmI = imports[2];
+        done();
+      });
+    });
+
+    it('should dispatch signal with selected component name', function (done) {
+      var popup = document.getElementById('componentselector1');
+
+      var library = ComponentLibrary();
+      library.add(components);
+
+      var grouper = ComponentCategoryGrouper({library: library});
+      popup.setComponentGrouper(grouper);
+
+      // check the component name is being dispatched
+      popup.signals.selected.add(function (componentName) {
+        expect(componentName).to.equal('boolean/and');
+        done();
+      });
+
+      // when the submenu is selected, tap the 'boolean/and' item
+      popup.$.select.signals.groupFocused.add(function (groupName) {
+        // first one is 'input/hw' - ignore that
+        if (groupName == 'logical/boolean') {
+          var selector = 'core-overlay-layer /deep/ paper-item[data-value="boolean/and"]';
+          var item = document.querySelector(selector);
+          item.dispatchEvent(new CustomEvent('click', {bubbles: true}));
+        }
+      });
+
+      popup.$.popup.signals.opened.add(function () {
+        popup.$.select.activeGroupName = 'logical/boolean';
+      });
+
+      popup.open();
+    });
+
+    it('should dispatch signal with selected component name after pagedown', function (done) {
+      var popup = document.getElementById('componentselector2');
+
+      var library = ComponentLibrary();
+      library.add(components);
+
+      var grouper = ComponentCategoryGrouper({library: library});
+      popup.setComponentGrouper(grouper);
+
+      popup.$.popup.signals.opened.add(function () {
+        popup.$.select.handleKeyboardInput('pagedown');
+      });
+
+      // expect groupFocused signals in this order
+      var groupNames = [
+        'input/hw',
+        'logical/boolean',
+        'output/hw'
+      ];
+      var callTracker = 0;
+
+      // when the group has changed to its initial value
+      popup.$.select.signals.groupFocused.add(function (groupName) {
+        // should have switched to next group
+        expect(groupName).to.equal(groupNames[callTracker]);
+
+        if (callTracker === groupNames.length - 1) {
+          popup.close();
+          done();
+        }
+        else {
+          // page to next one
+          popup.$.select.handleKeyboardInput('pagedown');
+        }
+
+        callTracker++;
+      });
+
+      // open popup
+      popup.open();
+    });
+
+  });
+  </script>
+</body>
+</html>

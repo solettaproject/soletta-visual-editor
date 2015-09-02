@@ -1,0 +1,157 @@
+<!--
+ -
+ - @license
+ -
+ - The MIT License (MIT)
+ -
+ - Copyright (c) 2015 Intel Corporation
+ -
+ - Permission is hereby granted, free of charge, to any person obtaining a copy
+ - of this software and associated documentation files (the "Software"), to deal
+ - in the Software without restriction, including without limitation the rights
+ - to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ - copies of the Software, and to permit persons to whom the Software is
+ - furnished to do so, subject to the following conditions:
+ -
+ - The above copyright notice and this permission notice shall be included in
+ - all copies or substantial portions of the Software.
+ -
+ - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ - IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ - FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ - AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ - LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ - THE SOFTWARE.
+ -
+ - Authors:
+ -   Elliot Smith <elliot.smith@intel.com>
+ -   Max Waterman <max.waterman@intel.com>
+ -
+ -->
+
+<!--
+element to display components (which can be added to the graph
+as nodes); a library object is used to hold the components which
+will be presented as options in the selector
+-->
+<link rel="import" href="../../bower_components/core-menu/core-menu.html">
+<link rel="import" href="../../bower_components/core-icon/core-icon.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/paper-dropdown/paper-dropdown.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+<polymer-element name="slv-component-dropdown" attributes="components">
+  <template>
+    <style>
+    #outer {
+      background-color: white;
+      width: 250px;
+      padding: 0.65em 0px 0.65em 10px;
+      margin: 0 6px;
+      border-radius: 4px;
+      border-bottom: none;
+    }
+
+    .dropdown {
+      width: 250px;
+    }
+
+    paper-button {
+      background-color: white;
+    }
+    </style>
+
+    <div id="container" layout horizontal center>
+      <paper-dropdown-menu id="outer" label="...no components..." disabled>
+        <paper-dropdown class="dropdown">
+          <core-menu id="menu" class="menu" valueattr="label">
+            <template repeat="{{ components }}">
+              <paper-item label="{{ name }}">
+                {{ name }}
+              </paper-item>
+            </template>
+          </core-menu>
+        </paper-dropdown>
+      </paper-dropdown-menu>
+
+      <paper-button id="button" on-click="{{ sendSelectedSignal }}"
+                    title="add selected component">
+        <core-icon icon="add"></core-icon>
+      </paper-button>
+    </div>
+  </template>
+
+  <script>
+  window.slvComponentDropdownReady = Promise.all([
+    System.import('js-signals')
+  ])
+  .then( function (imports) {
+    'use strict';
+
+    var signals = imports[0];
+
+    Polymer('slv-component-dropdown', {
+      /**
+       * Object containing signal instances which are used to
+       * connect this component to others.
+       *
+       * signals.selected: fired with the name of the selected
+       * component when the select button is pressed
+       */
+      signals: null,
+
+      /**
+       * Array of components, used to construct the options in the
+       * drop-down; each component should have the same structure
+       * as a Component object (see Component.create())
+       */
+      components: null,
+
+      created: function () {
+        this.signals = {
+          selected: new signals.Signal()
+        };
+      },
+
+      // if the options change, enable the menu if there is at least one
+      componentsChanged: function () {
+        if (this.components && this.components.length) {
+          this.$.outer.removeAttribute('disabled');
+          this.$.outer.setAttribute('label', 'select a component');
+        }
+      },
+
+      /**
+       * Return the name of the component which is currently selected.
+       * NB because <core-menu>.valueattr is set to "label", this
+       * returns the label attribute of the currently-selected <paper-item>.
+       */
+      getSelectedComponentName: function () {
+        return this.$.menu.selected;
+      },
+
+      /**
+       * Select the item with label matching name.
+       * @param {string} name    Name of component to select
+       */
+      setSelectedComponent: function (name) {
+        this.$.menu.selected = name;
+      },
+
+      /**
+       * Send the "selected" signal for the currently-active component
+       * name. If no component is selected, no signal will be sent.
+       */
+      sendSelectedSignal: function () {
+        var name = this.getSelectedComponentName();
+
+        if (name) {
+          this.signals.selected.dispatch(name);
+        }
+      }
+    });
+  });
+  </script>
+</polymer-element>

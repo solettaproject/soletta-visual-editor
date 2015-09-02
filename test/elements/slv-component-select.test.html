@@ -1,0 +1,368 @@
+<!--
+ -
+ - @license
+ -
+ - The MIT License (MIT)
+ -
+ - Copyright (c) 2015 Intel Corporation
+ -
+ - Permission is hereby granted, free of charge, to any person obtaining a copy
+ - of this software and associated documentation files (the "Software"), to deal
+ - in the Software without restriction, including without limitation the rights
+ - to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ - copies of the Software, and to permit persons to whom the Software is
+ - furnished to do so, subject to the following conditions:
+ -
+ - The above copyright notice and this permission notice shall be included in
+ - all copies or substantial portions of the Software.
+ -
+ - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ - IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ - FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ - AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ - LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ - THE SOFTWARE.
+ -
+ - Authors:
+ -   Elliot Smith <elliot.smith@intel.com>
+ -   Max Waterman <max.waterman@intel.com>
+ -
+ -->
+
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>slv-component-dropdown</title>
+
+  <script src="../../bower_components/webcomponentsjs/webcomponents.min.js"></script>
+  <script src="../../node_modules/web-component-tester/browser.js"></script>
+  <script src="../../bower_components/es6-module-loader/dist/es6-module-loader.js"></script>
+  <script src="../../bower_components/systemjs/dist/system.js"></script>
+
+  <script>
+  System.config({
+    baseURL: '../../app/js',
+    paths: {
+      'lodash': '../../bower_components/lodash/lodash.js',
+      'js-signals': '../../bower_components/js-signals/dist/signals.js',
+      'mutatingami': '../../test/mutatingami/mutatingami.js'
+    },
+    meta: {
+      '../../bower_components/js-signals/dist/signals.js': {
+        format: 'global',
+        exports: 'signals'
+      }
+    }
+  });
+  </script>
+
+  <!-- element under test -->
+  <link rel="import" href="../../app/elements/slv-component-select.html">
+</head>
+<body>
+  <slv-component-select id="componentselector1"></slv-component-select>
+  <slv-component-select id="componentselector2"></slv-component-select>
+  <slv-component-select id="componentselector3"></slv-component-select>
+  <slv-component-select id="componentselector4"></slv-component-select>
+  <slv-component-select id="componentselector5"></slv-component-select>
+
+  <script>
+  describe('<slv-component-select>', function () {
+    var MutatingAmI;
+    var elt;
+
+    beforeEach(function (done) {
+      Promise.all([
+        System.import('mutatingami'),
+        slvComponentSelectReady
+      ])
+      .then(function (imports) {
+        MutatingAmI = imports[0];
+        done();
+      });
+    });
+
+    afterEach(function (done) {
+      if (elt) {
+        elt.signals.selected.removeAll();
+        done();
+      }
+    });
+
+    it('should send a selected signal when item is selected', function (done) {
+      var name = 'boolean/or';
+
+      var groups = [
+        {
+          groupName: 'logical/boolean',
+          items: [
+            {name: 'boolean/and', category: 'logical/boolean'},
+            {name: name, category: 'logical/boolean'}
+          ],
+        },
+        {
+          groupName: 'output/hw',
+          items: [
+            {name: 'calamari/7seg', category: 'output/hw'},
+            {name: 'calamari/led', category: 'output/hw'}
+          ]
+        },
+        {
+          groupName: 'input/hw',
+          items: [
+            {name: 'calamari/lever', category: 'input/hw'}
+          ]
+        }
+      ];
+
+      elt = document.getElementById('componentselector1');
+      elt.groups = groups;
+
+      // connect to the signal; when the desired element is clicked,
+      // we should get a signal with the name of the correct component
+      elt.signals.selected.add(function (sentName) {
+        expect(sentName).to.equal(name);
+        done();
+      });
+
+      // selector for the menu item
+      var selector = '* /deep/ paper-item[data-value="' + name + '"]';
+
+      elt.signals.groupFocused
+
+      // wait until the menu elements in the slv-component-selector
+      // are ready to be selected from
+      var watcher = MutatingAmI.Watcher({forceRaf: true});
+
+      watcher.watch(elt, selector, 5000, function (err, elts) {
+        if (err) {
+          done(err);
+        }
+        else {
+          // trigger "selected" event by tapping the menu item
+          elts[0].dispatchEvent(new CustomEvent('click', {bubbles: true}));
+        }
+      });
+    });
+
+    it('should send a selected signal when item is selected using enter key', function (done) {
+      var name = 'boolean/and';
+      var expectedGroupName = 'logical/boolean';
+
+      var groups = [
+        {
+          groupName: expectedGroupName,
+          items: [
+            {name: name, category: 'logical/boolean'},
+            {name: 'boolean/or', category: 'logical/boolean'}
+          ],
+        },
+        {
+          groupName: 'output/hw',
+          items: [
+            {name: 'calamari/7seg', category: 'output/hw'},
+            {name: 'calamari/led', category: 'output/hw'}
+          ]
+        },
+        {
+          groupName: 'input/hw',
+          items: [
+            {name: 'calamari/lever', category: 'input/hw'}
+          ]
+        }
+      ];
+
+      var elt = document.getElementById('componentselector2');
+      elt.groups = groups;
+
+      // when the group is focused, move down to its first item
+      // (the boolean/and entry) and press 'enter'
+      elt.signals.groupFocused.add(function (groupName) {
+        expect(groupName).to.equal(expectedGroupName);
+        elt.handleKeyboardInput('down');
+        elt.handleKeyboardInput('enter');
+      });
+
+      // when the desired element is selected and 'enter' is pressed,
+      // we should get a signal with the name of the correct component
+      elt.signals.selected.add(function (sentName) {
+        expect(sentName).to.equal(name);
+        done();
+      });
+
+      // press enter to open first submenu and start the chain of signals
+      elt.handleKeyboardInput('enter');
+    });
+
+    it('should move highlight to second item with "down" key', function (done) {
+      var name = 'boolean/or';
+      var expectedGroupName = 'logical/boolean';
+
+      var groups = [
+        {
+          groupName: expectedGroupName,
+          items: [
+            {name: 'boolean/and', category: 'logical/boolean'},
+            {name: name, category: 'logical/boolean'}
+          ],
+        },
+        {
+          groupName: 'output/hw',
+          items: [
+            {name: 'calamari/7seg', category: 'output/hw'},
+            {name: 'calamari/led', category: 'output/hw'}
+          ]
+        },
+        {
+          groupName: 'input/hw',
+          items: [
+            {name: 'calamari/lever', category: 'input/hw'}
+          ]
+        }
+      ];
+
+      var elt = document.getElementById('componentselector3');
+      elt.groups = groups;
+
+      elt.signals.groupFocused.add(function (groupName) {
+        expect(groupName).to.equal(expectedGroupName);
+
+        // highlight first item
+        elt.handleKeyboardInput('down');
+
+        // highlight second item
+        elt.handleKeyboardInput('down');
+
+        // select item
+        elt.handleKeyboardInput('enter');
+      });
+
+      // connect to the signal; when the desired element is clicked,
+      // we should get a signal with the name of the correct component
+      elt.signals.selected.add(function (sentName) {
+        expect(sentName).to.equal(name);
+        done();
+      });
+
+      // open first submenu
+      elt.handleKeyboardInput('enter');
+    });
+
+    it('should wrap highlight to bottom item with "up" key', function (done) {
+      var name = 'boolean/or';
+      var expectedGroupName = 'logical/boolean';
+
+      var groups = [
+        {
+          groupName: expectedGroupName,
+          items: [
+            {name: 'boolean/and', category: 'logical/boolean'},
+            {name: name, category: 'logical/boolean'}
+          ],
+        },
+        {
+          groupName: 'output/hw',
+          items: [
+            {name: 'calamari/7seg', category: 'output/hw'},
+            {name: 'calamari/led', category: 'output/hw'}
+          ]
+        },
+        {
+          groupName: 'input/hw',
+          items: [
+            {name: 'calamari/lever', category: 'input/hw'}
+          ]
+        }
+      ];
+
+      var elt = document.getElementById('componentselector4');
+      elt.groups = groups;
+
+      elt.signals.groupFocused.add(function (groupName) {
+        expect(groupName).to.equal(expectedGroupName);
+
+        // should wrap to second option
+        elt.handleKeyboardInput('up');
+
+        // should move up to the first item
+        elt.handleKeyboardInput('up');
+
+        // select the highlighted item
+        elt.handleKeyboardInput('enter');
+      });
+
+      // connect to the signal; when the desired element is clicked,
+      // we should get a signal with the name of the correct component
+      elt.signals.selected.add(function (sentName) {
+        expect(sentName).to.equal(name);
+        done();
+      });
+
+      // open the first menu
+      elt.handleKeyboardInput('enter');
+    });
+
+    it('should wrap highlight from bottom to top item with "down" key', function (done) {
+      var name = 'boolean/and';
+      var expectedGroupName = 'logical/boolean';
+
+      var groups = [
+        {
+          groupName: expectedGroupName,
+          items: [
+            {name: 'boolean/and', category: 'logical/boolean'},
+            {name: 'boolean/or', category: 'logical/boolean'},
+          ],
+        },
+        {
+          groupName: 'output/hw',
+          items: [
+            {name: 'calamari/7seg', category: 'output/hw'},
+            {name: 'calamari/led', category: 'output/hw'}
+          ]
+        },
+        {
+          groupName: 'input/hw',
+          items: [
+            {name: 'calamari/lever', category: 'input/hw'}
+          ]
+        }
+      ];
+
+      var elt = document.getElementById('componentselector5');
+      elt.groups = groups;
+
+      elt.signals.groupFocused.add(function (groupName) {
+        expect(groupName).to.equal(expectedGroupName);
+
+        // first input just highlights an item
+        elt.handleKeyboardInput('down');
+
+        // select second option
+        elt.handleKeyboardInput('down');
+
+        // move down - should wrap to top
+        elt.handleKeyboardInput('down');
+
+        // select top
+        elt.handleKeyboardInput('enter');
+      });
+
+      // connect to the signal; when the desired element is clicked,
+      // we should get a signal with the name of the correct component
+      elt.signals.selected.add(function (sentName) {
+        expect(sentName).to.equal(name);
+        done();
+      });
+
+      // open first submenu
+      elt.handleKeyboardInput('enter');
+    });
+
+  });
+  </script>
+</body>
+</html>

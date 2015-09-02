@@ -1,0 +1,304 @@
+{
+ "hub": [
+  {
+   "author": "Intel Corporation",
+   "category": "hub",
+   "description": "Forward blob packets.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "blob",
+     "description": "Where to receive the blob packet to be forwarded.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "hub/blob",
+   "options_symbol": "sol_flow_node_type_hub_blob_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "blob",
+     "description": "Forwarded blob packets.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_HUB_BLOB",
+   "url": "http://solettaproject.org/doc/latest/node_types/hub/blob.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "hub",
+   "description": "Forward boolean packets.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Where to receive the boolean packet to be forwarded.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "hub/boolean",
+   "options_symbol": "sol_flow_node_type_hub_boolean_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Forwarded boolean packets.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_HUB_BOOLEAN",
+   "url": "http://solettaproject.org/doc/latest/node_types/hub/boolean.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "hub",
+   "description": "Forward byte packets.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "Where to receive the byte packet to be forwarded.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "hub/byte",
+   "options_symbol": "sol_flow_node_type_hub_byte_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "Forwarded byte packets.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_HUB_BYTE",
+   "url": "http://solettaproject.org/doc/latest/node_types/hub/byte.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "hub",
+   "description": "Forward empty packets.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "any",
+     "description": "Where to receive the packet to be forwarded. Any packet can be received, but they'll be forwarded as empty packets.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "hub/empty",
+   "options_symbol": "sol_flow_node_type_hub_empty_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "empty",
+     "description": "Forwarded empty packets.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_HUB_EMPTY",
+   "url": "http://solettaproject.org/doc/latest/node_types/hub/empty.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "hub",
+   "description": "Forward error packets.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "error",
+     "description": "Where to receive the error packet to be forwarded. They're forwared via 'ERROR' port.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "hub/error",
+   "options_symbol": "sol_flow_node_type_hub_error_options",
+   "symbol": "SOL_FLOW_NODE_TYPE_HUB_ERROR",
+   "url": "http://solettaproject.org/doc/latest/node_types/hub/error.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "hub",
+   "description": "Forward float packets.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Where to receive the float packet to be forwarded.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "hub/float",
+   "options_symbol": "sol_flow_node_type_hub_float_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Forwarded float packets.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_HUB_FLOAT",
+   "url": "http://solettaproject.org/doc/latest/node_types/hub/float.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "hub",
+   "description": "Forward int packets.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Where to receive the int packet to be forwarded.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "hub/int",
+   "options_symbol": "sol_flow_node_type_hub_int_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Forwarded int packets.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_HUB_INT",
+   "url": "http://solettaproject.org/doc/latest/node_types/hub/int.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "hub",
+   "description": "Forward rgb packets.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "rgb",
+     "description": "Where to receive the rgb packet to be forwarded.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "hub/rgb",
+   "options_symbol": "sol_flow_node_type_hub_rgb_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "rgb",
+     "description": "Forwarded rgb packets.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_HUB_RGB",
+   "url": "http://solettaproject.org/doc/latest/node_types/hub/rgb.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "hub",
+   "description": "Forward direction vector packets.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "direction-vector",
+     "description": "Where to receive the direction vector packet to be forwarded.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "hub/direction-vector",
+   "options_symbol": "sol_flow_node_type_hub_direction_vector_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "direction-vector",
+     "description": "Forwarded direction_vector packets.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_HUB_DIRECTION_VECTOR",
+   "url": "http://solettaproject.org/doc/latest/node_types/hub/direction-vector.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "hub",
+   "description": "Forward string packets.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "string",
+     "description": "Where to receive the string packet to be forwarded.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "hub/string",
+   "options_symbol": "sol_flow_node_type_hub_string_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "string",
+     "description": "Forwarded string packets.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_HUB_STRING",
+   "url": "http://solettaproject.org/doc/latest/node_types/hub/string.html",
+   "version": "1"
+  }
+ ]
+}

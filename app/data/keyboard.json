@@ -1,0 +1,65 @@
+{
+ "keyboard": [
+  {
+   "author": "Intel Corporation",
+   "category": "input/sw",
+   "description": "Provides boolean packets after each key press from a physical keyboard",
+   "license": "BSD 3-Clause",
+   "name": "keyboard/boolean",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "description": "A key's actual ASCII code to capture.",
+      "name": "binary_code",
+      "required": true
+     },
+     {
+      "data_type": "boolean",
+      "default": false,
+      "description": "Whether to toggle the output value, if the same key is pressed in sequence.",
+      "name": "toggle",
+      "required": false
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_keyboard_boolean_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "A boolean packet when keyboard input arrives.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_KEYBOARD_BOOLEAN",
+   "url": "http://solettaproject.org/doc/latest/node_types/keyboard_boolean.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "input/sw",
+   "description": "Provides int packets after each key press from a physical keyboard",
+   "license": "BSD 3-Clause",
+   "name": "keyboard/int",
+   "options_symbol": "sol_flow_node_type_keyboard_int_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "An int range packet (with the given key pressed's code) when keyboard input arrives.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_KEYBOARD_INT",
+   "url": "http://solettaproject.org/doc/latest/node_types/keyboard_irange.html",
+   "version": "1"
+  }
+ ]
+}

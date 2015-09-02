@@ -1,0 +1,786 @@
+<!--
+ -
+ - @license
+ -
+ - The MIT License (MIT)
+ -
+ - Copyright (c) 2015 Intel Corporation
+ -
+ - Permission is hereby granted, free of charge, to any person obtaining a copy
+ - of this software and associated documentation files (the "Software"), to deal
+ - in the Software without restriction, including without limitation the rights
+ - to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ - copies of the Software, and to permit persons to whom the Software is
+ - furnished to do so, subject to the following conditions:
+ -
+ - The above copyright notice and this permission notice shall be included in
+ - all copies or substantial portions of the Software.
+ -
+ - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ - IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ - FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ - AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ - LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ - THE SOFTWARE.
+ -
+ - Authors:
+ -   Elliot Smith <elliot.smith@intel.com>
+ -   Max Waterman <max.waterman@intel.com>
+ -
+ -->
+
+<link rel="import" href="../../bower_components/the-graph/the-graph-editor/the-graph-editor.html">
+<link rel="import" href="./slv-component-select-popup.html">
+
+<polymer-element name="slv-editor" attributes="width height grid snap theme">
+  <template>
+    <style>
+      #editor {
+        background-color: transparent;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+
+      /***************/
+      /* node styles */
+      /***************/
+
+      /* normal */
+
+      /* background */
+      #editor /deep/ .the-graph-dark .node > .node-rect {
+        fill: #80898c !important;
+      }
+
+      /* icon */
+      #editor /deep/ .the-graph-dark .node > .node-icon {
+        fill: #bbbbbb !important;
+      }
+
+      /* border */
+      #editor /deep/ .the-graph-dark .node > .node-border {
+        stroke: #797979 !important;
+      }
+
+      /* selected */
+
+      /* background */
+      #editor /deep/ .the-graph-dark .node.selected > .node-rect {
+        fill: #a1abae !important;
+      }
+
+      /* icon */
+      #editor /deep/ .the-graph-dark .node.selected > .node-icon {
+        fill: #efefef !important;
+      }
+
+      /* border */
+      /* same style for hover */
+      #editor /deep/ .the-graph-dark .node:hover > .node-border,
+      #editor /deep/ .the-graph-dark .node.selected > .node-border {
+        stroke: #e4e4e4 !important;
+      }
+
+      /* unselected - attribute since React trounces classes */
+
+      /* background */
+      #editor /deep/ .the-graph-dark .node[unselected] > .node-rect {
+        fill: #4e5354 !important;
+      }
+
+      /* icon */
+      #editor /deep/ .the-graph-dark .node[unselected] > .node-icon {
+        fill: #727476 !important;
+      }
+
+      /* border */
+      #editor /deep/ .the-graph-dark .node[unselected] > .node-border {
+        stroke: #575757 !important;
+      }
+
+      /* adjust pipe widths and colours */
+      /* selected pipe */
+      #editor /deep/ .the-graph-dark .edge.selected .edge-bg {
+        stroke-width: 6px;
+        stroke: #efefef;
+      }
+
+      #editor /deep/ .the-graph-dark .edge-fg {
+        stroke-width: 4px;
+      }
+
+      #editor /deep/ .the-graph-dark .stroke {
+        stroke: #bbbbbb !important;
+      }
+
+      #editor /deep/ .the-graph-dark .selected .stroke {
+        stroke: #efefef !important;
+      }
+
+      /* hide the small circle on top of the port */
+      #editor /deep/ .port-circle-small {
+        display: none;
+      }
+
+      /* reposition the port arcs so they don't overlap the node */
+      #editor /deep/ .port-arc {
+        fill: #4d4d4d !important;
+      }
+
+      #editor /deep/ g.inports .port-arc {
+        transform: translateX(-0.75px);
+      }
+
+      #editor /deep/ g.outports .port-arc {
+        transform: translateX(0.75px);
+      }
+
+      /* colour ports with an edge attached (no edge being dragged) */
+      #editor /deep/ .port-arc.slv-edge-attached {
+        fill: #41b6d4 !important;
+      }
+
+      /* colour unconnectable ports (while edge is dragging) */
+      #editor /deep/ .port-arc.slv-cannot-connect-port {
+        fill: #972c2c !important;
+      }
+
+      /* colour connectable ports (while edge is dragging) */
+      #editor /deep/ .port-arc.slv-can-connect-port {
+        fill: #efefef !important;
+      }
+
+      /* background colour for the graph */
+      #editor /deep/ .the-graph-dark .the-graph-app {
+        background-color: #292929 !important;
+      }
+    </style>
+
+    <slv-component-select-popup id="componentpopup"
+                                 heading="Select replacement node">
+    </slv-component-select-popup>
+
+    <the-graph-editor id="editor"
+      width="{{width}}"
+      height="{{height}}"
+      grid="{{grid}}"
+      snap="{{snap}}"
+      theme="{{theme}}">
+    </the-graph-editor>
+  </template>
+
+  <script>
+  // WARNING: this now relies on noflo in the global namespace, but
+  // I don't import it with System.import() here as it causes issues
+  // with the tests
+  window.slvEditorReady = Promise.all(
+  [
+    System.import('Component'),
+    System.import('FactoryDecorator'),
+    System.import('GraphQuery'),
+    System.import('ComponentSimilarGrouper'),
+    System.import('NodePlacer'),
+    System.import('lodash'),
+    System.import('js-signals'),
+    window.slvComponentSelectPopupReady
+  ])
+  .then(function (imports) {
+    'use strict';
+
+    var Component = imports.shift();
+    var FactoryDecorator = imports.shift();
+    var GraphQuery = imports.shift();
+    var ComponentSimilarGrouper = imports.shift();
+    var NodePlacer = imports.shift();
+    var _ = imports.shift();
+    var signals = imports.shift();
+
+    /**
+     * Wrapper for the-graph-editor to handle the extra metadata
+     * required by SLV (required, max_connections etc.) and paint
+     * nodes and edges appropriately.
+     *
+     * <the-graph-editor> has a fairly confusing setup of elements
+     * and properties:
+     *
+     *   <the-graph-editor>.$.graph: an instance of <the-graph> which
+     *     is responsible for drawing the UI for the editor; this also
+     *     fires events when nodes/edges are added to the UI
+     *   <the-graph-editor>.graph: a plain object representing the
+     *     collection of nodes added to the editor so far
+     *   <the-graph-editor>.nofloGraph: a NoFlo graph instance which
+     *     is reset whenever <the-graph-editor>.graph changes
+     *   <the-graph-editor>.$.graph.library: component library used
+     *     to determine which ports and labels should be shown on
+     *     nodes drawn onto the graph
+     *
+     * NB when creating a <slv-editor>, ensure that you invoke
+     * initialiseGraph() as soon as it is in the DOM, to draw the
+     * initial grid ready for nodes to be added.
+     */
+    Polymer('slv-editor', {
+      // reference to TheGraph
+      TheGraph: null,
+
+      // ComponentLibrary instance
+      componentLibrary: null,
+
+      created: function () {
+        this.signals = {
+
+          // sent the first time the editor's NoFlo graph is instantiated;
+          // dispatched with the NoFlo graph
+          graphInitialised: new signals.Signal(),
+
+          graphChanged: new signals.Signal(),
+
+          // dispatched when the replace node component option
+          // is selected from a node's context menu;
+          // payload: nodeId, componentName
+          componentSelected: new signals.Signal(),
+
+          // dispatched when one or more edges are selected on
+          // the-graph-editor
+          // payload: array of edges selected
+          edgesSelected: new signals.Signal(),
+
+          // dispatched when one or more nodes are selected on
+          // the-graph-editor
+          // payload: array of nodes selected
+          nodesSelected: new signals.Signal(),
+
+          // dispatched when a node should be removed
+          // payload: nodeId to remove
+          removeNode: new signals.Signal(),
+
+          // dispatched when an edge should be removed
+          // payload: from node ID, from port, to node ID, to port
+          removeEdge: new signals.Signal(),
+
+          // dispatched when an edge starts being drawn
+          edgeStarted: new signals.Signal(),
+
+          // dispatched when an edge ends being drawn
+          edgeEnded: new signals.Signal(),
+
+          // dispatched when the content of the clipboard should be
+          // pasted
+          // payload: TheGraph.Clipboard
+          paste: new signals.Signal()
+        };
+
+        this.nodePlacer = NodePlacer();
+
+        this.graphQuery = GraphQuery();
+
+        this.factoryDecorator = FactoryDecorator({
+          graphQuery: this.graphQuery
+        });
+      },
+
+      domReady: function () {
+        var self = this;
+
+        // set minZoom and maxZoom on the-graph element
+        this.$.editor.$.graph.minZoom = 0.5;
+        this.$.editor.$.graph.maxZoom = 2.5;
+
+        // dispatch an event when the selected edges on the embedded
+        // noflo graph change
+        this.$.editor.addEventListener('edges', function (e) {
+          self.signals.edgesSelected.dispatch(e.detail);
+        });
+
+        // dispatch an event when the selected nodes on the embedded
+        // noflo graph change
+        this.$.editor.$.graph.addEventListener('nodes', function (e) {
+          var nodes = e.detail;
+          self.signals.nodesSelected.dispatch(nodes);
+          self.selectNodesEdges(nodes);
+
+          if (nodes.length > 0) {
+            self.addUnselectedToUnselectedNodes(nodes);
+          } else {
+            self.removeUnselectedAll();
+          }
+        });
+
+        // detect edge start events; notify the factory
+        // decorator so it know when an edge is being drawn and can
+        // adapt port appearance accordingly; note that this event
+        // is also fired when the edge is dropped onto the target node,
+        // so that condition is handled in FactoryDecorator
+        this.$.editor.addEventListener('the-graph-edge-start', function (e) {
+          self.signals.edgeStarted.dispatch(e.detail);
+          self.factoryDecorator.setEdgeStarted(e.detail);
+        });
+
+        // edge is dropped and isn't on a node
+        this.$.editor.addEventListener('the-graph-edge-drop', function (e) {
+          self.signals.edgeEnded.dispatch(e.detail);
+          self.factoryDecorator.setEdgeEnded();
+        });
+
+        // menu item to do node replacement
+        this.$.editor.addMenuAction('node', 'n4', {
+          icon: 'recycle',
+          iconLabel: 'replace',
+          action: function (graph, nodeId, node) {
+            self.componentGrouper.setTarget(node.component);
+            self.$.componentpopup.open();
+
+            var handler = function (componentName) {
+              self.signals.componentSelected.dispatch(nodeId, componentName);
+            };
+
+            self.$.componentpopup.signals.selected.addOnce(handler);
+
+            // if component selection is cancelled, remove the handler
+            // (we don't want it to fire on this node the next time a
+            // component is selected for a different node)
+            self.$.componentpopup.signals.closed.addOnce(function () {
+              self.$.componentpopup.signals.selected.remove(handler);
+            });
+          }
+        });
+
+        // modify default menus on the-graph-editor so that any
+        // actions which modify the noflo Graph *must* go through
+        // the GraphBuilder
+        //
+        // NB the "copy" context menus are left as is, as they only
+        // influence the editor state, not the graph
+
+        // replace paste item for context menu on the area outside
+        // nodes, edges and groups;
+        // this passes responsibility for the paste to GraphBuilder
+        this.$.editor.addMenuAction('main', 'e4', {
+          icon: 'paste',
+          iconLabel: 'paste',
+          action: function () {
+            // get the position of the context menu from its transform attribute
+            var contextMenu = self.querySelector('#editor /deep/ .context-menu');
+            var transform = contextMenu?contextMenu.getAttribute('transform'):'';
+            var match = transform.match(/translate\((\d+),(\d+)\)/);
+            var x = match[1]?parseInt(match[1],10):0;
+            var y = match[2]?parseInt(match[2],10):0;
+
+            var scale = parseFloat(self.$.editor.$.graph.scale, 10);
+            var panX = parseFloat(self.$.editor.$.graph.pan[0], 10);
+            var panY = parseFloat(self.$.editor.$.graph.pan[1], 10);
+
+            x = (x - panX)/scale;
+            y = (y - panY)/scale;
+
+            self.signals.paste.dispatch(self.TheGraph.Clipboard, {autoposition: true, position: {x: x,y: y}});
+          }
+        });
+
+        // modify the paste menu on a group of selected nodes
+        // (push pastes through GraphBuilder)
+        this.$.editor.addMenuAction('selection', 'e4', {
+          icon: 'paste',
+          iconLabel: 'paste',
+          action: function () {
+            self.signals.paste.dispatch(self.TheGraph.Clipboard);
+          }
+        });
+
+        // modify the edge/delete action to fire a signal, so
+        // GraphBuilder can do the deletion
+        this.$.editor.addMenuAction('edge', 's4', {
+          icon: 'trash-o',
+          iconLabel: 'delete',
+          action: function (graph, itemKey, item) {
+            self.signals.removeEdge.dispatch(
+              item.from.node, item.from.port, item.to.node, item.to.port
+            );
+          }.bind(this.$.editor)
+        });
+
+        // modify the node/delete action so it fires a signal, rather
+        // than modifies the graph directly; the signal
+        // then triggers the actual remove action on GraphBuilder
+        this.$.editor.addMenuAction('node', 's4', {
+          icon: 'trash-o',
+          iconLabel: 'delete',
+          action: function (graph, nodeId) {
+            self.signals.removeNode.dispatch(nodeId);
+          }.bind(this.$.editor)
+        });
+
+        // remove unused/broken context menus in the graph-editor;
+        // exported nodes aren't in our requirements, and seem broken
+        // anyway; groups don't seem to be implemented
+        this.$.editor.menus.nodeInport = null; // node inport menu
+        this.$.editor.menus.nodeOutport = null; // node outport menu
+        this.$.editor.menus.graphInport = null; // exported inport menu
+        this.$.editor.menus.graphOutport = null; // exported outport menu
+        this.$.editor.menus.group = null; // group menu
+      },
+
+      // mark unselected nodes as unselected
+      // had to use attributes since React seems to overwrite
+      // classes I add
+      addUnselectedToUnselectedNodes: function (selectedNodes) {
+        var allNodes = this.$.editor.querySelectorAll(':host /deep/ .node');
+        var numNodes = allNodes.length;
+
+        var selectedNodesIds = _.pluck(selectedNodes, 'id');
+
+        for (var i = 0; i < numNodes; i++) {
+          var thisNode = allNodes[i];
+          var thisNodeId = thisNode.getAttribute('name');
+          // note that the selected class hasn't been moved at this point
+          // so previously selected node is still marked as selected
+          var notSelected = (selectedNodesIds.indexOf(thisNodeId) === -1);
+          if (notSelected) {
+            thisNode.setAttribute('unselected', '');
+          } else {
+            thisNode.removeAttribute('unselected');
+          }
+        }
+      },
+
+      // remove unselected attribute from all nodes that have it
+      removeUnselectedAll: function () {
+        var unselectedNodes = this.$.editor.querySelectorAll(':host /deep/ .node[unselected]');
+        var numNodes = unselectedNodes.length;
+
+        for (var i = 0; i < numNodes; i++) {
+          var thisNode = unselectedNodes[i];
+          thisNode.removeAttribute('unselected');
+        }
+      },
+
+      // select edges attached to the nodes
+      selectNodesEdges: function (nodes) {
+        var edges = this.graphQuery.getEdgesAttachedToNodes(nodes);
+
+        this.setSelectedEdges(edges);
+      },
+
+      /**
+       * This provides a mechanism to expose TheGraph to
+       * this element, so it can be used for node sizing etc.
+       */
+      setTheGraph: function (TheGraph) {
+        this.TheGraph = TheGraph;
+      },
+
+      /**
+       * Return a reference to the wrapped <the-graph-editor>.
+       * TODO maybe move the-graph-nav into this component from main.js,
+       * which would remove the need for this method.
+       */
+      getWrappedEditor: function () {
+        return this.$.editor;
+      },
+
+      /**
+       * Reset the editor's graph (which in turn resets the nofloGraph
+       * associated with it and clears the UI). This first deselects
+       * all selected nodes in the current graph, as NoFlo doesn't
+       * do this itself.
+       *
+       * This method should be called whenever a slv-editor instance
+       * is created. However, I was unable to find a suitable hook
+       * for it in Polymer's event sequence (i.e. domReady, created)
+       * which did not cause an error somewhere else. For this reason,
+       * manually call this method after a slv-editor element
+       * is added to the DOM.
+       *
+       * If this method is not invoked, everything will still work,
+       * but the wrapped <the-graph-editor> will not start itself
+       * correctly and the grid won't be drawn.
+       */
+      resetGraph: function () {
+        this.setGraph(new noflo.Graph());
+      },
+
+      /**
+       * Set the Component library used by the wrapped graph.
+       * This determines which NoFlo components can be instantiated
+       * and drawn into the graph.
+       *
+       * This also triggers decoration of <the-graph-editor>'s
+       * factory functions for drawing nodes, to allow them to be
+       * intercepted by our own drawing routines.
+       *
+       * @param {ComponentLibrary} library    Library of components; the
+       * map from component names to Component definitions is used, e.g.
+       * {'ComponentX': <Component representing ComponentX>, ...}
+       *
+       * see Component.create() in Component.js for the structure
+       * of Components
+       */
+      setLibrary: function (library) {
+        this.componentLibrary = library;
+        this.$.editor.$.graph.library = library.map;
+
+        this.componentGrouper = ComponentSimilarGrouper({
+          library: library
+        });
+
+        this.$.componentpopup.setComponentGrouper(this.componentGrouper);
+
+        this.factoryDecorator.setLibrary(library);
+        this.factoryDecorator.decorate();
+      },
+
+      /**
+       * gets the Component Library as set by setLibrary
+       */
+      getLibrary: function () {
+        return this.componentLibrary;
+      },
+
+      /**
+       * Autolayout nodes and edges in the wrapped <the-graph-editor>.
+       */
+      layout: function () {
+        this.$.editor.triggerAutolayout();
+      },
+
+      /**
+       * Get the position for a new node to be added to the editor,
+       * trying to avoid overlaps with existing nodes while keeping
+       * the new node in the viewport.
+       *
+       * @param {string} componentName    The component is necessary
+       * to figure out the height for the node
+       *
+       * Height is determined using the same algorithm as the-graph
+       * (see the-graph-graph.js)
+       *
+       * @returns { x: <x>, y: <y> }
+       */
+      getNodePosition: function (componentName) {
+        var topLeftPosition = { x: 0, y: 0 };
+
+        if (!this.$.editor.nofloGraph ||
+            !this.TheGraph ||
+            !this.componentLibrary) {
+          return topLeftPosition;
+        }
+
+        var component = this.componentLibrary.get(componentName);
+
+        if (!component) {
+          return topLeftPosition;
+        }
+
+        var gridPx = parseFloat(this.$.editor.$.graph.grid, 10);
+        var snap = parseFloat(this.$.editor.$.graph.snap, 10);
+
+        var width = parseFloat(this.$.editor.$.graph.width, 10);
+        var scale = parseFloat(this.$.editor.$.graph.scale, 10);
+
+        var panX = parseFloat(this.$.editor.$.graph.pan[0], 10);
+        var panY = parseFloat(this.$.editor.$.graph.pan[1], 10);
+
+        var x = -panX / scale;
+        var y = -panY / scale;
+
+        // increase node height for nodes with many ports
+        var portCount = Math.max(
+          component.inports.length,
+          component.outports.length
+        );
+
+        var nodeHeight = gridPx;
+
+        var diff = portCount - this.TheGraph.config.maxPortCount;
+
+        if (diff > 0) {
+          nodeHeight = this.TheGraph.config.nodeHeight +
+                       (diff * this.TheGraph.config.nodeHeightIncrement);
+        }
+
+        // fit the box into the graph
+        var box = {
+          x: x + snap,
+          y: y + snap,
+          height: nodeHeight,
+          width: gridPx
+        };
+
+        var constrainingBox = {
+          minX: x,
+          minY: y,
+          maxX: (width - panX) / scale
+        };
+
+        var boxes = _.map(this.$.editor.nofloGraph.nodes, function (node) {
+          return node.metadata;
+        });
+
+        return this.nodePlacer.findPlace(box, constrainingBox, boxes, snap);
+      },
+
+      /**
+       * Get the NoFlo graph associated with the editor as a simple
+       * object suitable for JSON serialisation.
+       */
+      getGraph: function () {
+        return this.$.editor.nofloGraph.toJSON();
+      },
+
+      /**
+       * Unselect all nodes
+       */
+      unselectAll: function () {
+        this.$.editor.$.graph.appView.unselectAll();
+      },
+
+      /**
+       * Set the width and height of the wrapped the-graph.
+       *
+       * @param {object} size    Dimensions for the-graph;
+       * {width: w, height: h}
+       */
+      setSize: function (size) {
+        this.setAttribute('width', size.width);
+        this.setAttribute('height', size.height);
+        this.propagateOffsets();
+      },
+
+      getScale: function () {
+        return this.$.editor.$.graph.scale;
+      },
+
+      /**
+       * Set offsets on the wrapped the-graph via
+       * the position of this (slv-editor) element.
+       */
+      propagateOffsets: function () {
+        var bounds = this.$.editor.getBoundingClientRect();
+        this.$.editor.$.graph.offsetX = bounds.left;
+        this.$.editor.$.graph.offsetY = bounds.top;
+      },
+
+      /**
+       * Set the NoFlo graph associated with the editor.
+       */
+      setGraph: function (nofloGraph, options) {
+        options = options || {};
+
+        this.setSelectedNodes([]);
+
+        // convert numeric metadata from strings to integers
+        var nodes = nofloGraph.nodes;
+        var intProps = [ 'x', 'y', 'width', 'height' ];
+
+        nodes.forEach(function (node, i) {
+          intProps.forEach(function (thisIntProp) {
+            var string = nodes[i].metadata[thisIntProp];
+            if (string) {
+              nodes[i].metadata[thisIntProp] = parseInt(string);
+            }
+          });
+        });
+
+        // fbp requires port names to be uppercase
+        // fbp parser seems to lowercase port name
+        // (perhaps because json requires lowercase)
+        // but this causes the-graph (somewhere) to
+        // duplicate the ports, one uppercase and one
+        // lowercase
+        // the prevent this, convert port names to upper case
+        var edges = nofloGraph.edges;
+        var ports = [ 'from', 'to' ];
+
+        edges.forEach(function (edge, i) {
+          ports.forEach(function (thisPort) {
+            var string = edges[i][thisPort].port;
+            if (string) {
+              edges[i][thisPort].port = string.toUpperCase();
+            }
+          });
+        });
+
+        /** hack to merge component definitions fully */
+        if (!this.patchedMergeComponentDefinition) {
+          this.$.editor.$.graph.mergeComponentDefinition = this.mergeComponentDefinition(
+            this.$.editor.$.graph.mergeComponentDefinition
+          );
+
+          this.patchedMergeComponentDefinition = true;
+        }
+
+        // set the graph - throws away existing graph and uses new one
+        this.$.editor.graph = nofloGraph;
+
+        this.graphQuery.setGraph(this.$.editor.graph);
+
+        this.async(function () {
+          if (options.autoLayout) {
+            this.layout();
+          }
+
+          this.$.editor.$.graph.rerender({libraryDirty: true});
+
+          // to enable the export button
+          this.signals.graphInitialised.dispatch(this.$.editor.graph);
+        });
+      },
+
+      mergeComponentDefinition: function (realImplementation) {
+        return function (component, definition) {
+          definition = realImplementation(component, definition);
+
+          // overwrite the definition using the component definition
+          var componentKeys = Object.keys(component);
+          componentKeys.forEach(function (key) {
+            definition[key] = component[key];
+          });
+
+          return Component.create(definition);
+        };
+      },
+
+      /**
+       * Check whether the node identified by nodeId is
+       * in the wrapped editor's selected nodes array.
+       */
+      nodeIsSelected: function (nodeId) {
+        return !!_.find(this.$.editor.selectedNodes, function (node) {
+          return node.id === nodeId;
+        });
+      },
+
+      // remove node with ID <nodeId> from nodes selected in the editor
+      deselectNode: function (nodeId) {
+        var newSelection = _.map(this.selectedNodes, function (node) {
+          return node.id !== nodeId;
+        });
+
+        this.setSelectedNodes(newSelection);
+      },
+
+      // remove <edge> from edges selected in the editor
+      deselectEdge: function (edgeToDeselect) {
+        var newSelection = _.map(this.selectedEdges, function (edge) {
+          return !(edge.from.node === edgeToDeselect.from.node &&
+                   edge.from.port === edgeToDeselect.from.port &&
+                   edge.to.node === edgeToDeselect.to.node &&
+                   edge.to.port === edgeToDeselect.to.port);
+        });
+
+        this.setSelectedEdges(newSelection);
+      },
+
+      setSelectedNodes: function (nodes) {
+        this.$.editor.selectedNodes = nodes;
+      },
+
+      setSelectedEdges: function (edges) {
+        this.$.editor.selectedEdges = edges;
+      }
+
+    });
+  });
+  </script>
+</polymer-element>

@@ -1,0 +1,68 @@
+{
+ "timer": [
+  {
+   "author": "Intel Corporation",
+   "category": "timer",
+   "description": "Provides an empty packet on a timely manner",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "any",
+     "description": "Resets the timer without triggering a packet in the current iteration.",
+     "name": "RESET",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "int",
+     "description": "Set the timer's tick interval in milliseconds.",
+     "name": "INTERVAL",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "boolean",
+     "description": "Enables or disables the timer, based on the value of the packet received. When stopped, the timer will cease to emit packets from the OUT port. When enabled again, it does not resume from the point where it was stopped.",
+     "name": "ENABLED",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "timer",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 1000
+      },
+      "description": "Tick interval the timer will start with, in milliseconds.",
+      "name": "interval",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_timer_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "empty",
+     "description": "an empty packet when timer ticks.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_TIMER",
+   "url": "http://solettaproject.org/doc/latest/node_types/timer.html"
+  }
+ ]
+}

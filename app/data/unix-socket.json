@@ -1,0 +1,564 @@
+{
+ "unix-socket": [
+  {
+   "author": "Intel Corporation",
+   "category": "output/network",
+   "description": "Unix socket boolean writer",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Unix socket boolean writer, port out.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "unix-socket/boolean-writer",
+   "options": {
+    "members": [
+     {
+      "data_type": "string",
+      "description": "Unix socket path",
+      "name": "path",
+      "required": true
+     },
+     {
+      "data_type": "boolean",
+      "default": true,
+      "description": "Act like a server",
+      "name": "server",
+      "required": false
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_unix_socket_boolean_writer_options",
+   "symbol": "SOL_FLOW_NODE_TYPE_UNIX_SOCKET_BOOLEAN_WRITER",
+   "url": "http://solettaproject.org/doc/latest/node_types/unix-socket/boolean-writer.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "input/network",
+   "description": "Unix socket boolean reader",
+   "license": "BSD 3-Clause",
+   "name": "unix-socket/boolean-reader",
+   "options": {
+    "members": [
+     {
+      "data_type": "boolean",
+      "default": false,
+      "description": "Act like a server",
+      "name": "server",
+      "required": false
+     },
+     {
+      "data_type": "string",
+      "description": "Unix socket path",
+      "name": "path",
+      "required": true
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_unix_socket_boolean_reader_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Unix socket boolean reader, port out.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_UNIX_SOCKET_BOOLEAN_READER",
+   "url": "http://solettaproject.org/doc/latest/node_types/unix-socket/boolean-reader.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "output/network",
+   "description": "Unix socket string writer",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "string",
+     "description": "Unix socket string writer, port out.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "unix-socket/string-writer",
+   "options": {
+    "members": [
+     {
+      "data_type": "string",
+      "description": "Unix socket path",
+      "name": "path",
+      "required": true
+     },
+     {
+      "data_type": "boolean",
+      "default": true,
+      "description": "Act like a server",
+      "name": "server",
+      "required": false
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_unix_socket_string_writer_options",
+   "symbol": "SOL_FLOW_NODE_TYPE_UNIX_SOCKET_STRING_WRITER",
+   "url": "http://solettaproject.org/doc/latest/node_types/unix-socket/string-writer.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "input/network",
+   "description": "Unix socket string reader",
+   "license": "BSD 3-Clause",
+   "name": "unix-socket/string-reader",
+   "options": {
+    "members": [
+     {
+      "data_type": "boolean",
+      "default": false,
+      "description": "Act like a server",
+      "name": "server",
+      "required": false
+     },
+     {
+      "data_type": "string",
+      "description": "Unix socket path",
+      "name": "path",
+      "required": true
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_unix_socket_string_reader_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "string",
+     "description": "Unix socket string reader, port out.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_UNIX_SOCKET_STRING_READER",
+   "url": "http://solettaproject.org/doc/latest/node_types/unix-socket/string-reader.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "output/network",
+   "description": "Unix socket rgb writer",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "rgb",
+     "description": "Unix socket rgb writer, port out.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "unix-socket/rgb-writer",
+   "options": {
+    "members": [
+     {
+      "data_type": "string",
+      "description": "Unix socket path",
+      "name": "path",
+      "required": true
+     },
+     {
+      "data_type": "boolean",
+      "default": true,
+      "description": "Act like a server",
+      "name": "server",
+      "required": false
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_unix_socket_rgb_writer_options",
+   "symbol": "SOL_FLOW_NODE_TYPE_UNIX_SOCKET_RGB_WRITER",
+   "url": "http://solettaproject.org/doc/latest/node_types/unix-socket/rgb-writer.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "input/network",
+   "description": "Unix socket rgb reader",
+   "license": "BSD 3-Clause",
+   "name": "unix-socket/rgb-reader",
+   "options": {
+    "members": [
+     {
+      "data_type": "boolean",
+      "default": false,
+      "description": "Act like a server",
+      "name": "server",
+      "required": false
+     },
+     {
+      "data_type": "string",
+      "description": "Unix socket path",
+      "name": "path",
+      "required": true
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_unix_socket_rgb_reader_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "rgb",
+     "description": "Unix socket rgb reader, port out.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_UNIX_SOCKET_RGB_READER",
+   "url": "http://solettaproject.org/doc/latest/node_types/unix-socket/rgb-reader.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "output/network",
+   "description": "Unix socket direction vector writer",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "direction-vector",
+     "description": "Unix socket direction vector writer, input port.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "unix-socket/direction-vector-writer",
+   "options": {
+    "members": [
+     {
+      "data_type": "string",
+      "description": "Unix socket path",
+      "name": "path",
+      "required": true
+     },
+     {
+      "data_type": "boolean",
+      "default": true,
+      "description": "Act like a server",
+      "name": "server",
+      "required": false
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_unix_socket_direction_vector_writer_options",
+   "symbol": "SOL_FLOW_NODE_TYPE_UNIX_SOCKET_DIRECTION_VECTOR_WRITER",
+   "url": "http://solettaproject.org/doc/latest/node_types/unix-socket/direction-vector-writer.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "input/network",
+   "description": "Unix socket direction_vector reader",
+   "license": "BSD 3-Clause",
+   "name": "unix-socket/direction-vector-reader",
+   "options": {
+    "members": [
+     {
+      "data_type": "boolean",
+      "default": false,
+      "description": "Act like a server",
+      "name": "server",
+      "required": false
+     },
+     {
+      "data_type": "string",
+      "description": "Unix socket path",
+      "name": "path",
+      "required": true
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_unix_socket_direction_vector_reader_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "direction-vector",
+     "description": "Unix socket direction vector reader, oupput port.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_UNIX_SOCKET_DIRECTION_VECTOR_READER",
+   "url": "http://solettaproject.org/doc/latest/node_types/unix-socket/direction-vector-reader.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "output/network",
+   "description": "Unix socket byte writer",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "Unix socket byte writer, port out.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "unix-socket/byte-writer",
+   "options": {
+    "members": [
+     {
+      "data_type": "string",
+      "description": "Unix socket path",
+      "name": "path",
+      "required": true
+     },
+     {
+      "data_type": "boolean",
+      "default": true,
+      "description": "Act like a server",
+      "name": "server",
+      "required": false
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_unix_socket_byte_writer_options",
+   "symbol": "SOL_FLOW_NODE_TYPE_UNIX_SOCKET_BYTE_WRITER",
+   "url": "http://solettaproject.org/doc/latest/node_types/unix-socket/byte-writer.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "input/network",
+   "description": "Unix socket byte reader",
+   "license": "BSD 3-Clause",
+   "name": "unix-socket/byte-reader",
+   "options": {
+    "members": [
+     {
+      "data_type": "boolean",
+      "default": false,
+      "description": "Act like a server",
+      "name": "server",
+      "required": false
+     },
+     {
+      "data_type": "string",
+      "description": "Unix socket path",
+      "name": "path",
+      "required": true
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_unix_socket_byte_reader_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "Unix socket byte reader, port out.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_UNIX_SOCKET_BYTE_READER",
+   "url": "http://solettaproject.org/doc/latest/node_types/unix-socket/byte-reader.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "output/network",
+   "description": "Unix socket int writer",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Unix socket int writer, port out.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "unix-socket/int-writer",
+   "options": {
+    "members": [
+     {
+      "data_type": "string",
+      "description": "Unix socket path",
+      "name": "path",
+      "required": true
+     },
+     {
+      "data_type": "boolean",
+      "default": true,
+      "description": "Act like a server",
+      "name": "server",
+      "required": false
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_unix_socket_int_writer_options",
+   "symbol": "SOL_FLOW_NODE_TYPE_UNIX_SOCKET_INT_WRITER",
+   "url": "http://solettaproject.org/doc/latest/node_types/unix-socket/int-writer.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "input/network",
+   "description": "Unix socket int reader",
+   "license": "BSD 3-Clause",
+   "name": "unix-socket/int-reader",
+   "options": {
+    "members": [
+     {
+      "data_type": "boolean",
+      "default": false,
+      "description": "Act like a server",
+      "name": "server",
+      "required": false
+     },
+     {
+      "data_type": "string",
+      "description": "Unix socket path",
+      "name": "path",
+      "required": true
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_unix_socket_int_reader_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Unix socket int reader, port out.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_UNIX_SOCKET_INT_READER",
+   "url": "http://solettaproject.org/doc/latest/node_types/unix-socket/int-reader.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "output/network",
+   "description": "Unix socket float writer",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Unix socket float writer, port out.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "unix-socket/float-writer",
+   "options": {
+    "members": [
+     {
+      "data_type": "string",
+      "description": "Unix socket path",
+      "name": "path",
+      "required": true
+     },
+     {
+      "data_type": "boolean",
+      "default": true,
+      "description": "Act like a server",
+      "name": "server",
+      "required": false
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_unix_socket_float_writer_options",
+   "symbol": "SOL_FLOW_NODE_TYPE_UNIX_SOCKET_FLOAT_WRITER",
+   "url": "http://solettaproject.org/doc/latest/node_types/unix-socket/float-writer.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "input/network",
+   "description": "Unix socket float reader",
+   "license": "BSD 3-Clause",
+   "name": "unix-socket/float-reader",
+   "options": {
+    "members": [
+     {
+      "data_type": "boolean",
+      "default": false,
+      "description": "Act like a server",
+      "name": "server",
+      "required": false
+     },
+     {
+      "data_type": "string",
+      "description": "Unix socket path",
+      "name": "path",
+      "required": true
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_unix_socket_float_reader_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Unix socket float reader, port out.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_UNIX_SOCKET_FLOAT_READER",
+   "url": "http://solettaproject.org/doc/latest/node_types/unix-socket/float-reader.html",
+   "version": "1"
+  }
+ ]
+}

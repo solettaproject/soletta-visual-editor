@@ -1,0 +1,253 @@
+{
+ "string": [
+  {
+   "author": "Intel Corporation",
+   "category": "string",
+   "description": "Compare two strings",
+   "in_ports": [
+    {
+     "array_size": 2,
+     "base_port_idx": 0,
+     "data_type": "string",
+     "description": "Two strings to be compared. Indexed from 0 to 1.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "string/compare",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 0
+      },
+      "description": "Amount of bytes to be compared between strings. If zero, the whole strings will be compared.",
+      "name": "bytes",
+      "required": false
+     },
+     {
+      "data_type": "boolean",
+      "default": false,
+      "description": "Ignore case when comparing strings.",
+      "name": "ignore_case",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_string_compare_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "It returns an integer less than, equal to, or greater than zero if string received on IN[0] is found to be less than, to match, or be greater than string on IN[1].",
+     "name": "OUT",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "boolean",
+     "description": "TRUE if the string received on IN[0] is the same as the string on IN[1].",
+     "name": "EQUAL",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_STRING_COMPARE",
+   "url": "http://solettaproject.org/doc/latest/node_types/string/compare.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "string",
+   "description": "Concatenate two strings",
+   "in_ports": [
+    {
+     "array_size": 2,
+     "base_port_idx": 0,
+     "data_type": "string",
+     "description": "Two strings to be concatenated. Indexed from 0 to 1.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "string/concatenate",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 0
+      },
+      "description": "Amount of bytes to be copied from string received on IN[1]. If zero, the whole string will be concatenated to the string received on IN[0]",
+      "name": "bytes",
+      "required": false
+     },
+     {
+      "data_type": "string",
+      "default": null,
+      "description": "Separator string to be used between the two concatenated strings. It's set to null by default (no separator).",
+      "name": "separator",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_string_concatenate_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "string",
+     "description": "String IN[0] concatenated to string IN[1].",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_STRING_CONCATENATE",
+   "url": "http://solettaproject.org/doc/latest/node_types/string/concatenate.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "string",
+   "description": "Calculate the length of a string",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "string",
+     "description": "String to be measured.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "string/length",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 0
+      },
+      "description": "Maximum length to be checked. If a string is greater than that, maxlen value will be sent. If zero, no limit is applied.",
+      "name": "maxlen",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_string_length_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Send the string size, the number of bytes excluding terminating null byte. If maxlen is provided, it'll be at most this value.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_STRING_LENGTH",
+   "url": "http://solettaproject.org/doc/latest/node_types/string/length.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "string",
+   "description": "Split a string given a separator.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "string",
+     "description": "String to be split.",
+     "name": "IN",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "string",
+     "description": "String received on 'IN' port will be split using these delimiter chars.",
+     "name": "SEPARATOR",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "int",
+     "description": "A string can be split in many substrings. This value defines which substring should be sent. It must be non negative.",
+     "name": "INDEX",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "string/split",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 0
+      },
+      "description": "A string can be split in many substrings. This value defines which substring should be sent. It must be non negative. It can be overriden by values received on 'INDEX' port.",
+      "name": "index",
+      "required": false
+     },
+     {
+      "data_type": "string",
+      "default": " ",
+      "description": "String received on 'IN' port will be split using these delimiters chars. It can be overriden by values received on 'SEPARATOR' port.",
+      "name": "separator",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_string_split_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Number of generated substrings.",
+     "name": "LENGTH",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "string",
+     "description": "Substring given a separator and an index.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_STRING_SPLIT",
+   "url": "http://solettaproject.org/doc/latest/node_types/string/split.html",
+   "version": "1"
+  }
+ ]
+}

@@ -1,0 +1,516 @@
+{
+ "grove": [
+  {
+   "author": "Intel Corporation",
+   "category": "input/hw",
+   "description": "Gets sensor temperature in Celsius, Fahrenheit and Kelvin. Conversion to Kelvin is done using: 1/(log(((i-r)*Rc/r)/Rt)/B + 1/T - where i is input range, r is raw sensor value, Rc is potential divider resistor resitance, Rt is thermistor resistance, B is thermistor constant and T is thermistor reference temperature. Celsius and Fahrenheit values are simply derived from Kelvin value.",
+   "license": "BSD 3-Clause",
+   "name": "grove/temperature-sensor",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 2
+      },
+      "description": "Pin",
+      "name": "pin",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 12
+      },
+      "description": "Valid bits mask. This mask is used to filter the valid bits from the data received from hardware (which is manufacturer dependent), therefore should not be used as a way to change the output range because the mask is applied to the least significant bits.",
+      "name": "mask",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 1000
+      },
+      "description": "Polling time in milliseconds. This option will take no effect if hardware interruptions for GPIO is supported by the underlying system. Use it if you know that you don't have those interruptions available.",
+      "name": "poll_timeout",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 3975
+      },
+      "description": "Thermistor constant",
+      "name": "thermistor_constant",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 10000
+      },
+      "description": "Potential divider resistance",
+      "name": "resistance",
+      "required": false
+     },
+     {
+      "data_type": "float",
+      "default": {
+       "max": "DBL_MAX",
+       "min": "-DBL_MAX",
+       "step": "DBL_MIN",
+       "val": 298.15
+      },
+      "description": "Thermistor reference temperature",
+      "name": "reference_temperature",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 10000
+      },
+      "description": "Thermistor reference resistance",
+      "name": "thermistor_resistance",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_grove_temperature_sensor_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Measured temperature in Celsius.",
+     "name": "CELSIUS",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "float",
+     "description": "Measured temperature in Fahrenheit.",
+     "name": "FAHRENHEIT",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "float",
+     "description": "Measured temperature in Kelvin.",
+     "name": "KELVIN",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 3,
+     "data_type": "int",
+     "description": "Raw measured temperature.",
+     "name": "RAW",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_GROVE_TEMPERATURE_SENSOR",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "input/hw",
+   "description": "Get light sensor readings in Lux. However, it should be noted that this sensor is not precise, so the Lux readings are a rough estimation based on Grove Starter Kit booklet table, which relates raw sensor readings to Lux.",
+   "license": "BSD 3-Clause",
+   "name": "grove/light-sensor",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 1
+      },
+      "description": "Pin",
+      "name": "pin",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 12
+      },
+      "description": "Valid bits mask. This mask is used to filter the valid bits from the data received from hardware (which is manufacturer dependent), therefore should not be used as a way to change the output range because the mask is applied to the least significant bits.",
+      "name": "mask",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 1000
+      },
+      "description": "Polling time in milliseconds. This option will take no effect if hardware interruptions for GPIO is supported by the underlying system. Use it if you know that you don't have those interruptions available.",
+      "name": "poll_timeout",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_grove_light_sensor_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Measured illuminance in Lux (approximately).",
+     "name": "LUX",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "int",
+     "description": "Raw measured illuminance.",
+     "name": "RAW",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_GROVE_LIGHT_SENSOR",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "input/hw",
+   "description": "Get rotary sensor reading in degrees and radians.",
+   "license": "BSD 3-Clause",
+   "name": "grove/rotary-sensor",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 0
+      },
+      "description": "Pin",
+      "name": "pin",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 12
+      },
+      "description": "Valid bits mask. This mask is used to filter the valid bits from the data received from hardware (which is manufacturer dependent), therefore should not be used as a way to change the output range because the mask is applied to the least significant bits.",
+      "name": "mask",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 1000
+      },
+      "description": "Polling time in milliseconds. This option will take no effect if hardware interruptions for GPIO is supported by the underlying system. Use it if you know that you don't have those interruptions available.",
+      "name": "poll_timeout",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 300
+      },
+      "description": "Angular range",
+      "name": "angular_range",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_grove_rotary_sensor_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Measured rotation in degrees.",
+     "name": "DEG",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "float",
+     "description": "Measured rotation in radians.",
+     "name": "RAD",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "int",
+     "description": "Raw measured rotation.",
+     "name": "RAW",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_GROVE_ROTARY_SENSOR",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "output/hw",
+   "description": "LCD grove controller (JHD131M1 model) for simple string displaying and backlight color setting. It uses two I2C addresses, one to control an HD44780 based display and one for RGB backlight. Display matrix is 16x2.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "string",
+     "description": "Set string to be displayed. If it's bigger than 16 characters, it breaks it to the second line. If it's bigger than 32 (what fits on the two display lines), it'll be cropped to this length.",
+     "name": "IN",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "rgb",
+     "description": "Set display's backlight color.",
+     "name": "COLOR",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "grove/lcd-string",
+   "options_symbol": "sol_flow_node_type_grove_lcd_string_options",
+   "symbol": "SOL_FLOW_NODE_TYPE_GROVE_LCD_STRING",
+   "url": "http://solettaproject.org/doc/latest/components/lcd/grove.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "output/hw",
+   "description": "LCD grove controller (JHD131M1 model) for custom character/cursor manipulation and backlight color setting. It uses two I2C addresses, one to control an HD44780 based display and one for RGB backlight. Display matrix is 16x2.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Set whether auto-scrolling is on or off. After it's set to on, the cursor position is held static until one sets it off again (or changes it explicitly).",
+     "name": "AUTO_SCROLL",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "boolean",
+     "description": "Set character entry direction to be left-to-right (true) or right-to-left (false).",
+     "name": "LEFT_TO_RIGHT",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "rgb",
+     "description": "Set display's backlight color.",
+     "name": "COLOR",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 3,
+     "data_type": "int",
+     "description": "Set display's current column. Valid range is 0-16 (16 is a virtual position useful when writing on the last column in right-to-left mode).",
+     "name": "COL",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 4,
+     "data_type": "int",
+     "description": "Set display's current row. Valid range is 0-1.",
+     "name": "ROW",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 5,
+     "data_type": "boolean",
+     "description": "Set whether the display's blinking cursor is on (true) or off (false).",
+     "name": "BLINK_CURSOR",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 6,
+     "data_type": "boolean",
+     "description": "Set whether the display's underline cursor is on (true) or off (false).",
+     "name": "UNDERLINE_CURSOR",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 7,
+     "data_type": "boolean",
+     "description": "Set whether the display is on (true) or not (false). Naturally, it starts on by default.",
+     "name": "DISPLAY_ON",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 8,
+     "data_type": "byte",
+     "description": "Write given character at display's current row/column and advance them one position. The column will raise or lower depending on the entry direction, and no wrapping will occur -- if either top-left or bottom-right of the screen is hit, further char writes will update those limit cells until one changes the cursor position explicitly.",
+     "name": "PUT_CHAR",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 9,
+     "data_type": "string",
+     "description": "Write a sequence of characters at display's current row/column and advance the cursor's position. The cursor's position will change differently depending on the entry direction, and, if either top-left or bottom-right of the screen is hit, the string will be cropped at that point.",
+     "name": "PUT_STRING",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 10,
+     "data_type": "any",
+     "description": "Shift/scroll right the whole display by one column, keeping the char cell states (lcd's RAM state) as it was. Thus, a subsequent shift left will bring the display to what it looked like before the first shift.",
+     "name": "SCROLL_RIGHT",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 11,
+     "data_type": "any",
+     "description": "Shift/scroll left the whole display by one column, keeping the char cell states (lcd's RAM state) as it was. Thus, a subsequent shift left will bring the display to what it looked like before the first shift.",
+     "name": "SCROLL_LEFT",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 12,
+     "data_type": "any",
+     "description": "Clear the whole display, also resetting cursor to the top-left position.",
+     "name": "CLEAR",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "grove/lcd-char",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 0
+      },
+      "description": "Initial column of the cursor.",
+      "name": "init_col",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 0
+      },
+      "description": "Initial row of the cursor.",
+      "name": "init_row",
+      "required": false
+     },
+     {
+      "data_type": "boolean",
+      "default": true,
+      "description": "Whether to start on left-to-right (true) or right-to-left (false) cursor advancing.",
+      "name": "ltr",
+      "required": false
+     },
+     {
+      "data_type": "boolean",
+      "default": false,
+      "description": "Set whether the display's blinking cursor is on (true) or off (false).",
+      "name": "blink_cursor",
+      "required": false
+     },
+     {
+      "data_type": "boolean",
+      "default": false,
+      "description": "Set whether the display's underline cursor is on (true) or off (false).",
+      "name": "underline_cursor",
+      "required": false
+     },
+     {
+      "data_type": "boolean",
+      "default": false,
+      "description": "Whether to start on auto scroll mode (true) or not (false).",
+      "name": "auto_scroll",
+      "required": false
+     },
+     {
+      "data_type": "rgb",
+      "default": {
+       "blue": 255,
+       "blue_max": 255,
+       "green": 255,
+       "green_max": 255,
+       "red": 255,
+       "red_max": 255
+      },
+      "description": "Initial background color.",
+      "name": "color",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_grove_lcd_char_options",
+   "symbol": "SOL_FLOW_NODE_TYPE_GROVE_LCD_CHAR",
+   "url": "http://solettaproject.org/doc/latest/components/lcd/grove.html",
+   "version": "1"
+  }
+ ]
+}

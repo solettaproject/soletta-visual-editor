@@ -1,0 +1,2438 @@
+{
+ "converter": [
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives a boolean packet and convert to float.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Where to receive the boolean value to be converted.",
+     "name": "IN",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "float",
+     "description": "DRange value of output when input is false.",
+     "name": "FALSE_VALUE",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "float",
+     "description": "DRange value of output when input is true.",
+     "name": "TRUE_VALUE",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/boolean-to-float",
+   "options": {
+    "members": [
+     {
+      "data_type": "float",
+      "default": {
+       "max": "DBL_MAX",
+       "min": "-DBL_MAX",
+       "step": "DBL_MIN",
+       "val": 0.0
+      },
+      "description": "DRange value of output when input is false.",
+      "name": "false_value",
+      "required": false
+     },
+     {
+      "data_type": "float",
+      "default": {
+       "max": "DBL_MAX",
+       "min": "-DBL_MAX",
+       "step": "DBL_MIN",
+       "val": 1.0
+      },
+      "description": "DRange value of output when input is true.",
+      "name": "true_value",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_converter_boolean_to_float_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Float with value set on options or via value_set ports.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_BOOLEAN_TO_FLOAT",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/boolean-to-drange.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives a boolean packet and convert to byte.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Where to receive the boolean value to be converted.",
+     "name": "IN",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "byte",
+     "description": "Byte value of output when input is false.",
+     "name": "FALSE_VALUE",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "byte",
+     "description": "Byte value of output when input is true.",
+     "name": "TRUE_VALUE",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/boolean-to-byte",
+   "options": {
+    "members": [
+     {
+      "data_type": "byte",
+      "default": 0,
+      "description": "Byte value of output when input is false.",
+      "name": "false_value",
+      "required": false
+     },
+     {
+      "data_type": "byte",
+      "default": 1,
+      "description": "Byte value of output when input is true.",
+      "name": "true_value",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_converter_boolean_to_byte_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "Byte with value set on options or via value_set ports.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_BOOLEAN_TO_BYTE",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/boolean-to-byte.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives a boolean packet and convert it to empty.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "If received boolean is true generates a pulse.",
+     "name": "PULSE_IF_TRUE",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "boolean",
+     "description": "If received boolean is false generates a pulse.",
+     "name": "PULSE_IF_FALSE",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/boolean-to-empty",
+   "options_symbol": "sol_flow_node_type_converter_boolean_to_empty_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "empty",
+     "description": "Sends a pulse if boolean values received on each port match expected value.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_BOOLEAN_TO_EMPTY",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/boolean-to-empty.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives a boolean packet and convert to int.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Where to receive the boolean value to be converted.",
+     "name": "IN",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "int",
+     "description": "IRange value of output when input is false.",
+     "name": "FALSE_VALUE",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "int",
+     "description": "IRange value of output when input is true.",
+     "name": "TRUE_VALUE",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/boolean-to-int",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 0
+      },
+      "description": "IRange value of output when input is false.",
+      "name": "false_value",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 1
+      },
+      "description": "IRange value of output when input is true.",
+      "name": "true_value",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_converter_boolean_to_int_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "IRange with value set on options or via value_set ports.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_BOOLEAN_TO_INT",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/boolean-to-irange.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives a boolean packet and convert to string.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Where to receive the boolean value to be converted.",
+     "name": "IN",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "string",
+     "description": "String to be sent on output when input is false.",
+     "name": "FALSE_VALUE",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "string",
+     "description": "String to be sent on output when input is true.",
+     "name": "TRUE_VALUE",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/boolean-to-string",
+   "options": {
+    "members": [
+     {
+      "data_type": "string",
+      "default": "False",
+      "description": "String sent when input is false.",
+      "name": "false_value",
+      "required": false
+     },
+     {
+      "data_type": "string",
+      "default": "True",
+      "description": "String sent when input is true.",
+      "name": "true_value",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_converter_boolean_to_string_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "string",
+     "description": "Send string defined by option 'true_value' if input is true or by 'false_value' if input is false.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_BOOLEAN_TO_STRING",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/boolean-to-string.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives byte packet and convert to a binary representaion in outputs.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "Where to receive the byte value to be converted.",
+     "name": "IN",
+     "required": true
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/byte-to-bits",
+   "options_symbol": "sol_flow_node_type_converter_byte_to_bits_options",
+   "out_ports": [
+    {
+     "array_size": 8,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Byte turned to bits, index 0 is the least significant, 7 the most",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_BYTE_TO_BITS",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/byte-to-bits.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives a byte packet and convert to boolean.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "Where to receive the byte value to be converted.",
+     "name": "IN",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "byte",
+     "description": "Defines maximum value of input to set output as true.",
+     "name": "TRUE_MAX",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "byte",
+     "description": "Defines minimum value of input to set output as true.",
+     "name": "TRUE_MIN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/byte-to-boolean",
+   "options": {
+    "members": [
+     {
+      "data_type": "byte",
+      "default": 255,
+      "description": "Defines maximum value of input to set output as true.",
+      "name": "true_max",
+      "required": false
+     },
+     {
+      "data_type": "byte",
+      "default": 1,
+      "description": "Defines minimum value of input to set output as true.",
+      "name": "true_min",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_converter_byte_to_boolean_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Send true if input packet value is in range defined by min and max values or false otherwise.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_BYTE_TO_BOOLEAN",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/byte-to-boolean.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives a byte packet and convert to float.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "Where to receive the byte value to be converted.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/byte-to-float",
+   "options_symbol": "sol_flow_node_type_converter_byte_to_float_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Byte converted to float.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_BYTE_TO_FLOAT",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/byte-to-drange.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives a byte packet and convert it to empty.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "Where to receive the byte value to be converted.",
+     "name": "IN",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "byte",
+     "description": "Byte maximum range value that generates a pulse.",
+     "name": "RANGE_MAX",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "byte",
+     "description": "Byte minimum range value that generates a pulse.",
+     "name": "RANGE_MIN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/byte-to-empty",
+   "options": {
+    "members": [
+     {
+      "data_type": "byte",
+      "default": 255,
+      "description": "Byte maximum value that generates a pulse.",
+      "name": "range_max",
+      "required": false
+     },
+     {
+      "data_type": "byte",
+      "default": 1,
+      "description": "Byte minimum value that generates a pulse.",
+      "name": "range_min",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_converter_byte_to_empty_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "empty",
+     "description": "Send an empty packet when input packet value in range defined by min and max values.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_BYTE_TO_EMPTY",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/byte-to-empty.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives a byte packet and convert to int.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "Where to receive the byte value to be converted.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/byte-to-int",
+   "options_symbol": "sol_flow_node_type_converter_byte_to_int_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Byte converted to int.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_BYTE_TO_INT",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/byte-to-irange.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives byte packets and convert to RGB.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "Byte value for red component.",
+     "name": "RED",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "byte",
+     "description": "Byte value for green component.",
+     "name": "GREEN",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "byte",
+     "description": "Byte value for blue component.",
+     "name": "BLUE",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/byte-to-rgb",
+   "options_symbol": "sol_flow_node_type_converter_byte_to_rgb_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "rgb",
+     "description": "Bytes converted to RGB.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_BYTE_TO_RGB",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/byte-to-rgb.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives byte packets and convert to direction vector",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "Byte value for x component.",
+     "name": "X",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "byte",
+     "description": "Byte value for y component.",
+     "name": "Y",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "byte",
+     "description": "Byte value for z component.",
+     "name": "Z",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/byte-to-direction-vector",
+   "options_symbol": "sol_flow_node_type_converter_byte_to_direction_vector_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "direction-vector",
+     "description": "Bytes converted to direction vector.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_BYTE_TO_DIRECTION_VECTOR",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/byte-to-direction-vector.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives a byte packet and convert to string.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "Where to receive the byte value to be converted.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/byte-to-string",
+   "options_symbol": "sol_flow_node_type_converter_byte_to_string_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "string",
+     "description": "Byte converted to string, prefixed with '0x', as 0x3e.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_BYTE_TO_STRING",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/byte-to-string.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives an float packet and convert to boolean.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Where to receive the float value to be converted.",
+     "name": "IN",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "float",
+     "description": "Defines minimum and maximum values of input to set output as true.",
+     "name": "TRUE_RANGE",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/float-to-boolean",
+   "options": {
+    "members": [
+     {
+      "data_type": "float",
+      "default": {
+       "max": 255,
+       "min": 1,
+       "step": "DBL_MIN",
+       "val": 0.0
+      },
+      "description": "Defines minimum and maximum values of input to set output as true.",
+      "name": "true_range",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_converter_float_to_boolean_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Send true if input packet value is in range defined by min and max values or false otherwise.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_FLOAT_TO_BOOLEAN",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/drange-to-boolean.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives a float packet and convert to byte.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Where to receive the float value to be converted.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/float-to-byte",
+   "options_symbol": "sol_flow_node_type_converter_float_to_byte_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "Float converted to byte. If float was greater than 255 or less than 0 the converted value will be at these limits.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_FLOAT_TO_BYTE",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/drange-to-byte.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives a float packet and convert it to empty.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Where to receive the float value to be converted.",
+     "name": "IN",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "float",
+     "description": "Float range that generates a pulse.",
+     "name": "RANGE",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/float-to-empty",
+   "options": {
+    "members": [
+     {
+      "data_type": "float",
+      "default": {
+       "max": 255,
+       "min": 1,
+       "step": "DBL_MIN",
+       "val": 0.0
+      },
+      "description": "Float range that generates a pulse.",
+      "name": "range",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_converter_float_to_empty_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "empty",
+     "description": "Send an empty packet when input packet value is in range defined by min and max values.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_FLOAT_TO_EMPTY",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/drange-to-empty.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives a float packet and convert to int.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Where to receive the float value to be converted.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/float-to-int",
+   "options_symbol": "sol_flow_node_type_converter_float_to_int_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Float converted to int. Value, min, max and step are converted.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_FLOAT_TO_INT",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/drange-to-irange.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives float packets and convert to RGB.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Float value for red component.",
+     "name": "RED",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "float",
+     "description": "Float value for green component.",
+     "name": "GREEN",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "float",
+     "description": "Float value for blue component.",
+     "name": "BLUE",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/float-to-rgb",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 255
+      },
+      "description": "Max value of red component. Minimum is set to zero.",
+      "name": "red_max",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 255
+      },
+      "description": "Max value of green component. Minimum is set to zero.",
+      "name": "green_max",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 255
+      },
+      "description": "Max value of blue component. Minimum is set to zero.",
+      "name": "blue_max",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_converter_float_to_rgb_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "rgb",
+     "description": "Float values converted to RGB.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_FLOAT_TO_RGB",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/float-to-rgb.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives float packets and converts to direction vector ones.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Float value for x component.",
+     "name": "X",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "float",
+     "description": "Float value for y component.",
+     "name": "Y",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "float",
+     "description": "Float value for z component.",
+     "name": "Z",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/float-to-direction-vector",
+   "options": {
+    "members": [
+     {
+      "data_type": "float",
+      "default": {
+       "max": "DBL_MAX",
+       "min": "-DBL_MAX",
+       "step": "DBL_MIN",
+       "val": 0.0
+      },
+      "description": "Range of output packet.",
+      "name": "out_range",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_converter_float_to_direction_vector_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "direction-vector",
+     "description": "Float values converted to direction vector.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_FLOAT_TO_DIRECTION_VECTOR",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/float-to-direction-vector.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives a float packet and convert to string.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Where to receive the float value to be converted.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/float-to-string",
+   "options_symbol": "sol_flow_node_type_converter_float_to_string_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "string",
+     "description": "Float converted to string with 6 digits after decimal-point character.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_FLOAT_TO_STRING",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/float-to-string.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives an empty packet and convert it to boolean.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "any",
+     "description": "Where to receive the empty packet.",
+     "name": "IN",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "boolean",
+     "description": "Boolean value of output when an empty packet is received.",
+     "name": "OUTPUT_VALUE",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/empty-to-boolean",
+   "options": {
+    "members": [
+     {
+      "data_type": "boolean",
+      "default": true,
+      "description": "Boolean value of output when an empty packet is received.",
+      "name": "output_value",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_converter_empty_to_boolean_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Boolean defined by OUTPUT_VALUE port or output_value option.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_EMPTY_TO_BOOLEAN",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/empty-to-boolean.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives an empty packet and convert it to rgb.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "any",
+     "description": "Where to receive the empty packet.",
+     "name": "IN",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "rgb",
+     "description": "RGB value of output when an empty packet is received.",
+     "name": "OUTPUT_VALUE",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/empty-to-rgb",
+   "options": {
+    "members": [
+     {
+      "data_type": "rgb",
+      "default": {
+       "blue": 255,
+       "blue_max": 255,
+       "green": 255,
+       "green_max": 255,
+       "red": 255,
+       "red_max": 255
+      },
+      "description": "RGB value of output when an empty packet is received.",
+      "name": "output_value",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_converter_empty_to_rgb_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "rgb",
+     "description": "RGB defined by OUTPUT_VALUE port or output_value option.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_EMPTY_TO_RGB",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/empty-to-rgb.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives an empty packet and convert it to byte.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "any",
+     "description": "Where to receive the empty packet.",
+     "name": "IN",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "byte",
+     "description": "Byte value of output when an empty packet is received.",
+     "name": "OUTPUT_VALUE",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/empty-to-byte",
+   "options": {
+    "members": [
+     {
+      "data_type": "byte",
+      "default": 1,
+      "description": "Byte value of output when an empty packet is received.",
+      "name": "output_value",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_converter_empty_to_byte_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "Byte defined by OUTPUT_VALUE port or output_value option.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_EMPTY_TO_BYTE",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/empty-to-byte.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives an empty packet and convert it to float.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "any",
+     "description": "Where to receive the empty packet.",
+     "name": "IN",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "float",
+     "description": "Float value of output when an empty packet is received.",
+     "name": "OUTPUT_VALUE",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/empty-to-float",
+   "options": {
+    "members": [
+     {
+      "data_type": "float",
+      "default": {
+       "max": 1,
+       "min": 1,
+       "step": 1,
+       "val": 1
+      },
+      "description": "Float value of output when an empty packet is received.",
+      "name": "output_value",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_converter_empty_to_float_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Float defined by OUTPUT_VALUE port or output_value option.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_EMPTY_TO_FLOAT",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/empty-to-drange.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives an empty packet and convert it to int.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "any",
+     "description": "Where to receive the empty packet.",
+     "name": "IN",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "int",
+     "description": "Int value of output when an empty packet is received.",
+     "name": "OUTPUT_VALUE",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/empty-to-int",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "default": {
+       "max": 1,
+       "min": 1,
+       "step": 1,
+       "val": 1
+      },
+      "description": "Int value of output when an empty packet is received.",
+      "name": "output_value",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_converter_empty_to_int_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Int defined by OUTPUT_VALUE port or output_value option.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_EMPTY_TO_INT",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/empty-to-irange.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives an empty packet and convert it to string.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "any",
+     "description": "Where to receive the empty packet.",
+     "name": "IN",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "string",
+     "description": "Output string sent when an empty packet is received.",
+     "name": "OUTPUT_VALUE",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/empty-to-string",
+   "options": {
+    "members": [
+     {
+      "data_type": "string",
+      "default": "",
+      "description": "Output string sent when an empty packet is received.",
+      "name": "output_value",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_converter_empty_to_string_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "string",
+     "description": "String defined by OUTPUT_VALUE port or output_value option.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_EMPTY_TO_STRING",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/empty-to-string.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives an int packet and convert to boolean.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Where to receive the int value to be converted.",
+     "name": "IN",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "int",
+     "description": "Defines minimum and maximum values of input to set output as true.",
+     "name": "TRUE_RANGE",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/int-to-boolean",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "default": {
+       "max": 255,
+       "min": 1,
+       "step": 1,
+       "val": 0
+      },
+      "description": "Defines minimum and maximum values of input to set output as true.",
+      "name": "true_range",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_converter_int_to_boolean_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Send true if input packet value is in range defined by min and max values or false otherwise.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_INT_TO_BOOLEAN",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/irange-to-boolean.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives an int packet and convert to byte.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Where to receive the int value to be converted.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/int-to-byte",
+   "options_symbol": "sol_flow_node_type_converter_int_to_byte_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "Int converted to byte. If int was greater than 255 or less than 0 the converted value will be at these limits.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_INT_TO_BYTE",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/irange-to-byte.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives four bytes and composes them into an int. Any input port with no connections will be treated as a 0 value input.",
+   "in_ports": [
+    {
+     "array_size": 4,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "Array of bytes to turn into an int. Index 0 is the least significant, 3 is the most",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/int-compose",
+   "options_symbol": "sol_flow_node_type_converter_int_compose_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Integer composed from the four input bytes",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_INT_COMPOSE",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/irange-compose.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives an int packet and decomposes it into four bytes. The received int will be treated as unsigned.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Where to receive the int value to be decomposed.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/int-decompose",
+   "options_symbol": "sol_flow_node_type_converter_int_decompose_options",
+   "out_ports": [
+    {
+     "array_size": 4,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "Int turned to bytes, index 0 is the least significant, 3 the most",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_INT_DECOMPOSE",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/irange-decompose.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives an int packet and convert to float.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Where to receive the int value to be converted.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/int-to-float",
+   "options_symbol": "sol_flow_node_type_converter_int_to_float_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Int converted to float. Value, min, max and step are converted.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_INT_TO_FLOAT",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/irange-to-drange.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives an int packet and convert it to empty.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Where to receive the int value to be converted.",
+     "name": "IN",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "int",
+     "description": "Int range that generates a pulse.",
+     "name": "RANGE",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/int-to-empty",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "default": {
+       "max": 255,
+       "min": 1,
+       "step": 1,
+       "val": 0
+      },
+      "description": "Int range that generates a pulse.",
+      "name": "range",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_converter_int_to_empty_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "empty",
+     "description": "Send an empty packet when input packet value is in range defined by min and max values.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_INT_TO_EMPTY",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/irange-to-empty.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives int packets and convert to RGB.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Int value for red component.",
+     "name": "RED",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "int",
+     "description": "Int value for green component.",
+     "name": "GREEN",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "int",
+     "description": "Int value for blue component.",
+     "name": "BLUE",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/int-to-rgb",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 255
+      },
+      "description": "Max value of red component. Minimum is set to zero.",
+      "name": "red_max",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 255
+      },
+      "description": "Max value of green component. Minimum is set to zero.",
+      "name": "green_max",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 255
+      },
+      "description": "Max value of blue component. Minimum is set to zero.",
+      "name": "blue_max",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_converter_int_to_rgb_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "rgb",
+     "description": "Int values converted to RGB.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_INT_TO_RGB",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/int-to-rgb.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives direction vector packets and converts to RGB ones.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "direction-vector",
+     "description": "Input for direction vector packets to be converted.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/direction-vector-to-rgb",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 255
+      },
+      "description": "Max value of red component. Minimum is set to zero.",
+      "name": "red_max",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 255
+      },
+      "description": "Max value of green component. Minimum is set to zero.",
+      "name": "green_max",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 255
+      },
+      "description": "Max value of blue component. Minimum is set to zero.",
+      "name": "blue_max",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_converter_direction_vector_to_rgb_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "rgb",
+     "description": "Direction vector values converted to RGB.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_DIRECTION_VECTOR_TO_RGB",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/int-to-rgb.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives int packets and converts a to direction vector one.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Int value for x component.",
+     "name": "X",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "int",
+     "description": "Int value for y component.",
+     "name": "Y",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "int",
+     "description": "Int value for z component.",
+     "name": "Z",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/int-to-direction-vector",
+   "options": {
+    "members": [
+     {
+      "data_type": "float",
+      "default": {
+       "max": "DBL_MAX",
+       "min": "-DBL_MAX",
+       "step": "DBL_MIN",
+       "val": 0.0
+      },
+      "description": "Range of output packet.",
+      "name": "out_range",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_converter_int_to_direction_vector_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "direction-vector",
+     "description": "Int values converted to direction vector.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_INT_TO_DIRECTION_VECTOR",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/int-to-direction-vector.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives an int packet and convert to string.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Where to receive the int value to be converted.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/int-to-string",
+   "options_symbol": "sol_flow_node_type_converter_int_to_string_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "string",
+     "description": "Int converted to string.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_INT_TO_STRING",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/irange-to-string.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives RGB packets and convert to bytes.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "rgb",
+     "description": "RGB to be decomposed.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/rgb-to-byte",
+   "options_symbol": "sol_flow_node_type_converter_rgb_to_byte_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "Byte value for red component.",
+     "name": "RED",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "byte",
+     "description": "Byte value for green component.",
+     "name": "GREEN",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "byte",
+     "description": "Byte value for blue component.",
+     "name": "BLUE",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_RGB_TO_BYTE",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/rgb-to-byte.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives RGB packets and convert to float values.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "rgb",
+     "description": "RGB to be decomposed.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/rgb-to-float",
+   "options_symbol": "sol_flow_node_type_converter_rgb_to_float_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Float value for red component.",
+     "name": "RED",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "float",
+     "description": "Float value for green component.",
+     "name": "GREEN",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "float",
+     "description": "Float value for blue component.",
+     "name": "BLUE",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_RGB_TO_FLOAT",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/rgb-to-float.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives RGB packets and convert to int values.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "rgb",
+     "description": "RGB to be decomposed.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/rgb-to-int",
+   "options_symbol": "sol_flow_node_type_converter_rgb_to_int_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Int value for red component.",
+     "name": "RED",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "int",
+     "description": "Int value for green component.",
+     "name": "GREEN",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "int",
+     "description": "Int value for blue component.",
+     "name": "BLUE",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_RGB_TO_INT",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/rgb-to-int.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives RGB packets and convert to direction vector ones.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "rgb",
+     "description": "RGB to be converted.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/rgb-to-direction-vector",
+   "options_symbol": "sol_flow_node_type_converter_rgb_to_direction_vector_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "direction-vector",
+     "description": "Dimensional vector packet",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_RGB_TO_DIRECTION_VECTOR",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/rgb-to-direction-vector.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives direction vector packets and converts to bytes.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "direction-vector",
+     "description": "direction vector to be decomposed.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/direction-vector-to-byte",
+   "options_symbol": "sol_flow_node_type_converter_direction_vector_to_byte_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "Byte value for x component.",
+     "name": "X",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "byte",
+     "description": "Byte value for y component.",
+     "name": "Y",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "byte",
+     "description": "Byte value for z component.",
+     "name": "Z",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_DIRECTION_VECTOR_TO_BYTE",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/direction-vector-to-byte.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives direction vector packets and converts to float values.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "direction-vector",
+     "description": "direction vector to be decomposed.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/direction-vector-to-float",
+   "options_symbol": "sol_flow_node_type_converter_direction_vector_to_float_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Float value for x component.",
+     "name": "X",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "float",
+     "description": "Float value for y component.",
+     "name": "Y",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "float",
+     "description": "Float value for z component.",
+     "name": "Z",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_DIRECTION_VECTOR_TO_FLOAT",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/direction-vector-to-float.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives direction vector packets and converts to RGB.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "direction-vector",
+     "description": "direction vector to be decomposed.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/direction-vector-to-int",
+   "options_symbol": "sol_flow_node_type_converter_direction_vector_to_int_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Int value for x component.",
+     "name": "X",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "int",
+     "description": "Int value for y component.",
+     "name": "Y",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "int",
+     "description": "Int value for z component.",
+     "name": "Z",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_DIRECTION_VECTOR_TO_INT",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/direction-vector-to-int.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives a string packet and convert it to boolean.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "string",
+     "description": "Where to receive the string to be converted.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/string-to-boolean",
+   "options_symbol": "sol_flow_node_type_converter_string_to_boolean_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Send true if received string is 'true' and false if 'false'. It ignores case. If string is different from those, no packet is sent.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_STRING_TO_BOOLEAN",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/string-to-boolean.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives a string packet and convert it to byte.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "string",
+     "description": "Where to receive the string to be converted.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/string-to-byte",
+   "options_symbol": "sol_flow_node_type_converter_string_to_byte_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "Send converted value on success or do not send anything if a valid byte can't be parsed. It's expected to be on base 16 and may include '0x' prefix.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_STRING_TO_BYTE",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/string-to-byte.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives a string packet and convert it to float.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "string",
+     "description": "Where to receive the string to be converted.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/string-to-float",
+   "options_symbol": "sol_flow_node_type_converter_string_to_float_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Send converted value on success or do not send anything if a valid number can't be parsed.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_STRING_TO_FLOAT",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/string-to-float.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives a string packet and send an empty packet.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "string",
+     "description": "Where to receive the string.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/string-to-empty",
+   "options_symbol": "sol_flow_node_type_converter_string_to_empty_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "empty",
+     "description": "Send a packet when any string is received.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_STRING_TO_EMPTY",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/string-to-empty.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives a string packet and convert it to int.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "string",
+     "description": "Where to receive the string to be converted.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/string-to-int",
+   "options_symbol": "sol_flow_node_type_converter_string_to_int_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Send converted value on success or do not send anything if a valid number can't be parsed.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_STRING_TO_INT",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/string-to-int.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Extracts error code and string from an error packet.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "error",
+     "description": "Where to receive the error to be converted.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/error",
+   "options_symbol": "sol_flow_node_type_converter_error_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Code extracted from error packet",
+     "name": "CODE",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "string",
+     "description": "Message extracted from error packet",
+     "name": "MESSAGE",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_ERROR",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/error.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives boolean packets and convert these bits to a byte.",
+   "in_ports": [
+    {
+     "array_size": 8,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Array of bits to turn into a byte. Index 0 is the least significant, 7 is the most",
+     "name": "IN",
+     "required": true
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/bits-to-byte",
+   "options_symbol": "sol_flow_node_type_converter_bits_to_byte_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "Send the byte converted from bits received.",
+     "name": "OUT",
+     "required": true
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_BITS_TO_BYTE",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/bits-to-byte.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "converter",
+   "description": "Receives a string packet and convert to blob (sub-type SOL_BLOB_TYPE_DEFAULT).",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "string",
+     "description": "Where to receive the string value to be converted.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "converter/string-to-blob",
+   "options_symbol": "sol_flow_node_type_converter_string_to_blob_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "blob",
+     "description": "Send blob with the contents of the string received in the port IN.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CONVERTER_STRING_TO_BLOB",
+   "url": "http://solettaproject.org/doc/latest/node_types/converter/string-to-blob.html",
+   "version": "1"
+  }
+ ]
+}

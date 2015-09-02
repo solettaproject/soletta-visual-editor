@@ -1,0 +1,368 @@
+<!--
+ -
+ - @license
+ -
+ - The MIT License (MIT)
+ -
+ - Copyright (c) 2015 Intel Corporation
+ -
+ - Permission is hereby granted, free of charge, to any person obtaining a copy
+ - of this software and associated documentation files (the "Software"), to deal
+ - in the Software without restriction, including without limitation the rights
+ - to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ - copies of the Software, and to permit persons to whom the Software is
+ - furnished to do so, subject to the following conditions:
+ -
+ - The above copyright notice and this permission notice shall be included in
+ - all copies or substantial portions of the Software.
+ -
+ - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ - IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ - FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ - AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ - LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ - THE SOFTWARE.
+ -
+ - Authors:
+ -   Elliot Smith <elliot.smith@intel.com>
+ -   Max Waterman <max.waterman@intel.com>
+ -
+ -->
+
+<!--
+Edit the value of a typed property (boolean, string etc.) in a popup;
+send a value signal when the OK button is clicked, or a cancel signal if
+Cancel is pressed.
+
+If the type is set to "any", this displays the "any" interface, which
+allows a "real" editable type to be selected. Once picked, the
+interface changes to allow editing of the port using that type instead.
+
+NB styles are inlined because CSS declarations inside a <style> element
+inside a paper-dialog have no effect, because of how the dialog is
+attached to/detached from the DOM.
+-->
+<link rel="import" href="../../bower_components/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../../bower_components/paper-radio-button/paper-radio-button.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-input/paper-autogrow-textarea.html">
+
+<polymer-element name="slv-property-editor">
+  <template>
+    <paper-dialog id="dialog" autoCloseDisabled="true" backdrop="true">
+      <div layout vertical center-justified>
+        <template if="{{ editable && propertyType === 'any' }}">
+          <p>Choose a type of value to set for port with type 'any'</p>
+
+          <paper-radio-group id="anyselect" valueattr="label"
+                             on-core-select="{{ setEditorType }}">
+            <template repeat="{{ anyTypes as solType }}">
+              <paper-radio-button label="{{ solType }}">
+              </paper-radio-button>
+            </template>
+          </paper-radio-group>
+        </template>
+
+        <template if="{{ !editable }}">
+          <p>
+            Ports of type <em>{{ propertyType }}</em> cannot be set
+            via this form
+          </p>
+        </template>
+
+        <template if= "{{ editable && propertyName && propertyType !== 'any' }}">
+          <p>
+            Set an initial value of type <em>{{ propertyType }}</em>
+            for port <em>{{ propertyName }}</em>
+          </p>
+
+          <p>
+            <template if="{{ propertyType === 'boolean' }}">
+              <paper-radio-group id="input" valueattr="label">
+                <paper-radio-button label="false">
+                </paper-radio-button>
+
+                <paper-radio-button label="true">
+                </paper-radio-button>
+              </paper-radio-group>
+            </template>
+
+            <template if="{{ propertyType === 'int' || propertyType === 'float' }}">
+              <paper-input id="input" value="{{ propertyValue }}"
+                           style="width: 100%;" on-keypress="{{ handleKeypress }}">
+              </paper-input>
+            </template>
+
+            <template if="{{ propertyType === 'string' }}">
+              <paper-autogrow-textarea style="width: 100%" rows="5" maxRows="5">
+                <textarea id="input" style="background-color: #EEE;">{{ propertyValue }}</textarea>
+              </paper-autogrow-textarea>
+            </template>
+          </p>
+        </template>
+      </div>
+
+      <div layout horizontal center-justified
+           style="position: absolute; bottom: 10px; width: 50%; left: 25%;">
+        <template if="{{ editable && propertyType !== 'any' }}">
+          <paper-button id="ok" on-click="{{ sendValueSignal }}">
+            Save
+          </paper-button>
+        </template>
+
+        <paper-button id="cancel" on-click="{{ sendCancelSignal }}">
+          Cancel
+        </paper-button>
+      </div>
+    </paper-dialog>
+  </template>
+
+  <script>
+  window.slvPropertyEditorReady = Promise.all([
+    System.import('TypeMapper'),
+    System.import('js-signals'),
+    System.import('lodash')
+  ])
+  .then(function (imports) {
+    'use strict';
+
+    var TypeMapper = imports.shift();
+    var signals = imports.shift();
+    var _ = imports.shift();
+
+    Polymer('slv-property-editor', {
+      signals: null,
+
+      /**
+       * Set to the element you want to size the popup with respect to
+       */
+      sizingTarget: null,
+
+      /**
+       * Name of the property being edited
+       */
+      propertyName: null,
+
+      /**
+       * The type of the property to be edited; this governs which
+       * user interface elements are drawn to edit the property
+       * (or displays a "can't edit" message for types which can't
+       * be edited through the UI).
+       *
+       * See TypeMapper.SOL_TYPES (in TypeMapper.js) for valid types
+       */
+      propertyType: null,
+
+      /**
+       * Existing value for the property.
+       */
+      propertyValue: null,
+
+      /**
+       * Set to true if the property can be edited
+       */
+      editable: null,
+
+      /**
+       * Editable types which can be selected from if the supplied
+       * property type is "any"; when a selection is made, the
+       * editor interface for that type will be shown instead of
+       * the "any" interface
+       */
+      anyTypes: null,
+
+      created: function () {
+        this.signals = {
+          // dispatches with the property value
+          value: new signals.Signal(),
+
+          // dispatches if cancel is clicked
+          cancel: new signals.Signal()
+        };
+
+        this.sizingTarget = document.body;
+
+        this.editable = true;
+
+        this.anyTypes = _.select(TypeMapper.SOL_TYPES_ARRAY, function (item) {
+          return item !== 'blob' &&
+                 item !== 'any' &&
+                 item !== 'byte' &&
+                 item !== 'empty';
+        });
+      },
+
+      domReady: function () {
+        var self = this;
+
+        // make the height of the dialog half the height of
+        // the sizing target
+        this.$.dialog.addEventListener('core-overlay-position', function () {
+          var height = self.sizingTarget.offsetHeight / 2;
+          self.$.dialog.style.height = height + 'px';
+          self.$.dialog.style.width = '25%';
+        });
+
+        // workaround to set the value for the boolean radio button
+        // group; I tried all kinds of methods to do this using the
+        // selected property inside the template, responding to
+        // the core-select event etc., but this is the only way which
+        // worked
+        this.$.dialog.addEventListener('core-overlay-open-completed', function () {
+          self.setBoolean();
+
+          self.async(function () {
+            self.focusInput();
+          });
+        });
+      },
+
+      // check one of the boolean radio buttons, based on
+      // the current propertyValue; this is a workaround for the
+      // fact that setting the "selected" attribute on the
+      // radio button group doesn't seem to work correctly
+      setBoolean: function () {
+        if (this.propertyType !== TypeMapper.SOL_TYPES.boolean) {
+          return;
+        }
+
+        var elt = this.getInputElement();
+        if (!elt) {
+          return;
+        }
+
+        elt.selected = (this.propertyValue === true ? 'true' : 'false');
+      },
+
+      // move the focus to the input element
+      focusInput: function () {
+        var input = this.getInputElement();
+
+        if (input) {
+          input.focus();
+        }
+      },
+
+      handleKeypress: function (e) {
+        // "Return" pressed, so click on OK
+        if (e.keyCode === 13) {
+          var okBtn = this.getOkButton();
+          if (okBtn) {
+            okBtn.click();
+          }
+        }
+      },
+
+      // it doesn't seem possible to reference this.$.input where
+      // the input is conditionally added to the output via
+      // <template if="...">, so this gets the #input element from
+      // inside the <paper-dialog>
+      getInputElement: function () {
+        return this.$.dialog.querySelector('#input');
+      },
+
+      // similar to the input element, the ok button doesn't seem
+      // to be registered unless it's in the initial rendering
+      // (i.e. the property type is not 'any'); so provide a getter for it
+      getOkButton: function () {
+        return this.$.dialog.querySelector('#ok');
+      },
+
+      sendCancelSignal: function () {
+        this.signals.cancel.dispatch();
+        this.$.dialog.close();
+      },
+
+      /**
+       * Get the current value for the active input element.
+       *
+       * @returns {any} the current value, whose type depends
+       * on the current propertyType; or null if no value is
+       * available (e.g. you call getValue() on this element
+       * when the property assigned to it is not editable)
+       */
+      getValue: function () {
+        var input = this.getInputElement();
+
+        if (!input) {
+          return null;
+        }
+
+        var value = input.selected || input.value;
+
+        if (this.propertyType === TypeMapper.SOL_TYPES.boolean) {
+          value = (value === 'false' ? false : true);
+        }
+        else if (this.propertyType === TypeMapper.SOL_TYPES.int) {
+          value = parseInt(value, 10);
+        }
+        else if (this.propertyType === TypeMapper.SOL_TYPES.float) {
+          value = parseFloat(value, 10);
+        }
+
+        return value;
+      },
+
+      sendValueSignal: function () {
+        this.signals.value.dispatch(this.getValue());
+        this.$.dialog.close();
+      },
+
+      open: function () {
+        this.$.dialog.open();
+      },
+
+      propertyTypeChanged: function () {
+        var editable = true;
+
+        // sets a default if no property value is defined
+        var propertyValue = null;
+
+        switch (this.propertyType) {
+          case TypeMapper.SOL_TYPES.blob:
+          case TypeMapper.SOL_TYPES.byte:
+          case TypeMapper.SOL_TYPES.empty:
+            editable = false;
+            break;
+          case TypeMapper.SOL_TYPES.any:
+            editable = true;
+            break;
+          case TypeMapper.SOL_TYPES.boolean:
+            propertyValue = true;
+            break;
+          case TypeMapper.SOL_TYPES.string:
+            propertyValue = '';
+            break;
+          case TypeMapper.SOL_TYPES.int:
+          case TypeMapper.SOL_TYPES.float:
+            propertyValue = 0;
+            break;
+        }
+
+        this.editable = editable;
+        this.propertyValue = (this.propertyValue !== null ?
+                                this.propertyValue : propertyValue);
+      },
+
+      // update the type of variable being edited from the
+      // type selected from the "any" interface
+      setEditorType: function () {
+        // reset the value, as we could be changing the type
+        this.propertyValue = null;
+
+        var anySelect = this.$.dialog.querySelector('#anyselect');
+        this.propertyType = anySelect.selected;
+
+        this.async(function () {
+          this.setBoolean();
+          this.focusInput();
+        });
+      }
+    });
+  });
+
+  </script>
+</polymer-element>

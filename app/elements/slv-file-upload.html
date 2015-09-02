@@ -1,0 +1,136 @@
+<!--
+ -
+ - @license
+ -
+ - The MIT License (MIT)
+ -
+ - Copyright (c) 2015 Intel Corporation
+ -
+ - Permission is hereby granted, free of charge, to any person obtaining a copy
+ - of this software and associated documentation files (the "Software"), to deal
+ - in the Software without restriction, including without limitation the rights
+ - to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ - copies of the Software, and to permit persons to whom the Software is
+ - furnished to do so, subject to the following conditions:
+ -
+ - The above copyright notice and this permission notice shall be included in
+ - all copies or substantial portions of the Software.
+ -
+ - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ - IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ - FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ - AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ - LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ - THE SOFTWARE.
+ -
+ - Authors:
+ -   Elliot Smith <elliot.smith@intel.com>
+ -   Max Waterman <max.waterman@intel.com>
+ -
+ -->
+
+<!--
+wrapper for <input type="file">
+which sends a signal each time a new file is received on the input
+-->
+
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+<polymer-element name="slv-file-upload" horizontal justified layout attributes="accept">
+  <template>
+    <style>
+      paper-button {
+        margin: 0;
+      }
+
+      #fileinput {
+        display: none;
+      }
+    </style>
+
+    <input type="file" id="fileinput" accept="{{ accept }}" on-change="{{ handleFile }}">
+
+    <paper-button on-click="{{ onClick }}">
+      <content select="*"></content>
+    </paper-button>
+  </template>
+
+  <script>
+  window.slvFileUploadReady = Promise.all([
+    System.import('js-signals')
+  ])
+  .then(function (imports) {
+    'use strict';
+
+    var signals = imports.shift();
+
+    Polymer('slv-file-upload', {
+      /**
+       * The most-recently selected file object; changing this
+       * will cause the newFile signal to dispatch, so it can be
+       * used for testing.
+       */
+      file: null,
+
+      /**
+       * Object containing signal instances which are used to
+       * connect this component to others.
+       *
+       * signals.newFile: dispatched when a new file is uploaded;
+       * associated data is a File instance
+       */
+      signals: null,
+
+      created: function () {
+        this.signals = {
+          newFile: new signals.Signal()
+        };
+      },
+
+      /**
+       * Change the file property to the most recently selected file.
+       */
+      handleFile: function () {
+        this.file = this.$.fileinput.files[0];
+
+        // this ensures that the same file can be selected multiple
+        // times and still trigger the "change" event
+        this.$.fileinput.value = null;
+      },
+
+      onClick: function () {
+        this.openFileChooser();
+      },
+
+      /**
+       * Open the file chooser via the proxy button.
+       */
+      openFileChooser: function () {
+        this.$.fileinput.click();
+      },
+
+      /**
+       * Dispatches a newFile signal each time the file associated
+       * with this object changes (either uploaded via the fileinput
+       * element or set using setFile()).
+       *
+       * The signal's data is a File object
+       * (https://developer.mozilla.org/en/docs/Web/API/File).
+       */
+      fileChanged: function () {
+        if (this.file) {
+          this.signals.newFile.dispatch(this.file);
+        }
+      },
+
+      /**
+       * Set the file. This should trigger the newFile signal.
+       */
+      setFile: function (file) {
+        this.file = file;
+      }
+    });
+  });
+  </script>
+</polymer-element>

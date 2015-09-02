@@ -1,0 +1,171 @@
+<!--
+ -
+ - @license
+ -
+ - The MIT License (MIT)
+ - 
+ - Copyright (c) 2015 Intel Corporation
+ - 
+ - Permission is hereby granted, free of charge, to any person obtaining a copy
+ - of this software and associated documentation files (the "Software"), to deal
+ - in the Software without restriction, including without limitation the rights
+ - to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ - copies of the Software, and to permit persons to whom the Software is
+ - furnished to do so, subject to the following conditions:
+ - 
+ - The above copyright notice and this permission notice shall be included in
+ - all copies or substantial portions of the Software.
+ - 
+ - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ - IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ - FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ - AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ - LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ - THE SOFTWARE.
+ -
+ - Authors:
+ -   Elliot Smith <elliot.smith@intel.com>
+ -   Max Waterman <max.waterman@intel.com>
+ -
+ -->
+
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>slv-component-tooltip</title>
+
+  <script src="../../bower_components/webcomponentsjs/webcomponents.min.js"></script>
+  <script src="../../node_modules/web-component-tester/browser.js"></script>
+  <script src="../../bower_components/es6-module-loader/dist/es6-module-loader.js"></script>
+  <script src="../../bower_components/systemjs/dist/system.js"></script>
+
+  <script>
+  System.config({
+    baseURL: '../../app/js',
+    paths: {
+      'lodash': '../../bower_components/lodash/lodash.js',
+      'js-signals': '../../bower_components/js-signals/dist/signals.js'
+    },
+    meta: {
+      '../../bower_components/js-signals/dist/signals.js': {
+        format: 'global',
+        exports: 'signals'
+      }
+    }
+  });
+  </script>
+
+  <!-- element under test -->
+  <link rel="import" href="../../app/elements/slv-component-tooltip.html">
+</head>
+<body>
+  <slv-component-tooltip id="tooltip"></slv-component-tooltip>
+
+  <script>
+  describe('<slv-component-tooltip>', function () {
+    var Component;
+
+    beforeEach(function (done) {
+      Promise.all([
+        System.import('Component')
+      ])
+      .then(function (imports) {
+        Component = imports[0];
+        done();
+      });
+    });
+
+    it('should show details for a component', function (done) {
+      var component = Component.create({
+        name: 'boolean/what',
+        description: 'What?',
+        category: 'logical/boolean',
+        inports: [
+          {
+            name: 'in1',
+            type: 'string',
+            description: 'Input string',
+            required: false,
+            max_connections: 0
+          },
+
+          {
+            name: 'in2',
+            type: 'int',
+            description: '',
+            required: false,
+            max_connections: 0
+          }
+        ],
+        outports: [
+          {
+            name: 'out1',
+            type: 'boolean',
+            description: 'Output boolean',
+            required: false,
+            max_connections: 0
+          },
+
+          {
+            name: 'out2',
+            type: 'float',
+            description: '',
+            required: false,
+            max_connections: 0
+          }
+        ]
+      });
+
+      var tooltip = document.querySelector('slv-component-tooltip');
+      var tip;
+
+      tooltip.signals.hidden.add(function () {
+        // tip should be hidden
+        expect(getComputedStyle(tip).display).to.equal('none');
+
+        done();
+      });
+
+      tooltip.signals.shown.add(function () {
+        tip = tooltip.querySelector('* /deep/ [data-role="tip"]');
+
+        // tip should be visible
+        expect(getComputedStyle(tip).display).to.equal('block');
+
+        var heading = tooltip.querySelector('* /deep/ [data-role="heading"]');
+        expect(heading.innerHTML).to.match(new RegExp(component.name));
+
+        var description = tooltip.querySelector('* /deep/ [data-role="description"]');
+        expect(description.innerHTML).to.match(new RegExp(component.description));
+
+        var inports = tooltip.querySelectorAll('* /deep/ [data-role="inport-detail"]');
+        expect(inports.length).to.equal(2);
+        expect(inports[0].innerHTML).to.match(/in1\(string\)/);
+        expect(inports[0].innerHTML).to.match(/:&nbsp;Input string/);
+        expect(inports[1].innerHTML).to.match(/in2\(int\)/);
+
+        // should be no colon, as no description for in2
+        expect(inports[1].innerHTML).not.to.match(/:/);
+
+        var outports = tooltip.querySelectorAll('* /deep/ [data-role="outport-detail"]');
+        expect(outports.length).to.equal(2);
+        expect(outports[0].innerHTML).to.match(/out1\(boolean\)/);
+        expect(outports[0].innerHTML).to.match(/:&nbsp;Output boolean/);
+        expect(outports[1].innerHTML).to.match(/out2\(float\)/);
+
+        // should be no colon, as no description for out2
+        expect(outports[1].innerHTML).not.to.match(/:/);
+
+        tooltip.hide();
+      });
+
+      tooltip.setComponent(component);
+      tooltip.show();
+    });
+
+  });
+  </script>
+</body>
+</html>

@@ -1,0 +1,232 @@
+{
+ "random": [
+  {
+   "author": "Intel Corporation",
+   "category": "random",
+   "description": "Generate random booleans",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Seed value. Sequences are repeatable by using the same seed.",
+     "name": "SEED",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "any",
+     "description": "Receives a pulse to generate a new random boolean.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "random/boolean",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 1
+      },
+      "description": "Seed value. Sequences are repeatable by using the same seed.",
+      "name": "seed",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_random_boolean_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Random boolean. Do NOT use it for anything else than test purposes.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_RANDOM_BOOLEAN",
+   "url": "http://solettaproject.org/doc/latest/node_types/random/boolean.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "random",
+   "description": "Generate random bytes",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Seed value. Sequences are repeatable by using the same seed.",
+     "name": "SEED",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "any",
+     "description": "Receives a pulse to generate a new random byte.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "random/byte",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 1
+      },
+      "description": "Seed value. Sequences are repeatable by using the same seed.",
+      "name": "seed",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_random_byte_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "Random byte. Do NOT use it for anything else than test purposes.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_RANDOM_BYTE",
+   "url": "http://solettaproject.org/doc/latest/node_types/random/byte.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "random",
+   "description": "Generate random float values",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Seed value. Sequences are repeatable by using the same seed.",
+     "name": "SEED",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "any",
+     "description": "Receives a pulse to generate a new random float number.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "random/float",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 1
+      },
+      "description": "Seed value. Sequences are repeatable by using the same seed.",
+      "name": "seed",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_random_float_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Random float value from 0 to INT32_MAX. Do NOT use it for anything else than test purposes.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_RANDOM_FLOAT",
+   "url": "http://solettaproject.org/doc/latest/node_types/random/float.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "random",
+   "description": "Generate random int values",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Seed value. Sequences are repeatable by using the same seed.",
+     "name": "SEED",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "any",
+     "description": "Receives a pulse to generate a new random int number.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "random/int",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 1
+      },
+      "description": "Seed value. Sequences are repeatable by using the same seed.",
+      "name": "seed",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_random_int_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Random int value from 0 to INT32_MAX. Do NOT use it for anything else than test purposes.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_RANDOM_INT",
+   "url": "http://solettaproject.org/doc/latest/node_types/random/int.html",
+   "version": "1"
+  }
+ ]
+}

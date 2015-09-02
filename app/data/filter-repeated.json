@@ -1,0 +1,242 @@
+{
+ "filter-repeated": [
+  {
+   "author": "Intel Corporation",
+   "category": "filter-repeated",
+   "description": "Filter repeated boolean packets.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Where to receive the boolean packet to be filtered. If the packet is equal to the previously received, it'll be dropped. Otherwise, it'll be forwarded.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "filter-repeated/boolean",
+   "options_symbol": "sol_flow_node_type_filter_repeated_boolean_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Filtered boolean packets.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_FILTER_REPEATED_BOOLEAN",
+   "url": "http://solettaproject.org/doc/latest/node_types/filter-repeated/boolean.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "filter-repeated",
+   "description": "Filter repeated byte packets.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "Where to receive the byte packet to be filtered. If the packet is equal to the previously received, it'll be dropped. Otherwise, it'll be forwarded.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "filter-repeated/byte",
+   "options_symbol": "sol_flow_node_type_filter_repeated_byte_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "Filtered byte packets.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_FILTER_REPEATED_BYTE",
+   "url": "http://solettaproject.org/doc/latest/node_types/filter-repeated/byte.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "filter-repeated",
+   "description": "Filter repeated error packets.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "error",
+     "description": "Where to receive the error packet to be filtered. If the packet is equal to the previously received, it'll be dropped. Otherwise, it'll be forwarded. They're forwared via 'ERROR' port.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "filter-repeated/error",
+   "options_symbol": "sol_flow_node_type_filter_repeated_error_options",
+   "symbol": "SOL_FLOW_NODE_TYPE_FILTER_REPEATED_ERROR",
+   "url": "http://solettaproject.org/doc/latest/node_types/filter-repeated/error.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "filter-repeated",
+   "description": "Filter repeated float packets.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Where to receive the float packet to be filtered. If the packet is equal to the previously received, it'll be dropped. Otherwise, it'll be forwarded.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "filter-repeated/float",
+   "options_symbol": "sol_flow_node_type_filter_repeated_float_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Filtered float packets.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_FILTER_REPEATED_FLOAT",
+   "url": "http://solettaproject.org/doc/latest/node_types/filter-repeated/float.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "filter-repeated",
+   "description": "Filter repeated int packets.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Where to receive the int packet to be filtered. If the packet is equal to the previously received, it'll be dropped. Otherwise, it'll be forwarded.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "filter-repeated/int",
+   "options_symbol": "sol_flow_node_type_filter_repeated_int_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Filtered int packets.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_FILTER_REPEATED_INT",
+   "url": "http://solettaproject.org/doc/latest/node_types/filter-repeated/int.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "filter-repeated",
+   "description": "Filter repeated rgb packets.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "rgb",
+     "description": "Where to receive the rgb packet to be filtered. If the packet is equal to the previously received, it'll be dropped. Otherwise, it'll be forwarded.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "filter-repeated/rgb",
+   "options_symbol": "sol_flow_node_type_filter_repeated_rgb_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "rgb",
+     "description": "Filtered rgb packets.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_FILTER_REPEATED_RGB",
+   "url": "http://solettaproject.org/doc/latest/node_types/filter-repeated/rgb.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "filter-repeated",
+   "description": "Filter repeated direction vector packets.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "direction-vector",
+     "description": "Where to receive the direction vector packet to be filtered. If the packet is equal to the previously received one, it'll be dropped. Otherwise, it'll be forwarded.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "filter-repeated/direction-vector",
+   "options_symbol": "sol_flow_node_type_filter_repeated_direction_vector_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "direction-vector",
+     "description": "Filtered direction vector packets.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_FILTER_REPEATED_DIRECTION_VECTOR",
+   "url": "http://solettaproject.org/doc/latest/node_types/filter-repeated/direction-vector.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "filter-repeated",
+   "description": "Filter repeated string packets.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "string",
+     "description": "Where to receive the string packet to be filtered. If the packet is equal to the previously received, it'll be dropped. Otherwise, it'll be forwarded.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "filter-repeated/string",
+   "options_symbol": "sol_flow_node_type_filter_repeated_string_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "string",
+     "description": "Filtered string packets.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_FILTER_REPEATED_STRING",
+   "url": "http://solettaproject.org/doc/latest/node_types/filter-repeated/string.html",
+   "version": "1"
+  }
+ ]
+}

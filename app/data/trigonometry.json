@@ -1,0 +1,159 @@
+{
+ "trigonometry": [
+  {
+   "author": "Intel Corporation",
+   "category": "trigonometry",
+   "description": "Calculates the cosine of an angle.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Angle in radians.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "trigonometry/cosine",
+   "options_symbol": "sol_flow_node_type_trigonometry_cosine_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Cosine of angle.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_TRIGONOMETRY_COSINE",
+   "url": "http://solettaproject.org/doc/latest/node_types/trigonometry/cosine.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "trigonometry",
+   "description": "Convert degrees to radians.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Angle in degrees.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "trigonometry/degrees-to-radian",
+   "options_symbol": "sol_flow_node_type_trigonometry_degrees_to_radian_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Angle in radian.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_TRIGONOMETRY_DEGREES_TO_RADIAN",
+   "url": "http://solettaproject.org/doc/latest/node_types/trigonometry/degrees_to_radian.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "trigonometry",
+   "description": "Convert radians to degrees.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Angle in radians.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "trigonometry/radian-to-degrees",
+   "options_symbol": "sol_flow_node_type_trigonometry_radian_to_degrees_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Angle in degrees.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_TRIGONOMETRY_RADIAN_TO_DEGREES",
+   "url": "http://solettaproject.org/doc/latest/node_types/trigonometry/radian_to_degrees.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "trigonometry",
+   "description": "Calculates the sine of an angle.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Angle in radians.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "trigonometry/sine",
+   "options_symbol": "sol_flow_node_type_trigonometry_sine_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Sine of angle.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_TRIGONOMETRY_SINE",
+   "url": "http://solettaproject.org/doc/latest/node_types/trigonometry/sine.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "trigonometry",
+   "description": "Calculates the tangent of an angle.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Angle in radians.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "trigonometry/tangent",
+   "options_symbol": "sol_flow_node_type_trigonometry_tangent_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Tangent of angle.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_TRIGONOMETRY_TANGENT",
+   "url": "http://solettaproject.org/doc/latest/node_types/trigonometry/tangent.html",
+   "version": "1"
+  }
+ ]
+}

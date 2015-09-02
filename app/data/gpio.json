@@ -1,0 +1,117 @@
+{
+ "gpio": [
+  {
+   "author": "Intel Corporation",
+   "category": "input/hw",
+   "description": "GPIO reader",
+   "license": "BSD 3-Clause",
+   "name": "gpio/reader",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "description": "GPIO pin",
+      "name": "pin",
+      "required": true
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 1000
+      },
+      "description": "Polling time",
+      "name": "poll_timeout",
+      "required": false
+     },
+     {
+      "data_type": "boolean",
+      "default": false,
+      "description": "Is active low",
+      "name": "active_low",
+      "required": false
+     },
+     {
+      "data_type": "boolean",
+      "default": false,
+      "description": "Is edge rising",
+      "name": "edge_rising",
+      "required": false
+     },
+     {
+      "data_type": "boolean",
+      "default": false,
+      "description": "Is edge falling",
+      "name": "edge_falling",
+      "required": false
+     },
+     {
+      "data_type": "string",
+      "default": "none",
+      "description": "up for pull up, down for pull down, none for no pull",
+      "name": "pull",
+      "required": false
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_gpio_reader_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "GPIO reader, port out",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_GPIO_READER",
+   "url": "http://solettaproject.org/doc/latest/node_types/gpio/reader.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "output/hw",
+   "description": "GPIO writer",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "GPIO writer, port in",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "gpio/writer",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "description": "GPIO pin",
+      "name": "pin",
+      "required": true
+     },
+     {
+      "data_type": "boolean",
+      "default": false,
+      "description": "Is active low",
+      "name": "active_low",
+      "required": false
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_gpio_writer_options",
+   "symbol": "SOL_FLOW_NODE_TYPE_GPIO_WRITER",
+   "url": "http://solettaproject.org/doc/latest/node_types/gpio/writer.html",
+   "version": "1"
+  }
+ ]
+}

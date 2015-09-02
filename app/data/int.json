@@ -1,0 +1,1064 @@
+{
+ "int": [
+  {
+   "author": "Intel Corporation",
+   "category": "math/int",
+   "description": "Int Max",
+   "in_ports": [
+    {
+     "array_size": 2,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Two ports for max operation. Indexed from 0 to 1.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "int/max",
+   "options_symbol": "sol_flow_node_type_int_max_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Maximum value between IN[0] and IN[1].",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_INT_MAX",
+   "url": "http://solettaproject.org/doc/latest/node_types/math/irange/max.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "math/int",
+   "description": "Int Min",
+   "in_ports": [
+    {
+     "array_size": 2,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Two ports for min operation. Indexed from 0 to 1.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "int/min",
+   "options_symbol": "sol_flow_node_type_int_min_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Minimum value between IN[0] and IN[1].",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_INT_MIN",
+   "url": "http://solettaproject.org/doc/latest/node_types/math/irange/min.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "math/int",
+   "description": "Calculates absolute value of a number.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Input number.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "int/abs",
+   "options_symbol": "sol_flow_node_type_int_abs_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Number's absolute value.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_INT_ABS",
+   "url": "http://solettaproject.org/doc/latest/node_types/math/irange/abs.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "logical/int",
+   "description": "Increment or decrement it's internal value by 'step' whenever a packet is received and outputs the updated value. If the internal value is greater than 'max' after an increment, it's set to min and an empty packet is sent through OVERFLOW port as well, or if it's less than 'min' after a decrement, it's set to 'max' and an empty packet is sent through UNDERFLOW port.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "any",
+     "description": "Increment operation.",
+     "name": "INC",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "any",
+     "description": "Decrement operation.",
+     "name": "DEC",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "any",
+     "description": "Reset accumulator to its initial state.",
+     "name": "RESET",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "int/accumulator",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 0
+      },
+      "description": "The initial value, range and step to be used in operations. Only positive step values are allowed.",
+      "name": "setup_value",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_int_accumulator_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Updated value after an input is processed.",
+     "name": "OUT",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "empty",
+     "description": "Sends an empty package whenever an overflow happens.",
+     "name": "OVERFLOW",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "empty",
+     "description": "Sends an empty package whenever an underflow happens.",
+     "name": "UNDERFLOW",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_INT_ACCUMULATOR",
+   "url": "http://solettaproject.org/doc/latest/node_types/irange/accumulator.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "arithmetic/int",
+   "description": "Arithmetic addition operation with ints",
+   "in_ports": [
+    {
+     "array_size": 32,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Thirty two ports for addition operation. Indexed from 0 to 31.",
+     "name": "OPERAND",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "int/addition",
+   "options_symbol": "sol_flow_node_type_int_addition_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Sum of values received on ports OPERAND[0] to OPERAND[31].",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_INT_ADDITION",
+   "url": "http://solettaproject.org/doc/latest/node_types/arithmetic/irange/addition.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "arithmetic/int",
+   "description": "Arithmetic division operation with ints",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Receives dividend value.",
+     "name": "DIVIDEND",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "int",
+     "description": "Receives divisor value.",
+     "name": "DIVISOR",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "int/division",
+   "options_symbol": "sol_flow_node_type_int_division_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Quotient from the division of DIVIDEND by DIVISOR.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_INT_DIVISION",
+   "url": "http://solettaproject.org/doc/latest/node_types/arithmetic/irange/division.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "arithmetic/int",
+   "description": "Arithmetic modulo operation with ints",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Receives dividend value.",
+     "name": "DIVIDEND",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "int",
+     "description": "Receives divisor value.",
+     "name": "DIVISOR",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "int/modulo",
+   "options_symbol": "sol_flow_node_type_int_modulo_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Remainder from the division of DIVIDEND by DIVISOR.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_INT_MODULO",
+   "url": "http://solettaproject.org/doc/latest/node_types/arithmetic/irange/modulo.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "arithmetic/int",
+   "description": "Arithmetic multiplication operation with ints",
+   "in_ports": [
+    {
+     "array_size": 32,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Thirty two ports for multiplication operation. Indexed from 0 to 31.",
+     "name": "OPERAND",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "int/multiplication",
+   "options_symbol": "sol_flow_node_type_int_multiplication_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Product of values received on ports OPERAND[0] and OPERAND[31].",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_INT_MULTIPLICATION",
+   "url": "http://solettaproject.org/doc/latest/node_types/arithmetic/irange/multiplication.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "arithmetic/int",
+   "description": "Arithmetic subtraction operation with ints",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Receives minuend value.",
+     "name": "MINUEND",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "int",
+     "description": "Receives subtrahend value.",
+     "name": "SUBTRAHEND",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "int/subtraction",
+   "options_symbol": "sol_flow_node_type_int_subtraction_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Difference of values received on ports OPERAND[0] to OPERAND[31].",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_INT_SUBTRACTION",
+   "url": "http://solettaproject.org/doc/latest/node_types/arithmetic/irange/subtraction.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "logical/bitwise",
+   "description": "Bitwise And",
+   "in_ports": [
+    {
+     "array_size": 2,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Two ports for AND operation. Indexed from 0 to 1.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "int/bitwise-and",
+   "options_symbol": "sol_flow_node_type_int_bitwise_and_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "The result of a bitwise AND between IN[0] and IN[1]",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_INT_BITWISE_AND",
+   "url": "http://solettaproject.org/doc/latest/node_types/int/bitwise_and.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "logical/bitwise",
+   "description": "Bitwise Not",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "First port of NOT operation.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "int/bitwise-not",
+   "options_symbol": "sol_flow_node_type_int_bitwise_not_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Bitwise NOT of the value received in IN.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_INT_BITWISE_NOT",
+   "url": "http://solettaproject.org/doc/latest/node_types/int/bitwise_not.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "logical/bitwise",
+   "description": "Bitwise Or",
+   "in_ports": [
+    {
+     "array_size": 2,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Two ports for OR operation. Indexed from 0 to 1.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "int/bitwise-or",
+   "options_symbol": "sol_flow_node_type_int_bitwise_or_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "The result of a bitwise OR between IN[0] and IN[1]",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_INT_BITWISE_OR",
+   "url": "http://solettaproject.org/doc/latest/node_types/int/bitwise_or.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "logical/bitwise",
+   "description": "Bitwise Shift Left",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Value to be shifted",
+     "name": "IN",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "int",
+     "description": "Number of bits to shift the value in IN (must be less than 32)",
+     "name": "SHIFT",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "int/shift-left",
+   "options_symbol": "sol_flow_node_type_int_shift_left_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "The value received in IN, shifted SHIFT bits to the left.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_INT_SHIFT_LEFT",
+   "url": "http://solettaproject.org/doc/latest/node_types/int/shift_left.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "logical/bitwise",
+   "description": "Bitwise Shift Right",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Value to be shifted",
+     "name": "IN",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "int",
+     "description": "Number of bits to shift the value in IN (must be less than 32)",
+     "name": "SHIFT",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "int/shift-right",
+   "options_symbol": "sol_flow_node_type_int_shift_right_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "The value received in IN, shifted SHIFT bits to the right (No sign extension).",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_INT_SHIFT_RIGHT",
+   "url": "http://solettaproject.org/doc/latest/node_types/int/shift_right.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "logical/bitwise",
+   "description": "Bitwise Xor",
+   "in_ports": [
+    {
+     "array_size": 2,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Two ports for XOR operation. Indexed from 0 to 1.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "int/bitwise-xor",
+   "options_symbol": "sol_flow_node_type_int_bitwise_xor_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "The result of a bitwise XOR between IN[0] xor IN[1]",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_INT_BITWISE_XOR",
+   "url": "http://solettaproject.org/doc/latest/node_types/int/bitwise_xor.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "logical/int",
+   "description": "Apply desired computation when buffer fills or timeout happens.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Input port.",
+     "name": "IN",
+     "required": true
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "int",
+     "description": "Receives an int packet to set the timeout time to be used.",
+     "name": "TIMEOUT",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "any",
+     "description": "Reset buffer and timer to its initial state.",
+     "name": "RESET",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "int/buffer",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 4
+      },
+      "description": "Number of samples that the buffer should hold.",
+      "name": "samples",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 0
+      },
+      "description": "Timeout time in milliseconds. Default is zero which means that timeout is disabled.",
+      "name": "timeout",
+      "required": false
+     },
+     {
+      "data_type": "string",
+      "default": "all_true",
+      "description": "Operation to be applied in the buffer elements to compute the output.",
+      "name": "operation",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_int_buffer_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Output port.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_INT_BUFFER",
+   "url": "http://solettaproject.org/doc/latest/node_types/irange/buffer.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "comparison/int",
+   "description": "Check if an int is equal to other.",
+   "in_ports": [
+    {
+     "array_size": 2,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Two ports for equal comparison operation. Indexed from 0 to 1.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "int/equal",
+   "options_symbol": "sol_flow_node_type_int_equal_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "True if value received on port IN[0] is equal to value received on port IN[1].",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_INT_EQUAL",
+   "url": "http://solettaproject.org/doc/latest/node_types/comparison/irange/equal.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "comparison/int",
+   "description": "Check if an int is greater than other.",
+   "in_ports": [
+    {
+     "array_size": 2,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Two ports for greater comparison operation. Indexed from 0 to 1, and IN[0] being the left operand.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "int/greater",
+   "options_symbol": "sol_flow_node_type_int_greater_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "True if value received on port IN[0] is greater than value received on port IN[1].",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_INT_GREATER",
+   "url": "http://solettaproject.org/doc/latest/node_types/comparison/irange/greater.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "comparison/int",
+   "description": "Check if an int is greater than or equal to other.",
+   "in_ports": [
+    {
+     "array_size": 2,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Two ports for greater-or-equal comparison operation. Indexed from 0 to 1, and IN[0] being the left operand.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "int/greater-or-equal",
+   "options_symbol": "sol_flow_node_type_int_greater_or_equal_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "True if value received on port IN[0] is greater than or equal to value received on port IN[1].",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_INT_GREATER_OR_EQUAL",
+   "url": "http://solettaproject.org/doc/latest/node_types/comparison/irange/greater-or-equal.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "comparison/int",
+   "description": "Check if an int is less than other.",
+   "in_ports": [
+    {
+     "array_size": 2,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Two ports for less comparison operation. Indexed from 0 to 1, and IN[0] being the left operand.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "int/less",
+   "options_symbol": "sol_flow_node_type_int_less_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "True if value received on port IN[0] is less than value received on port IN[1].",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_INT_LESS",
+   "url": "http://solettaproject.org/doc/latest/node_types/comparison/irange/less.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "comparison/int",
+   "description": "Check if an int is less than or equal to other.",
+   "in_ports": [
+    {
+     "array_size": 2,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Two ports for less-or-equal comparison operation. Indexed from 0 to 1, and IN[0] being the left operand.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "int/less-or-equal",
+   "options_symbol": "sol_flow_node_type_int_less_or_equal_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "True if value received on port IN[0] is less than or equal to value received on port IN[1].",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_INT_LESS_OR_EQUAL",
+   "url": "http://solettaproject.org/doc/latest/node_types/comparison/irange/less-or-equal.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "comparison/int",
+   "description": "Check if an int is different from other.",
+   "in_ports": [
+    {
+     "array_size": 2,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Two ports for not-equal comparison operation. Indexed from 0 to 1",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "int/not-equal",
+   "options_symbol": "sol_flow_node_type_int_not_equal_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "True if value received on port IN[0] is different from value received on port IN[1].",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_INT_NOT_EQUAL",
+   "url": "http://solettaproject.org/doc/latest/node_types/comparison/irange/not-equal.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "math/int",
+   "description": "Constrain value to it's range",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Value to be constrained.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "int/constrain",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "default": {
+       "max": 1023,
+       "min": 0,
+       "step": 1,
+       "val": 0
+      },
+      "description": "Range values (min, max, step). Used only if use_input_range is disabled.",
+      "name": "range",
+      "required": false
+     },
+     {
+      "data_type": "boolean",
+      "default": true,
+      "description": "Use min, max and step values from package instead of options min, max and step. It's useful if you need to convert from many different sources to the same range and all of them inform these values correctly in each package.",
+      "name": "use_input_range",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_int_constrain_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Value constrained considering range",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_INT_CONSTRAIN",
+   "url": "http://solettaproject.org/doc/latest/node_types/math/irange/constrain.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "int/filter",
+   "description": "Filter ints in range",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Data input port.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "int/filter",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": "INT32_MIN"
+      },
+      "description": "Minimum value (inclusive)",
+      "name": "min",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": "INT32_MAX"
+      },
+      "description": "Maximum value (inclusive)",
+      "name": "max",
+      "required": false
+     },
+     {
+      "data_type": "boolean",
+      "default": false,
+      "description": "if true, the packet irange will have it's min and max changed to the min and max of this node.",
+      "name": "range_override",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_int_filter_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Outputs the same variable as the input if it's in range, nothing otherwise.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_INT_FILTER",
+   "url": "http://solettaproject.org/doc/latest/node_types/int/filter.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "logical/int",
+   "description": "check if value is between a min and max range.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "value that will be checked if its in range or not.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "int/inrange",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "default": {
+       "max": 255,
+       "min": -255,
+       "step": 1,
+       "val": 0
+      },
+      "description": "maximum range value.",
+      "name": "range",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_int_inrange_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "true if IN is in range",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_INT_INRANGE",
+   "url": "http://solettaproject.org/doc/latest/node_types/irange/inrange.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "math/int",
+   "description": "Map values to different range",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Value to be converted.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "int/map",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 0
+      },
+      "description": "Input's range. Used only if use_input_range is disabled.",
+      "name": "input_range",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "description": "Output's range.",
+      "name": "output_range",
+      "required": true
+     },
+     {
+      "data_type": "boolean",
+      "default": true,
+      "description": "Use min and max values from input package instead of option input_range. It's useful if you need to convert from many different sources to the same range and all of them inform these values correctly in each package.",
+      "name": "use_input_range",
+      "required": false
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_int_map_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Value mapped considering input and output ranges",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_INT_MAP",
+   "url": "http://solettaproject.org/doc/latest/node_types/math/irange/map.html",
+   "version": "1"
+  }
+ ]
+}

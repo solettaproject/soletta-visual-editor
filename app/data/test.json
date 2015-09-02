@@ -1,0 +1,373 @@
+{
+ "test": [
+  {
+   "author": "Intel Corporation",
+   "category": "test",
+   "description": "Node type used to indicate whether a test flow has passed or not",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "any",
+     "description": "Indicates that the tested flow has passed",
+     "name": "PASS",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "any",
+     "description": "Indicates that the tested flow has failed",
+     "name": "FAIL",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "any",
+     "description": "Indicates the result of tested flow, TRUE means success and FALSE means failure",
+     "name": "RESULT",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "test/result",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 500
+      },
+      "description": "Time allotted for a fbp test to run in ms. Expiration of the timer is considered a failure.",
+      "name": "timeout",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_test_result_options",
+   "symbol": "SOL_FLOW_NODE_TYPE_TEST_RESULT",
+   "url": "http://solettaproject.org/doc/latest/components/test.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "test",
+   "description": "Matches an expected sequence.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Where to receive the expected sequence.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "test/boolean-validator",
+   "options": {
+    "members": [
+     {
+      "data_type": "string",
+      "description": "Expected sequence to be matched, formatted as 'TFTFTTTFF' where 'T' is true and 'F' is false.",
+      "name": "sequence",
+      "required": true
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_test_boolean_validator_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Outputs true if there is a match, false otherwise.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_TEST_BOOLEAN_VALIDATOR",
+   "url": "http://solettaproject.org/doc/latest/components/boolean-validator.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "test",
+   "description": "Provides predefined input for testing",
+   "license": "BSD 3-Clause",
+   "name": "test/boolean-generator",
+   "options": {
+    "members": [
+     {
+      "data_type": "string",
+      "description": "String sequence to be generated, formatted as 'TFTFTTTFF' where 'T' is true and 'F' is false.",
+      "name": "sequence",
+      "required": true
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 0
+      },
+      "description": "Interval between packets.",
+      "name": "interval",
+      "required": false
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_test_boolean_generator_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Where the predefined sequence is outputted.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_TEST_BOOLEAN_GENERATOR",
+   "url": "http://solettaproject.org/doc/latest/components/boolean_generator.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "test",
+   "description": "Matches an expected sequence of integer values.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Where to receive the expected sequence.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "test/int-validator",
+   "options": {
+    "members": [
+     {
+      "data_type": "string",
+      "description": "Expected sequence to be matched, formatted as '1 2 3 -4 10 100 -1000'",
+      "name": "sequence",
+      "required": true
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_test_int_validator_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Outputs true if there is a match, false otherwise.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_TEST_INT_VALIDATOR",
+   "url": "http://solettaproject.org/doc/latest/components/int-validator.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "test",
+   "description": "Provides predefined input for testing",
+   "license": "BSD 3-Clause",
+   "name": "test/int-generator",
+   "options": {
+    "members": [
+     {
+      "data_type": "string",
+      "description": "String sequence to be generated, formatted as '1 10 -2 1000'.",
+      "name": "sequence",
+      "required": true
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 0
+      },
+      "description": "Interval between packets.",
+      "name": "interval",
+      "required": false
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_test_int_generator_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Where the predefined sequence is outputted.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_TEST_INT_GENERATOR",
+   "url": "http://solettaproject.org/doc/latest/components/int_generator.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "test",
+   "description": "Provides predefined input for testing",
+   "license": "BSD 3-Clause",
+   "name": "test/float-generator",
+   "options": {
+    "members": [
+     {
+      "data_type": "string",
+      "description": "String sequence to be generated, formatted as '1.0 2 -1.7 35.864'",
+      "name": "sequence",
+      "required": true
+     },
+     {
+      "data_type": "float",
+      "default": {
+       "max": "DBL_MAX",
+       "min": "-DBL_MAX",
+       "step": "DBL_MIN",
+       "val": 0.0
+      },
+      "description": "Interval between packets.",
+      "name": "interval",
+      "required": false
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_test_float_generator_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Where the predefined sequence is outputted.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_TEST_FLOAT_GENERATOR",
+   "url": "http://solettaproject.org/doc/latest/components/float_generator.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "test",
+   "description": "Matches an expected sequence.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Where to receive the expected sequence.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "test/float-validator",
+   "options": {
+    "members": [
+     {
+      "data_type": "string",
+      "description": "Expected sequence to be matched, formatted as '1.0 2 -1.7 35.864'",
+      "name": "sequence",
+      "required": true
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_test_float_validator_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Outputs true if there is a match, false otherwise.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_TEST_FLOAT_VALIDATOR",
+   "url": "http://solettaproject.org/doc/latest/components/float-validator.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "test",
+   "description": "Matches an expected memory blob.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "blob",
+     "description": "Where to receive the expected sequence.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "test/blob-validator",
+   "options": {
+    "members": [
+     {
+      "data_type": "string",
+      "description": "Expected string to be matched",
+      "name": "expected",
+      "required": true
+     },
+     {
+      "data_type": "boolean",
+      "default": false,
+      "description": "If true, it will compare the received blob with 'expected' string with terminating null byte, otherwise it will compare with a not terminated string.",
+      "name": "expect_terminating_null_byte",
+      "required": false
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_test_blob_validator_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Outputs true if there is a match, false otherwise.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_TEST_BLOB_VALIDATOR",
+   "url": "http://solettaproject.org/doc/latest/components/blob-validator.html",
+   "version": "1"
+  }
+ ]
+}

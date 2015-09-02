@@ -1,0 +1,118 @@
+{
+ "oic": [
+  {
+   "author": "Intel Corporation",
+   "category": "iot/server",
+   "description": "OIC Server (Legacy Brightlight)",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "True if on, False if off",
+     "name": "IN_STATE",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "int",
+     "description": "Current sensed or set value for Brightness",
+     "name": "IN_POWER",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "oic/server-brightlight",
+   "options_symbol": "sol_flow_node_type_oic_server_brightlight_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "True if on, False if off",
+     "name": "OUT_STATE",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "int",
+     "description": "Current sensed or set value for Brightness",
+     "name": "OUT_POWER",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_OIC_SERVER_BRIGHTLIGHT",
+   "url": "http://solettaproject.org/doc/latest/components/oic-server-brightlight.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "iot/client",
+   "description": "OIC Client (Legacy Brightlight)",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "True if on, False if off",
+     "name": "IN_STATE",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "int",
+     "description": "Current sensed or set value for Brightness",
+     "name": "IN_POWER",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "oic/client-brightlight",
+   "options": {
+    "members": [
+     {
+      "data_type": "string",
+      "description": "Hardware address of the device (MAC address, etc)",
+      "name": "hwaddr",
+      "required": true
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_oic_client_brightlight_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Outputs true if resource was found, false if not, or if unreachable",
+     "name": "FOUND",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "boolean",
+     "description": "True if on, False if off",
+     "name": "OUT_STATE",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "int",
+     "description": "Current sensed or set value for Brightness",
+     "name": "OUT_POWER",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_OIC_CLIENT_BRIGHTLIGHT",
+   "url": "http://solettaproject.org/doc/latest/components/oic-client-brightlight.html",
+   "version": "1"
+  }
+ ]
+}

@@ -1,0 +1,257 @@
+{
+ "byte": [
+  {
+   "author": "Intel Corporation",
+   "category": "logical/bitwise",
+   "description": "Bitwise And",
+   "in_ports": [
+    {
+     "array_size": 2,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "Two ports for bitwise operation AND. Indexed from 0 to 1.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "byte/bitwise-and",
+   "options_symbol": "sol_flow_node_type_byte_bitwise_and_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "The result of a bitwise AND between IN[0] and IN[1]",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_BYTE_BITWISE_AND",
+   "url": "http://solettaproject.org/doc/latest/node_types/byte/bitwise_and.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "logical/bitwise",
+   "description": "Bitwise Not",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "First port of NOT operation.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "byte/bitwise-not",
+   "options_symbol": "sol_flow_node_type_byte_bitwise_not_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "Bitwise NOT of the value received in IN.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_BYTE_BITWISE_NOT",
+   "url": "http://solettaproject.org/doc/latest/node_types/byte/bitwise_not.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "logical/bitwise",
+   "description": "Bitwise Or",
+   "in_ports": [
+    {
+     "array_size": 2,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "Two ports for bitwise operation OR. Indexed from 0 to 1.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "byte/bitwise-or",
+   "options_symbol": "sol_flow_node_type_byte_bitwise_or_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "The result of a bitwise OR between IN[0] or IN[1]",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_BYTE_BITWISE_OR",
+   "url": "http://solettaproject.org/doc/latest/node_types/byte/bitwise_or.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "logical/bitwise",
+   "description": "Bitwise Shift Left",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "Value to be shifted",
+     "name": "IN",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "byte",
+     "description": "Number of bits to shift the value in IN (must be less than 8)",
+     "name": "SHIFT",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "byte/shift-left",
+   "options_symbol": "sol_flow_node_type_byte_shift_left_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "The value received in IN, shifted SHIFT bits to the left.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_BYTE_SHIFT_LEFT",
+   "url": "http://solettaproject.org/doc/latest/node_types/byte/shift_left.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "logical/bitwise",
+   "description": "Bitwise Shift Right",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "Value to be shifted",
+     "name": "IN",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "byte",
+     "description": "Number of bits to shift the value in IN (must be less than 8)",
+     "name": "SHIFT",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "byte/shift-right",
+   "options_symbol": "sol_flow_node_type_byte_shift_right_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "The value received in IN, shifted SHIFT bits to the right (No sign extension).",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_BYTE_SHIFT_RIGHT",
+   "url": "http://solettaproject.org/doc/latest/node_types/byte/shift_right.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "logical/bitwise",
+   "description": "Bitwise Xor",
+   "in_ports": [
+    {
+     "array_size": 2,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "Two ports for bitwise operation XOR. Indexed from 0 to 1.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "byte/bitwise-xor",
+   "options_symbol": "sol_flow_node_type_byte_bitwise_xor_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "The result of a bitwise XOR between IN[0] xor IN[1]",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_BYTE_BITWISE_XOR",
+   "url": "http://solettaproject.org/doc/latest/node_types/byte/bitwise_xor.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "byte/filter",
+   "description": "Filter bytes in range",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "Data input port.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "byte/filter",
+   "options": {
+    "members": [
+     {
+      "data_type": "byte",
+      "default": 0,
+      "description": "Minimum value (inclusive)",
+      "name": "min",
+      "required": false
+     },
+     {
+      "data_type": "byte",
+      "default": 255,
+      "description": "Maximum value (inclusive)",
+      "name": "max",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_byte_filter_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "Outputs the same variable as the input if it's in range, nothing otherwise.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_BYTE_FILTER",
+   "url": "http://solettaproject.org/doc/latest/node_types/byte/filter.html",
+   "version": "1"
+  }
+ ]
+}

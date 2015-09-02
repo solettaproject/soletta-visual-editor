@@ -1,0 +1,94 @@
+{
+ "platform": [
+  {
+   "author": "Intel Corporation",
+   "category": "input/sw",
+   "description": "Platform State",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "any",
+     "description": "Triggers emission of current state.",
+     "name": "TRIGGER",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "platform",
+   "options_symbol": "sol_flow_node_type_platform_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "True if platform is ready.",
+     "name": "READY",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_PLATFORM",
+   "url": "http://solettaproject.org/doc/latest/node_types/platform.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "input/sw",
+   "description": "Platform Service State",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "any",
+     "description": "Triggers emission of current service state.",
+     "name": "TRIGGER",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "any",
+     "description": "Starts service when receives a signal",
+     "name": "START",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "any",
+     "description": "Stops service when receives a signal",
+     "name": "STOP",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "platform-service",
+   "options": {
+    "members": [
+     {
+      "data_type": "string",
+      "description": "the platform service name",
+      "name": "service_name",
+      "required": true
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_platform_service_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "True if platform service is active.",
+     "name": "ACTIVE",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_PLATFORM_SERVICE",
+   "url": "http://solettaproject.org/doc/latest/node_types/platform_service.html",
+   "version": "1"
+  }
+ ]
+}

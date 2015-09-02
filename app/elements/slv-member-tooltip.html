@@ -1,0 +1,183 @@
+<!--
+ -
+ - @license
+ -
+ - The MIT License (MIT)
+ -
+ - Copyright (c) 2015 Intel Corporation
+ -
+ - Permission is hereby granted, free of charge, to any person obtaining a copy
+ - of this software and associated documentation files (the "Software"), to deal
+ - in the Software without restriction, including without limitation the rights
+ - to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ - copies of the Software, and to permit persons to whom the Software is
+ - furnished to do so, subject to the following conditions:
+ -
+ - The above copyright notice and this permission notice shall be included in
+ - all copies or substantial portions of the Software.
+ -
+ - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ - IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ - FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ - AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ - LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ - THE SOFTWARE.
+ -
+ - Authors:
+ -   Elliot Smith <elliot.smith@intel.com>
+ -   Max Waterman <max.waterman@intel.com>
+ -
+ -->
+
+<!--
+Tooltip to show node member variable information.
+-->
+<link rel="import" href="./slv-tooltip.html">
+
+<polymer-element name="slv-member-tooltip">
+  <template>
+    <style>
+      :host /deep/ [data-role="tip"] {
+        width: 256px !important;
+      }
+
+      [data-role="heading"] {
+        font-size: 18px !important;
+        margin-bottom: 4px;
+        margin-top: 0;
+        text-transform: uppercase;
+      }
+
+      [data-role="description"] {
+        margin-top: 0;
+        margin-bottom: 4px;
+      }
+
+      [data-role="description"].last {
+        margin-bottom: 16px !important;
+      }
+
+      [data-role="subheading"] {
+        font-size: 13px !important;
+        margin-top: 8px;
+        margin-bottom: 4px;
+      }
+
+      [data-role="list"] {
+        list-style-type: none;
+        margin-left: -40px;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+    </style>
+
+    <slv-tooltip id="tooltip">
+      <template if="{{ !member }}">
+        <h1>not ready...</h1>
+      </template>
+
+      <template if="{{ member }}">
+        <h1 data-role="heading">
+          {{ member.name }}
+        </h1>
+
+        <template if="{{ member.description }}">
+          <p data-role="description" class="last">
+            {{ member.description }}
+          </p>
+        </template>
+
+        <template if="{{ member.type }}">
+          <h2 data-role="subheading">
+            Data type:
+          </h2>
+
+          <p data-role="description" class="last">
+            {{ member.type }}
+          </p>
+        </template>
+
+        <template if="{{ member.default !== undefined }}">
+          <h2 data-role="subheading">
+            Default value:
+          </h2>
+
+          <!-- int/float with "default" object -->
+          <template if="{{ member.default.val !== undefined }}">
+            <p data-role="description">
+              value: {{ member.default.val }}
+            </p>
+
+            <p data-role="description">
+              min: {{ member.default.min }}
+            </p>
+
+            <p data-role="description">
+              max: {{ member.default.max }}
+            </p>
+
+            <p data-role="description" class="last">
+              step: {{ member.default.step }}
+            </p>
+          </template>
+
+          <!-- everything *except* int/float with "default" object -->
+          <template if="{{ member.default.val === undefined }}">
+            <p data-role="description" class="last">
+              {{ member.default }}
+            </p>
+          </template>
+        </template>
+      </template>
+    </slv-tooltip>
+  </template>
+
+  <script>
+    (function () {
+      'use strict';
+
+      Polymer('slv-member-tooltip', {
+        /**
+         * Member variable to show description for
+         */
+        member: null,
+
+        /**
+         * Set the member variable to display details for.
+         *
+         * @param {object} member   Component member object with
+         * structure:
+         *
+         * {
+         *  name: '<name>',
+         *  type: '<data type>',
+         *  required: <boolean>,
+         *  'default': <default value>,
+         *  description: '<member description>'
+         * }
+         */
+        setMember: function (member) {
+          this.member = member;
+        },
+
+        // proxies onto tooltip methods
+        show: function () {
+          this.$.tooltip.show();
+        },
+
+        hide: function () {
+          this.$.tooltip.hide();
+        },
+
+        stayInside: function (elt) {
+          this.$.tooltip.stayInside(elt);
+        },
+
+        positionAt: function (elt) {
+          this.$.tooltip.positionAt(elt);
+        }
+      });
+    })();
+  </script>
+</polymer-element>

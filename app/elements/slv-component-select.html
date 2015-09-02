@@ -1,0 +1,795 @@
+<!--
+ -
+ - @license
+ -
+ - The MIT License (MIT)
+ -
+ - Copyright (c) 2015 Intel Corporation
+ -
+ - Permission is hereby granted, free of charge, to any person obtaining a copy
+ - of this software and associated documentation files (the "Software"), to deal
+ - in the Software without restriction, including without limitation the rights
+ - to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ - copies of the Software, and to permit persons to whom the Software is
+ - furnished to do so, subject to the following conditions:
+ -
+ - The above copyright notice and this permission notice shall be included in
+ - all copies or substantial portions of the Software.
+ -
+ - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ - IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ - FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ - AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ - LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ - THE SOFTWARE.
+ -
+ - Authors:
+ -   Elliot Smith <elliot.smith@intel.com>
+ -   Max Waterman <max.waterman@intel.com>
+ -
+ -->
+
+<!--
+element to display Components in groups
+-->
+<link rel="import" href="../../bower_components/core-icon/core-icon.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="./slv-component-tooltip.html">
+<link rel="import" href="./slv-icons-svg.html">
+
+<polymer-element name="slv-component-select" attributes="open animations">
+  <template>
+    <style>
+    :host /deep/ * {
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    #scroller {
+      height: 100%;
+      overflow-y: scroll;
+      padding: 0 !important;
+    }
+
+    /* submenu heading: colour change when submenu is active;
+       lighter bottom border when active */
+    [data-role="submenu"][data-active="true"] [data-role="submenu-heading"] {
+      background-color: #dce4e7;
+      border-bottom: 2px solid #c2ccce;
+    }
+    [data-role="submenu"][data-active="false"] [data-role="submenu-heading"] {
+      background-color: #c2cacd;
+      border-bottom: 2px solid #aab3ba;
+    }
+
+    /* submenu heading: general styling */
+    [data-role="submenu-heading"] {
+      display: flex;
+      display: -webkit-flex;
+      display: -moz-flex;
+      flex-direction: row;
+      -webkit-flex-direction: row;
+      -moz-flex-direction: row;
+      align-items: center;
+      -webkit-align-items: center;
+      -moz-align-items: center;
+      justify-content: center;
+      -webkit-justify-content: center;
+      -moz-justify-content: center;
+      box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      height: 42px;
+    }
+
+    [data-role="submenu-heading-text"] {
+      flex: 1 0 auto;
+      -webkit-flex: 1 0 auto;
+      -moz-flex: 1 0 auto;
+      cursor: pointer;
+      padding-left: 16px;
+      font-size: 21px;
+      height: 40px;
+      line-height: 40px;
+    }
+
+    /* submenu heading: collapsed/open arrow */
+    [data-role="arrow"] {
+      display: flex;
+      display: -webkit-flex;
+      display: -moz-flex;
+      align-items: center;
+      -webkit-align-items: center;
+      -moz-align-items: center;
+      justify-content: center;
+      -webkit-justify-content: center;
+      -moz-justify-content: center;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      width: 46px;
+      height: 42px;
+    }
+
+    /* submenu heading: border to left of arrow changes colour as
+       submenu becomes active/inactive */
+    [data-role="submenu"][data-active="false"] [data-role="arrow"] {
+      border-left: 2px solid #a8b0b3;
+    }
+
+    [data-role="submenu"][data-active="true"] [data-role="arrow"] {
+      border-left: 2px solid #b8c0c3;
+    }
+
+    /* submenu heading: arrow open/close rotation */
+    [data-role="submenu"][data-active="false"] [data-role="arrow-icon"] {
+      transform: rotateZ(0deg);
+      -webkit-transform: rotateZ(0deg); /* Safari */
+      -moz-transform: rotateZ(0deg);
+    }
+
+    [data-role="submenu"][data-active="true"] [data-role="arrow-icon"] {
+      transform: rotateZ(180deg);
+      -webkit-transform: rotateZ(180deg); /* Safari */
+      -moz-transform: rotateZ(180deg);
+    }
+
+    /* submenu heading: tree top open/close rotation */
+    [data-role="submenu"][data-active="false"] [data-role="tree-top"] {
+      transform: rotateZ(0deg);
+      -webkit-transform: rotateZ(0deg);
+      -moz-transform: rotateZ(0deg);
+    }
+
+    [data-role="submenu"][data-active="true"] [data-role="tree-top"] {
+      transform: rotateZ(90deg);
+      -webkit-transform: rotateZ(90deg);
+      -moz-transform: rotateZ(90deg);
+    }
+
+    /* submenu heading: animate background colour when active/inactive */
+    [data-role="tree"] {
+      transition: background-color 0.25s ease-in;
+      -webkit-transition: background-color 0.25s ease-in;
+      -moz-transition: background-color 0.25s ease-in;
+    }
+
+    /* submenu heading: tree top background colour is darker when inactive */
+    [data-role="submenu"][data-active="false"] [data-role="tree"] {
+      background-color: #b6bec1;
+    }
+
+    /* submenu items: active/inactive submenu state animates item height */
+    [data-role="submenu"][data-active="true"] [data-role="submenu-item"] {
+      height: 40px;
+    }
+
+    [data-role="submenu"][data-active="false"] [data-role="submenu-item"] {
+      height: 0;
+    }
+
+    /* submenu items: last item in the active group needs bottom border
+       to separate it from the next group heading */
+    .last-item {
+      border-bottom: 2px solid #bcc4c7;
+    }
+
+    /* submenu items: general styling */
+    [data-role="submenu-item"] {
+      width: 100%;
+      transition: height 0.25s ease-in;
+      -webkit-transition: height 0.25s ease-in;
+      -moz-transition: height 0.25s ease-in;
+      overflow: hidden;
+      background-color: #cfd8dc;
+    }
+
+    /* submenu items: hover changes background colour of item */
+    [data-role="submenu-item"].hover {
+      background-color: #dde3e6;
+    }
+
+    [data-role="submenu-item-value"] {
+      flex: 1 0 auto;
+      -webkit-flex: 1 0 auto;
+      -moz-flex: 1 0 auto;
+    }
+
+    /* submenu item: icon for tree structure */
+    [data-role="tree"], [data-role="tree"] core-icon {
+      width: 40px;
+      height: 40px;
+    }
+
+    /* tree structure icons */
+    [data-role="tree"] /deep/ path, [data-role="tree"] /deep/ rect {
+      fill: #909497;
+    }
+
+    /* box for info icon */
+    [data-role="info"] {
+      display: flex;
+      display: -webkit-flex;
+      display: -moz-flex;
+      flex-direction: row;
+      -webkit-flex-direction: row;
+      -moz-flex-direction: row;
+      justify-content: center;
+      -webkit-justify-content: center;
+      -moz-justify-content: center;
+      align-items: center;
+      -webkit-align-items: center;
+      -moz-align-items: center;
+      width: 46px;
+      height: 100%;
+    }
+
+    /* info icon colour */
+    [data-role="info"] core-icon /deep/ path {
+      fill: #9ca5ab;
+    }
+
+    [data-role="info"] core-icon:hover /deep/ path {
+      fill: #0abcf7 !important;
+    }
+
+    /* fudge info icon position as there's a mysterious 3px offset,
+       probably introduced by Polymer */
+    [data-role="info"] core-icon {
+      margin-left: 3px;
+    }
+    </style>
+
+    <div id="scroller" on-scroll="{{ showScrollData }}">
+
+      <template if="{{ groups.length === 0 }}">
+        <paper-item disabled>
+          No components available to select from
+        </paper-item>
+      </template>
+
+      <template if="{{ groups.length > 0 }}">
+        <template repeat="{{ group, index in groups }}">
+
+          <template if="{{ group.items.length > 0 }}">
+            <div data-role="submenu"
+                 data-index="{{ index }}"
+                 data-active="{{ group.groupName === activeGroupName }}">
+              <div data-role="submenu-heading"
+                   data-group-name="{{ group.groupName }}"
+                   on-click="{{ toggleSubmenu }}">
+                <div data-role="tree">
+                  <core-icon data-role="tree-top"
+                             icon="slv-icons-svg:tree-top"></core-icon>
+                </div>
+
+                <div data-role="submenu-heading-text">
+                  {{ group.groupName }}
+                </div>
+
+                <div data-role="arrow">
+                  <core-icon data-role="arrow-icon"
+                             icon="slv-icons-svg:arrow"></core-icon>
+                </div>
+              </div>
+
+              <template repeat="{{ item, index in group.items }}">
+                <div data-role="submenu-item" data-index="{{ index }}" layout horizontal center class="{{ { 'last-item': ((group.groupName === activeGroupName) && (index === group.items.length - 1)) } | tokenList }}"
+                    on-mouseover="{{ addHover }}" on-mouseout="{{ removeHover }}">
+                  <div data-role="tree">
+                    <template if="{{ index !== group.items.length - 1}}">
+                      <core-icon icon="slv-icons-svg:tree-branch"></core-icon>
+                    </template>
+
+                    <template if="{{ index === group.items.length - 1 }}">
+                      <core-icon icon="slv-icons-svg:tree-end"></core-icon>
+                    </template>
+                  </div>
+
+                  <paper-item data-role="submenu-item-value"
+                              data-value="{{ item.name }}"
+                              on-click="{{ selected }}">
+                    {{ item.name }}
+                  </paper-item>
+
+                  <div data-role="info">
+                    <core-icon icon="slv-icons-svg:info"
+                               data-group-name="{{ group.groupName }}"
+                               data-component-name="{{ item.name }}"
+                               on-mouseout="{{ hideTooltip }}"
+                               on-mouseover="{{ handleOnMouseOver }}">
+                    </core-icon>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </template>
+
+          <template if="{{ group.items.length === 0 }}">
+            <paper-item disabled>
+              <strong>No components in group {{ group.groupName }}</strong>
+            </paper-item>
+          </template>
+
+        </template>
+      </template>
+    </div>
+  </template>
+
+  <script>
+  window.slvComponentSelectReady = Promise.all([
+    System.import('lodash'),
+    System.import('js-signals'),
+    window.slvComponentTooltipReady
+  ])
+  .then( function (imports) {
+    'use strict';
+
+    var _ = imports[0];
+    var signals = imports[1];
+
+    var raf = (
+      window.requestAnimationFrame       ||
+      window.webkitRequestAnimationFrame ||
+      window.mozRequestAnimationFrame    ||
+      function (callback) {
+        window.setTimeout(callback, 1000 / 60);
+      }
+    );
+
+    // traverse up the tree until reaching an element with a data-group-name
+    // attribute; return that attribute's value;
+    // if no such element exists, returns null
+    var getGroupName = function (elt) {
+      var parent = elt.parentNode;
+      if (!parent) {
+        return null;
+      }
+      else if (parent.getAttribute('data-group-name')) {
+        return parent.getAttribute('data-group-name');
+      }
+      else {
+        return getGroupName(parent);
+      }
+    };
+
+    // easing function for the item focus animation
+    // from https://github.com/danro/jquery-easing/blob/master/jquery.easing.js
+    // other easing functions could be used here if required
+    // elapsed: current elapsed time
+    // startValue: beginning value
+    // changeInValue: change in value
+    // duration: duration
+    // returns the new value for that point in time
+    var easeOutSine = function (elapsed, startValue, changeInValue, duration) {
+      return changeInValue * Math.sin(elapsed/duration * (Math.PI/2)) + startValue;
+    };
+
+    Polymer('slv-component-select', {
+      /**
+       * Length of the scroll animation. NB the animation
+       * is actually two animations in sequence, so the item height
+       * animation uses values set in the CSS, then the focus animation
+       * (where the scroller moves to put the active submenu at
+       * the top of the selector) uses this value.
+       */
+      ANIMATION_LENGTH_SECS: 0.25,
+
+      /**
+       * Set to false if you don't want the active group's menu to be
+       * open when the selector is first displayed.
+       */
+      open: true,
+
+      /**
+       * Set to false to disable animations.
+       */
+      animations: true,
+
+      /**
+       * Components organised into groups; arranged as an array of
+       * objects like
+       * [ {groupName: "<name>", items: [...array of Components...]} ]
+       */
+      groups: null,
+
+      /**
+       * Name of the active group. This will open the associated submenu
+       * for the group.
+       */
+      activeGroupName: null,
+
+      /**
+       * Reference to the tooltip used to display component info.
+       * NB this is attached to document.body, so it can correctly
+       * sit on top of this element.
+       */
+      tooltip: null,
+
+      /**
+       * Object containing signal instances which are used to
+       * connect this component to others.
+       *
+       * signals.selected: fired with the name of the selected
+       * component when an item is selected
+       */
+      signals: null,
+
+      created: function () {
+        this.signals = {
+          // dispatches with the name of the selected component
+          selected: new signals.Signal(),
+
+          // dispatches with the group name when that group is
+          // focused (i.e. items have expanded to full size and
+          // scroll is finished)
+          groupFocused: new signals.Signal()
+        };
+
+        this.groups = [];
+      },
+
+      // Create the tooltip which will be used to show component details.
+      domReady: function () {
+        if (!this.tooltip) {
+          this.tooltip = document.createElement('slv-component-tooltip');
+          this.tooltip.stayInside(document.documentElement);
+          document.documentElement.appendChild(this.tooltip);
+        }
+      },
+
+      animationsChanged: function () {
+        if (!this.animations) {
+          this.ANIMATION_LENGTH_SECS = 0;
+        }
+      },
+
+      activeGroupNameChanged: function (oldValue, newValue) {
+        // wait for the submenu item animation to finish before focusing
+        var self = this;
+        setTimeout(function () {
+          self.focusActiveGroup(newValue);
+        }, (this.ANIMATION_LENGTH_SECS * 1000));
+      },
+
+      /**
+       * Animate the scroll of the scroller element to
+       * position the active submenu at the top of the selector.
+       *
+       * @dispatches groupFocused signal with active group name
+       * when the group is in focus
+       */
+      scrollTo: function (activeGroupName, targetValue) {
+        // already at scroll position, early return
+        if (targetValue === this.$.scroller.scrollTop) {
+          this.signals.groupFocused.dispatch(activeGroupName);
+          return;
+        }
+
+        // no animations, early return
+        if (!this.animations) {
+          this.$.scroller.scrollTop = targetValue;
+          this.signals.groupFocused.dispatch(activeGroupName);
+          return;
+        }
+
+        var self = this;
+
+        var step = function (startTime, startValue, changeInValue, duration) {
+          var now = (new Date()).getTime();
+          var elapsed = now - startTime;
+
+          if (elapsed >= duration) {
+            self.$.scroller.scrollTop = targetValue;
+
+            self.async(function () {
+              self.signals.groupFocused.dispatch(activeGroupName);
+            });
+          }
+          else {
+            var newValue = easeOutSine(elapsed, startValue, changeInValue, duration);
+            self.$.scroller.scrollTop = newValue;
+
+            raf(function () {
+              step(startTime, startValue, changeInValue, duration);
+            });
+          }
+        };
+
+        var startTime = new Date();
+        var startValue = this.$.scroller.scrollTop;
+        var changeInValue = targetValue - startValue;
+        var duration = (this.ANIMATION_LENGTH_SECS * 1000);
+
+        raf(function () {
+          step(startTime, startValue, changeInValue, duration);
+        });
+      },
+
+      /**
+       * Focus on the active group, so the header for that group
+       * moves to the top of this element.
+       */
+      focusActiveGroup: function (activeGroupName) {
+        var selector = '[data-active="true"]';
+        var activeSubmenu = this.shadowRoot.querySelector(selector);
+
+        if (!activeSubmenu) {
+          return;
+        }
+
+        // the active submenu's offset from the top is equal to the
+        // height of all the headings of submenus above it
+        selector = '[data-role="submenu-heading"]';
+        var activeSubmenuHeading = activeSubmenu.querySelector(selector);
+
+        // the position is zero-indexed, so it represents the number
+        // of collapsed submenus with headings above the active submenu
+        var position = parseInt(activeSubmenu.getAttribute('data-index'), 10);
+
+        // make a simplifying assumption that all headings are the
+        // same height as the heading of the active submenu
+        var headingHeight = activeSubmenuHeading.offsetHeight;
+
+        var scrollPosition = position * headingHeight;
+
+        this.scrollTo(activeGroupName, scrollPosition);
+      },
+
+      /**
+       * If the groups change and there is no activeSubmenu, or
+       * the activeSubmenu no longer exists, set the first group
+       * as the active one.
+       */
+      groupsChanged: function () {
+        if (!this.groups || this.groups.length === 0 || !this.open) {
+          // can't set a default active group, as there are no groups;
+          // or we don't want to set a default, as we want the menu
+          // to be closed
+          return;
+        }
+
+        if (this.activeGroupName) {
+          var groupNames = _.pluck(this.groups, 'groupName');
+          if (!_.includes(groupNames, this.activeGroupName)) {
+            this.activeGroupName = this.groups[0].groupName;
+          }
+        }
+      },
+
+      /**
+       * Open the first group. Used by the keyboard handler for
+       * situations where there is no active group.
+       */
+      openFirstGroup: function () {
+        if (this.groups.length) {
+          var firstGroupName = this.groups[0].groupName;
+          this.activeGroupName = firstGroupName;
+        }
+      },
+
+      toggleSubmenu: function (e) {
+        var groupName = getGroupName(e.target);
+        this.removeHover();
+
+        if (!groupName) {
+          return;
+        }
+        else if (this.activeGroupName === groupName) {
+          this.activeGroupName = null;
+        }
+        else {
+          this.activeGroupName = groupName;
+        }
+      },
+
+      /**
+       * Send the "selected" signal for the currently-active component
+       * name selected from a submenu.
+       */
+      selected: function (e) {
+        e.stopPropagation();
+        var value = e.target.getAttribute('data-value');
+        this.signals.selected.dispatch(value);
+      },
+
+      /**
+       * Handles the keyboard input.
+       * up/down - Scroll the current selection up/down
+       *   If nothing is currently selected, it just selects the first item in the list.
+       * right/left - Opens/closes the tooltip for the currently selected item.
+       *   The state of the tooltip is moved up/down with the item selection.
+       * enter - Accepts the current selection, adding it to the graph.
+       * pagedown/up - Changes to the next/previous group of items.
+       */
+      handleKeyboardInput: function (key) {
+        // any key press on the menu when there is no active group
+        // will open the first group
+        if (!this.activeGroupName) {
+          this.openFirstGroup();
+          return;
+        }
+
+        var submenuKeys = ['up', 'down', 'left', 'right', 'enter'];
+        var actionWithinSubmenu = (submenuKeys.indexOf(key) !== -1);
+
+        if (actionWithinSubmenu) {
+          var currentSelector = '[data-role="submenu-item"].hover';
+          var current = this.shadowRoot.querySelector(currentSelector);
+
+          // no item, so select the first one in the active submenu
+          if (!current) {
+            var selector = '[data-role="submenu"][data-active="true"] ' +
+                '> [data-role="submenu-item"]';
+
+            var firstItem = this.shadowRoot.querySelector(selector);
+
+            if (firstItem) {
+              firstItem.classList.add('hover', 'keyboard');
+            }
+
+            return;
+          }
+
+          var items = current.parentNode.querySelectorAll('[data-role="submenu-item"]');
+          var numItems = items.length;
+          var currentIndex = parseInt(current.getAttribute('data-index'), 10);
+
+          var self = this;
+          var moveCurrentTo = function (newIndex) {
+            current.classList.remove('hover', 'keyboard');
+            var newCurrent = items[newIndex];
+            newCurrent.classList.add('hover', 'keyboard');
+            if (newCurrent.scrollIntoViewIfNeeded) {
+              newCurrent.scrollIntoViewIfNeeded(false);
+            }
+            else {
+              self.scrollIntoViewIfNeeded(newCurrent, self.$.scroller);
+            }
+          };
+
+          var coreicon;
+
+          // move highlighted line up/down - wrapping around
+          if (key === 'up' || key === 'down') {
+            var toolTipWasShown = this.tooltip.isShown();
+            if (toolTipWasShown) {
+              this.hideTooltip();
+            }
+
+            var newIndex;
+            if (key === 'up') {
+              newIndex = ((currentIndex === 0) ? numItems : currentIndex) - 1;
+            }
+            else { // down
+              newIndex = (currentIndex + 1) % numItems;
+            }
+
+            moveCurrentTo(newIndex);
+
+            if (toolTipWasShown) {
+              coreicon = items[newIndex].querySelector('[data-role="info"] > core-icon');
+              this.showTooltip(coreicon);
+            }
+          }
+          else if (key === 'right') {
+            coreicon = current.querySelector('[data-role="info"] > core-icon');
+            this.showTooltip(coreicon);
+          }
+          else if (key === 'left') {
+            this.hideTooltip();
+          }
+          else if (key === 'enter') {
+            // add selected component to graph
+            var paperitem = current.querySelector('[data-role="submenu-item-value"]');
+            paperitem.click();
+          }
+        }
+        else if (key === 'pageup' || key === 'pagedown') {
+          // move to previous/next group - wrap around
+          var thisSubmenu = this.shadowRoot.querySelector('[data-role="submenu"][data-active="true"]');
+          var submenus = this.shadowRoot.querySelectorAll('[data-role="submenu"]');
+          var numSubmenus = submenus.length;
+          var currentSubmenuIndex = parseInt(thisSubmenu.getAttribute('data-index'),10);
+          var newSubmenuIndex;
+          if (key === 'pageup') {
+            newSubmenuIndex = ((currentSubmenuIndex === 0)?numSubmenus:currentSubmenuIndex)-1;
+          }
+          else { // pagedown
+            newSubmenuIndex = (currentSubmenuIndex+1)%numSubmenus;
+          }
+
+          submenus[newSubmenuIndex].querySelector('[data-role="submenu-heading-text"]').click();
+        }
+        else {
+          console.error('Unknown key:', key);
+        }
+      },
+
+      addHover: function (e) {
+        var current = this.shadowRoot.querySelector('[data-role="submenu-item"].hover:not(.keyboard)');
+        if (current) {
+          current.classList.remove('hover');
+          this.hideTooltip();
+        }
+        e.target.parentNode.classList.add('hover');
+      },
+
+      removeHover: function () {
+        var hovers = this.shadowRoot.querySelectorAll('[data-role="submenu-item"].hover');
+        var numHovers = hovers.length;
+        for (var i = 0; i < numHovers; i++) {
+          hovers[i].classList.remove('hover');
+        }
+        this.hideTooltip();
+      },
+
+      /**
+       * Scrolls the given element into the view, if it is
+       * below/above the current visible viewport.
+       * Needed because native version lacks supported on
+       * FF/Safari.
+       * Adapted from <https://gist.github.com/hsablonniere/2581101>
+       */
+      scrollIntoViewIfNeeded: function (element, parent) {
+        var parentStyle = window.getComputedStyle(parent, null);
+        var parentBorderTop = parentStyle.getPropertyValue('border-top-width');
+        var parentBorderTopWidth = parseInt(parentBorderTop, 10);
+        var overTop = (element.offsetTop - parent.offsetTop) < parent.scrollTop;
+        var overBottom = (element.offsetTop - parent.offsetTop +
+            element.clientHeight - parentBorderTopWidth) >
+            (parent.scrollTop + parent.clientHeight);
+        var alignWithTop = overTop && !overBottom;
+
+        if (overTop || overBottom) {
+          parent.scrollTop = element.offsetTop - parent.offsetTop -
+              parent.clientHeight / 2 - parentBorderTopWidth +
+              element.clientHeight / 2;
+          element.scrollIntoView(alignWithTop);
+        }
+      },
+
+      /**
+       * Show tooltip for the info button currently being hovered on.
+       */
+      showTooltip: function (element) {
+        var groupName = element.getAttribute('data-group-name');
+        var componentName = element.getAttribute('data-component-name');
+
+        var group = _.find(this.groups, function (group) {
+          return group.groupName === groupName;
+        });
+
+        if (!group) {
+          return;
+        }
+
+        var component = _.find(group.items, function (item) {
+          return item.name === componentName;
+        });
+
+        if (!component) {
+          return;
+        }
+
+        this.tooltip.positionAt(element);
+        this.tooltip.setComponent(component);
+        this.tooltip.show();
+      },
+
+      handleOnMouseOver: function (e) {
+        var element = e.target;
+
+        this.showTooltip(element);
+      },
+
+      hideTooltip: function () {
+        if (this.tooltip) {
+          this.tooltip.hide();
+        }
+      }
+    });
+  });
+  </script>
+</polymer-element>

@@ -1,0 +1,987 @@
+{
+ "float": [
+  {
+   "author": "Intel Corporation",
+   "category": "arithmetic/float",
+   "description": "Arithmetic addition operation with floats",
+   "in_ports": [
+    {
+     "array_size": 32,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Thirty two ports for addition operation. Indexed from 0 to 31.",
+     "name": "OPERAND",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "float/addition",
+   "options_symbol": "sol_flow_node_type_float_addition_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Sum of values received on ports OPERAND[0] to OPERAND[31].",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_FLOAT_ADDITION",
+   "url": "http://solettaproject.org/doc/latest/node_types/arithmetic/drange/addition.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "arithmetic/float",
+   "description": "Arithmetic division operation with floats",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Recieves dividend value.",
+     "name": "DIVIDEND",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "float",
+     "description": "Receives divisor value.",
+     "name": "DIVISOR",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "float/division",
+   "options_symbol": "sol_flow_node_type_float_division_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Quotient from the division of DIVIDEND by DIVISOR.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_FLOAT_DIVISION",
+   "url": "http://solettaproject.org/doc/latest/node_types/arithmetic/drange/division.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "arithmetic/float",
+   "description": "Arithmetic modulo operation with floats",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "First port of modulo operation.",
+     "name": "DIVIDEND",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "float",
+     "description": "Second port of modulo operation.",
+     "name": "DIVISOR",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "float/modulo",
+   "options_symbol": "sol_flow_node_type_float_modulo_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Remainder from the division of DIVIDEND by DIVISOR.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_FLOAT_MODULO",
+   "url": "http://solettaproject.org/doc/latest/node_types/arithmetic/drange/modulo.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "arithmetic/float",
+   "description": "Arithmetic multiplication operation with floats",
+   "in_ports": [
+    {
+     "array_size": 32,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Thirty two ports for multiplication operation. Indexed from 0 to 31.",
+     "name": "OPERAND",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "float/multiplication",
+   "options_symbol": "sol_flow_node_type_float_multiplication_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Product of values received on ports OPERAND[0] to OPERAND[31].",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_FLOAT_MULTIPLICATION",
+   "url": "http://solettaproject.org/doc/latest/node_types/arithmetic/drange/multiplication.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "arithmetic/float",
+   "description": "Arithmetic subtraction operation with floats",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Receives minuend value.",
+     "name": "MINUEND",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "float",
+     "description": "Receives subtrahend value.",
+     "name": "SUBTRAHEND",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "float/subtraction",
+   "options_symbol": "sol_flow_node_type_float_subtraction_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Difference of values received on ports MINUEND and SUBTRAHEND.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_FLOAT_SUBTRACTION",
+   "url": "http://solettaproject.org/doc/latest/node_types/arithmetic/drange/subtraction.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "math/float",
+   "description": "Calculates absolute value of a number.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Input number.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "float/abs",
+   "options_symbol": "sol_flow_node_type_float_abs_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Number's absolute value.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_FLOAT_ABS",
+   "url": "http://solettaproject.org/doc/latest/node_types/math/drange/abs.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "math/float",
+   "description": "Constrain value to it's range",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Value to be constrained.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "float/constrain",
+   "options": {
+    "members": [
+     {
+      "data_type": "float",
+      "default": {
+       "max": 1023,
+       "min": 0,
+       "step": "DBL_MIN",
+       "val": 0.0
+      },
+      "description": "Range values (min, max, step). Used only if use_input_range is disabled.",
+      "name": "range",
+      "required": false
+     },
+     {
+      "data_type": "boolean",
+      "default": true,
+      "description": "Use min, max and step values from package instead of options min, max and step. It's useful if you need to convert from many different sources to the same range and all of them inform these values correctly in each package.",
+      "name": "use_input_range",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_float_constrain_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Value constrained considering range",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_FLOAT_CONSTRAIN",
+   "url": "http://solettaproject.org/doc/latest/node_types/math/drange/constrain.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "math/float",
+   "description": "Calculates the natural logarithm of an input value.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Number to have natural logarithm calculated.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "float/ln",
+   "options_symbol": "sol_flow_node_type_float_ln_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "The result of the natural logarithm operation.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_FLOAT_LN",
+   "url": "http://solettaproject.org/doc/latest/node_types/math/drange/ln.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "math/float",
+   "description": "Map values to different range",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Value to be converted.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "float/map",
+   "options": {
+    "members": [
+     {
+      "data_type": "float",
+      "default": {
+       "max": "DBL_MAX",
+       "min": "-DBL_MAX",
+       "step": "DBL_MIN",
+       "val": 0.0
+      },
+      "description": "Input's range. Used only if use_input_range is disabled.",
+      "name": "input_range",
+      "required": false
+     },
+     {
+      "data_type": "float",
+      "description": "Output's range.",
+      "name": "output_range",
+      "required": true
+     },
+     {
+      "data_type": "boolean",
+      "default": true,
+      "description": "Use min and max values from input package instead of option input_range. It's useful if you need to convert from many different sources to the same range and all of them inform these values correctly in each package.",
+      "name": "use_input_range",
+      "required": false
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_float_map_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Value mapped considering input and output ranges",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_FLOAT_MAP",
+   "url": "http://solettaproject.org/doc/latest/node_types/math/drange/map.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "math/float",
+   "description": "Float Max",
+   "in_ports": [
+    {
+     "array_size": 2,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Two ports for max operation. Indexed from 0 to 1.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "float/max",
+   "options_symbol": "sol_flow_node_type_float_max_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Maximum value between IN[0] and IN[1].",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_FLOAT_MAX",
+   "url": "http://solettaproject.org/doc/latest/node_types/math/drange/max.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "math/float",
+   "description": "Float Min",
+   "in_ports": [
+    {
+     "array_size": 2,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Two ports for min operation. Indexed from 0 to 1.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "float/min",
+   "options_symbol": "sol_flow_node_type_float_min_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Minimum value between IN[0] and IN[1].",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_FLOAT_MIN",
+   "url": "http://solettaproject.org/doc/latest/node_types/math/drange/min.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "math/float",
+   "description": "Calculates the value of a number raised to a power.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Number to be raised.",
+     "name": "BASE",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "float",
+     "description": "The power to which the base is raised.",
+     "name": "EXPONENT",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "float/pow",
+   "options_symbol": "sol_flow_node_type_float_pow_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "The result of the exponentiation.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_FLOAT_POW",
+   "url": "http://solettaproject.org/doc/latest/node_types/math/drange/pow.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "math/float",
+   "description": "Calculates the square root of a number.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Input number.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "float/sqrt",
+   "options_symbol": "sol_flow_node_type_float_sqrt_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Number's square root.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_FLOAT_SQRT",
+   "url": "http://solettaproject.org/doc/latest/node_types/math/drange/sqrt.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "comparison/float",
+   "description": "Check if an float is equal to other.",
+   "in_ports": [
+    {
+     "array_size": 2,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Two ports for equal comparison operation. Indexed from 0 to 1.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "float/equal",
+   "options_symbol": "sol_flow_node_type_float_equal_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "True if value received on port IN[0] is equal to value received on port IN[1].",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_FLOAT_EQUAL",
+   "url": "http://solettaproject.org/doc/latest/node_types/comparison/drange/equal.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "comparison/float",
+   "description": "Check if an float is greater than or equal to other.",
+   "in_ports": [
+    {
+     "array_size": 2,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Two ports for greater-or-equal comparison operation. Indexed from 0 to 1, and IN[0] being the left operand.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "float/greater-or-equal",
+   "options_symbol": "sol_flow_node_type_float_greater_or_equal_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "True if value received on port IN[0] is greater than or equal to value received on port IN[1].",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_FLOAT_GREATER_OR_EQUAL",
+   "url": "http://solettaproject.org/doc/latest/node_types/comparison/drange/greater_or_equal.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "comparison/float",
+   "description": "Check if an float is greater than other.",
+   "in_ports": [
+    {
+     "array_size": 2,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Two ports for greater comparison operation. Indexed from 0 to 1, and IN[0] being the left operand.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "float/greater",
+   "options_symbol": "sol_flow_node_type_float_greater_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "True if value received on port IN[0] is greater than value received on port IN[1].",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_FLOAT_GREATER",
+   "url": "http://solettaproject.org/doc/latest/node_types/comparison/drange/greater.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "comparison/float",
+   "description": "Check if an float is less than or equal to other.",
+   "in_ports": [
+    {
+     "array_size": 2,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Two ports for less-or-equal comparison operation. Indexed from 0 to 1, and IN[0] being the left operand.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "float/less-or-equal",
+   "options_symbol": "sol_flow_node_type_float_less_or_equal_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "True if value received on port IN[0] is less than or equal to value received on port IN[1].",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_FLOAT_LESS_OR_EQUAL",
+   "url": "http://solettaproject.org/doc/latest/node_types/comparison/drange/less_or_equal.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "comparison/float",
+   "description": "Check if an float is less than other.",
+   "in_ports": [
+    {
+     "array_size": 2,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Two ports for less comparison operation. Indexed from 0 to 1, and IN[0] being the left operand.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "float/less",
+   "options_symbol": "sol_flow_node_type_float_less_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "True if value received on port IN[0] is less than value received on port IN[1].",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_FLOAT_LESS",
+   "url": "http://solettaproject.org/doc/latest/node_types/comparison/drange/less.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "comparison/float",
+   "description": "Check if an float is different from other.",
+   "in_ports": [
+    {
+     "array_size": 2,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Two ports for not-equal comparison operation. Indexed from 0 to 1",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "float/not-equal",
+   "options_symbol": "sol_flow_node_type_float_not_equal_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "True if value received on port IN[0] is different from value received on port IN[1].",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_FLOAT_NOT_EQUAL",
+   "url": "http://solettaproject.org/doc/latest/node_types/comparison/drange/not_equal.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "float/filter",
+   "description": "Filter floats in range",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Data input port.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "float/filter",
+   "options": {
+    "members": [
+     {
+      "data_type": "float",
+      "default": {
+       "max": "DBL_MAX",
+       "min": "-DBL_MAX",
+       "step": "DBL_MIN",
+       "val": "-DBL_MAX"
+      },
+      "description": "Minimum value (inclusive)",
+      "name": "min",
+      "required": false
+     },
+     {
+      "data_type": "float",
+      "default": {
+       "max": "DBL_MAX",
+       "min": "-DBL_MAX",
+       "step": "DBL_MIN",
+       "val": "DBL_MAX"
+      },
+      "description": "Maximum value (inclusive)",
+      "name": "max",
+      "required": false
+     },
+     {
+      "data_type": "boolean",
+      "default": false,
+      "description": "if true, the packet irange will have it's min and max changed to the min and max of this node.",
+      "name": "range_override",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_float_filter_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Outputs the same variable as the input if it's in range, nothing otherwise.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_FLOAT_FILTER",
+   "url": "http://solettaproject.org/doc/latest/node_types/float/filter.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "wave-generator",
+   "description": "A waves generator node that, after each input tick, generates the next value of its defined function on its output port. That function is defined by the various options members it's got, and has the form that goes from a minimum to an maximum value. When at those two extreme values, it may hold (for a pulse or more) on them, before resuming the increment/decrement steps. Thus, it is capable of producing trapezoidal/triangular/sawtooth/square waves. This node won't send any initial packets after port connections are made on its output port solely -- it needs an explicit 'pulse' on its input port to produce packets.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "any",
+     "description": "Iterate to next generator's function value, outputting a packet.",
+     "name": "TICK",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "wave-generator/trapezoidal",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 1
+      },
+      "description": "In how many function iterations (ticks) it should go from max to min values. The value must be greater than or equal to 1 (which means go from max to min instantly). With this value, the node will calculate the 'increasing step' of the function for you.",
+      "name": "ticks_inc",
+      "required": false
+     },
+     {
+      "data_type": "float",
+      "description": "The maximum value of the wave. This must be greater than min.",
+      "name": "max",
+      "required": true
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 1
+      },
+      "description": "In how many function iterations (ticks) it should go from min to max values. The value must be greater than or equal to 1 (which means go from min to max instantly). With this value, the node will calculate the 'increasing step' of the function for you.",
+      "name": "ticks_dec",
+      "required": false
+     },
+     {
+      "data_type": "float",
+      "description": "The minimum value of the wave. This must be less than max.",
+      "name": "min",
+      "required": true
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 0
+      },
+      "description": "The starting point of the wave, in ticks (must be greater or equal to 0). Zero means to start at min value, when no ticks have happened yet. Use this to shift the starting point and overwrite the default behavior.",
+      "name": "tick_start",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 0
+      },
+      "description": "The number of (extra) input ticks the wave will hold its output at max value when it reaches it. The value must be greater than or equal to 0.",
+      "name": "ticks_at_max",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 0
+      },
+      "description": "The number of (extra) input ticks the wave will hold its output at min value when it reaches it. The value must be greater than or equal to 0.",
+      "name": "ticks_at_min",
+      "required": false
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_wave_generator_trapezoidal_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "The generator's current function value. This port won't send any initial packets after a connection is made. The node expects an explicit 'pulse' on its input port to produce packets.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_WAVE_GENERATOR_TRAPEZOIDAL",
+   "url": "http://solettaproject.org/doc/latest/node_types/wave-generator/trapezoidal.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "wave-generator",
+   "description": "A node that, after each input tick, generates the next value of the sine function on its output port. With fine tuning of it tick_start option, the cosine function can be achieved as well. A multiplier value can be supplied for the original [-1.0, 1.0] range, too. This node won't send any initial packets after port connections are made on its output port solely -- it needs an explicit 'pulse' on its input port to produce packets.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "any",
+     "description": "Iterate to next generator's function value, outputting a packet.",
+     "name": "TICK",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "wave-generator/sinusoidal",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "description": "In how many function iterations (ticks) it should go from the starting to the ending value of each function period (AKA function's resolution). The value must be greater than or equal to 1 (which means go from start to end in one step only), but note that waves very small values for this option tend to be useless.",
+      "name": "ticks_per_period",
+      "required": true
+     },
+     {
+      "data_type": "float",
+      "default": {
+       "max": "DBL_MAX",
+       "min": "-DBL_MAX",
+       "step": "DBL_MIN",
+       "val": 1.0
+      },
+      "description": "The sine wave's amplitude. This must be a positive number, which will multiply the values in the pristine [-1.0, 1.0] range.",
+      "name": "amplitude",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 0
+      },
+      "description": "The starting point of the wave, in ticks (must be greater or equal to 0). Zero means to start at the beginning of the sive wave, when no ticks have happened yet. Use this to shift the starting point and overwrite the default behavior.",
+      "name": "tick_start",
+      "required": false
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_wave_generator_sinusoidal_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "The generator's current function value. This port won't send any initial packets after a connection is made. The node expects an explicit 'pulse' on its input port to produce packets.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_WAVE_GENERATOR_SINUSOIDAL",
+   "url": "http://solettaproject.org/doc/latest/node_types/wave-generator/sinusoidal.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "float/classify",
+   "description": "Classifies input float according to one of float classifications: Not a Number, Infinite, Zero, Subnormal or Normal. It has OUT ports for each classification and sends input float to its classification OUT port.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "Float to be classified.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "float/classify",
+   "options_symbol": "sol_flow_node_type_float_classify_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "float",
+     "description": "If input is NaN, it will go through this port.",
+     "name": "NAN",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "float",
+     "description": "If input is Infinite (either positive or negative), it will go through this port.",
+     "name": "INFINITE",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "float",
+     "description": "If input is Zero, it will go through this port.",
+     "name": "ZERO",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 3,
+     "data_type": "float",
+     "description": "If input is Subnormal, it will go through this port.",
+     "name": "SUBNORMAL",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 4,
+     "data_type": "float",
+     "description": "If input is Normal, it will go through this port.",
+     "name": "NORMAL",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_FLOAT_CLASSIFY",
+   "version": "1"
+  }
+ ]
+}

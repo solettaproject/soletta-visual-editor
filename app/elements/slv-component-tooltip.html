@@ -1,0 +1,161 @@
+<!--
+ -
+ - @license
+ -
+ - The MIT License (MIT)
+ -
+ - Copyright (c) 2015 Intel Corporation
+ -
+ - Permission is hereby granted, free of charge, to any person obtaining a copy
+ - of this software and associated documentation files (the "Software"), to deal
+ - in the Software without restriction, including without limitation the rights
+ - to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ - copies of the Software, and to permit persons to whom the Software is
+ - furnished to do so, subject to the following conditions:
+ -
+ - The above copyright notice and this permission notice shall be included in
+ - all copies or substantial portions of the Software.
+ -
+ - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ - IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ - FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ - AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ - LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ - THE SOFTWARE.
+ -
+ - Authors:
+ -   Elliot Smith <elliot.smith@intel.com>
+ -   Max Waterman <max.waterman@intel.com>
+ -
+ -->
+
+<!--
+Tooltip for displaying component details. Used by slv-component-select.
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="./slv-tooltip.html">
+
+<polymer-element name="slv-component-tooltip">
+  <template>
+    <style>
+      [data-role="heading"] {
+        font-size: 18px !important;
+        margin-bottom: 4px;
+        margin-top: 0;
+      }
+
+      [data-role="description"] {
+        margin-bottom: 12px;
+        margin-top: -4px;
+      }
+
+      [data-role="subheading"] {
+        font-size: 13px !important;
+        margin-top: 8px;
+        margin-bottom: 4px;
+      }
+
+      [data-role="list"] {
+        list-style-type: none;
+        margin-left: -40px;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+    </style>
+
+    <slv-tooltip id="tooltip">
+      <template if="{{ !component }}">
+        <h1>not ready...</h1>
+      </template>
+
+      <template if="{{ component }}">
+        <h1 data-role="heading">
+          {{ component.name }}
+        </h1>
+
+        <p data-role="description">
+          {{ component.description }}
+        <p>
+
+        <h2 data-role="subheading">
+          Input ports<template if="{{ component.inports.length === 0 }}">: none</template>
+        </h2>
+
+        <template if="{{ component.inports.length > 0 }}">
+          <ul data-role="list">
+            <template repeat="{{ inport in component.inports }}">
+              <li data-role="inport-detail">
+                - {{ inport.name }}({{ inport.type }})<template if="{{ inport.description !== '' }}">:&nbsp;{{ inport.description }}</template>
+              </li>
+            </template>
+          </ul>
+        </template>
+
+        <h2 data-role="subheading">
+          Output ports<template if="{{ component.outports.length === 0 }}">: none</template>
+        </h2>
+
+        <template if="{{ component.outports.length > 0 }}">
+          <ul data-role="list">
+            <template repeat="{{ outport in component.outports }}">
+              <li data-role="outport-detail">
+                - {{ outport.name }}({{ outport.type }})<template if="{{ outport.description !== '' }}">:&nbsp;{{ outport.description }}</template>
+              </li>
+            </template>
+          </ul>
+        </template>
+      </template>
+    </slv-tooltip>
+
+  </template>
+
+  <script>
+    window.slvComponentTooltipReady = window.slvTooltipReady.then(function () {
+      'use strict';
+
+      Polymer('slv-component-tooltip', {
+        /**
+         * Component to render for (see Component.js)
+         */
+        component: null,
+
+        domReady: function () {
+          this.signals = this.$.tooltip.signals;
+        },
+
+        /**
+         * Set the Component instance to render
+         */
+        setComponent: function (component) {
+          this.component = component;
+        },
+
+        isShown: function () {
+          return this.$.tooltip.isShown();
+        },
+
+        show: function () {
+          this.$.tooltip.show();
+        },
+
+        hide: function () {
+          this.$.tooltip.hide();
+        },
+
+        stayInside: function (elt) {
+          this.$.tooltip.stayInside(elt);
+        },
+
+        /**
+         * Position the tooltip at the specified DOM element.
+         * NB this does not show the element.
+         */
+        positionAt: function (elt) {
+          this.$.tooltip.positionAt(elt);
+        }
+      });
+    });
+  </script>
+</polymer-element>

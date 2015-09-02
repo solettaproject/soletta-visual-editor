@@ -1,0 +1,143 @@
+<!--
+ -
+ - @license
+ -
+ - The MIT License (MIT)
+ -
+ - Copyright (c) 2015 Intel Corporation
+ -
+ - Permission is hereby granted, free of charge, to any person obtaining a copy
+ - of this software and associated documentation files (the "Software"), to deal
+ - in the Software without restriction, including without limitation the rights
+ - to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ - copies of the Software, and to permit persons to whom the Software is
+ - furnished to do so, subject to the following conditions:
+ -
+ - The above copyright notice and this permission notice shall be included in
+ - all copies or substantial portions of the Software.
+ -
+ - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ - IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ - FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ - AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ - LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ - THE SOFTWARE.
+ -
+ - Authors:
+ -   Elliot Smith <elliot.smith@intel.com>
+ -   Max Waterman <max.waterman@intel.com>
+ -
+ -->
+
+<!--
+dialog with a component select inside it; the components in the select
+are derived from a ComponentLibrary (see the groupComponents() method)
+-->
+<link rel="import" href="./slv-component-select.html">
+<link rel="import" href="./slv-popup.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+<polymer-element name="slv-component-select-popup" attributes="heading">
+  <template>
+    <slv-popup id="popup" heading="{{ heading }}"
+                widthfraction="0.4" heightfraction="0.6">
+      <slv-component-select id="select" fit>
+      </slv-component-select>
+    </slv-popup>
+  </template>
+
+  <script>
+  window.slvComponentSelectPopupReady = Promise.all([
+    System.import('js-signals'),
+    window.slvPopupReady,
+    window.slvComponentSelectReady
+  ])
+  .then(function (imports) {
+    'use strict';
+
+    var signals = imports[0];
+
+    Polymer('slv-component-select-popup', {
+      signals: null,
+
+      /**
+       * ComponentGrouper implementation with associated library,
+       * which groups components ready for display in the popup.
+       * Should have a group() method which returns an array of
+       * component groups in format:
+       * [{groupName: '<group name>', items: [<Component>, ...]}, ...]
+       * See ComponentCategoryGrouper for an example implementation.
+       */
+      componentGrouper: null,
+
+      created: function () {
+        this.signals = {
+          selected: new signals.Signal(),
+          closed: new signals.Signal()
+        };
+
+        this._open = false;
+      },
+
+      domReady: function () {
+        var self = this;
+
+        this.$.select.signals.selected.add(function (componentName) {
+          self.signals.selected.dispatch(componentName);
+
+          // close on selection
+          self.$.popup.close();
+        });
+
+        // scroll to active group when this popup opens
+        this.$.popup.signals.opened.add(function () {
+          self.$.select.focusActiveGroup();
+          self._open = true;
+        });
+
+        this.$.popup.signals.closed.add(function () {
+          self._open = false;
+          self.signals.closed.dispatch();
+        });
+      },
+
+      /**
+       * Set the object which groups components for display in the popup.
+       */
+      setComponentGrouper: function (componentGrouper) {
+        this.componentGrouper = componentGrouper;
+      },
+
+      isOpen: function () {
+        return this._open;
+      },
+
+      open: function () {
+        this.showComponents();
+        this.async(function () {
+          this.$.popup.open();
+        });
+      },
+
+      close: function () {
+        this.$.popup.close();
+      },
+
+      /**
+       * Set the "categories" property on the wrapped
+       * slv-component-select.
+       */
+      showComponents: function () {
+        var groups = [];
+
+        if (this.componentGrouper) {
+          groups = this.componentGrouper.group();
+        }
+
+        this.$.select.groups = groups;
+      }
+    });
+  });
+  </script>
+</polymer-element>

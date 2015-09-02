@@ -1,0 +1,136 @@
+{
+ "file": [
+  {
+   "author": "Intel Corporation",
+   "category": "input/sw",
+   "description": "Reads a file from disk and dispatches on output port as a blob",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "string",
+     "description": "A string containing the file path.",
+     "name": "PATH",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "file/reader",
+   "options": {
+    "members": [
+     {
+      "data_type": "string",
+      "default": null,
+      "description": "file name to read.",
+      "name": "path",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_file_reader_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "blob",
+     "description": "A blob containing the file contents and its size.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_FILE_READER",
+   "url": "http://solettaproject.org/doc/latest/node_types/file_reader.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "input/sw",
+   "description": "Writes a file to disk",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "string",
+     "description": "A string containing the file path.",
+     "name": "PATH",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "int",
+     "description": "file permissions in POSIX mode such as 0644.",
+     "name": "PERMISSIONS",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "blob",
+     "description": "A blob containing the file contents.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "file/writer",
+   "options": {
+    "members": [
+     {
+      "data_type": "string",
+      "default": null,
+      "description": "file name to write.",
+      "name": "path",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 420
+      },
+      "description": "file permissions in POSIX mode such as 0644.",
+      "name": "permissions",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_file_writer_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "True if it's busy writing the file to disk.",
+     "name": "BUSY",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "int",
+     "description": "Bytes already written to disk.",
+     "name": "SIZE",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "int",
+     "description": "Total bytes to write to disk.",
+     "name": "DONE",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_FILE_WRITER",
+   "url": "http://solettaproject.org/doc/latest/node_types/file_writer.html",
+   "version": "1"
+  }
+ ]
+}

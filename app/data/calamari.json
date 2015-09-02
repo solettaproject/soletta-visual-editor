@@ -1,0 +1,266 @@
+{
+ "calamari": [
+  {
+   "author": "Intel Corporation",
+   "category": "output/hw",
+   "description": "Calamari PWM Led Output",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Set PWM led intensity",
+     "name": "INTENSITY",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "calamari/led",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 10000
+      },
+      "description": "PWM period",
+      "name": "period",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": 10000,
+       "min": 0,
+       "step": 1,
+       "val": 0
+      },
+      "description": "Range for PWM output.",
+      "name": "range",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "description": "Hardware address of the PWN output",
+      "name": "address",
+      "required": true
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_calamari_led_options",
+   "symbol": "SOL_FLOW_NODE_TYPE_CALAMARI_LED",
+   "url": "http://solettaproject.org/doc/latest/node_types/calamari_led.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "input/hw",
+   "description": "SPI Lever in Calamari lure",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "any",
+     "description": "Signal the SPI chip that a read must be performed",
+     "name": "POLL_SIGNAL",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "calamari/lever",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 0
+      },
+      "description": "Intervel between polling the SPI chip in the lure.",
+      "name": "poll_interval",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": 1023,
+       "min": 0,
+       "step": 1,
+       "val": 0
+      },
+      "description": "The range value. Used to convert the output.",
+      "name": "range",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 0
+      },
+      "description": "SPI bus.",
+      "name": "bus",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 0
+      },
+      "description": "SPI chip select.",
+      "name": "chip_select",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_calamari_lever_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Current value queried from SPI chip",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_CALAMARI_LEVER",
+   "url": "http://solettaproject.org/doc/latest/node_types/calamari_lever.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "output/hw",
+   "description": "Receives packages with values to be displayed on Calamari's 7 segments display",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "byte",
+     "description": "Define segments to be on and off.",
+     "name": "SEGMENTS",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "int",
+     "description": "Set value to be displayed.",
+     "name": "VALUE",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "calamari/7seg",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "description": "CLOCK GPIO pin",
+      "name": "clock_pin",
+      "required": true
+     },
+     {
+      "data_type": "int",
+      "description": "CLEAR GPIO pin",
+      "name": "clear_pin",
+      "required": true
+     },
+     {
+      "data_type": "int",
+      "description": "DATA GPIO pin",
+      "name": "data_pin",
+      "required": true
+     },
+     {
+      "data_type": "int",
+      "description": "LATCH GPIO pin",
+      "name": "latch_pin",
+      "required": true
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_calamari_7seg_options",
+   "symbol": "SOL_FLOW_NODE_TYPE_CALAMARI_7SEG",
+   "url": "http://solettaproject.org/doc/latest/components/calamari-7seg.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "output/hw",
+   "description": "Receives packets indicating the color of Calamari's RGB LED",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Turn red led ON/OFF",
+     "name": "RED",
+     "required": true
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "boolean",
+     "description": "Turn green led ON/OFF",
+     "name": "GREEN",
+     "required": true
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "boolean",
+     "description": "Turn blue led ON/OFF",
+     "name": "BLUE",
+     "required": true
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "calamari/rgb-led",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "description": "Red LED GPIO pin",
+      "name": "red_pin",
+      "required": true
+     },
+     {
+      "data_type": "int",
+      "description": "Green LED GPIO pin",
+      "name": "green_pin",
+      "required": true
+     },
+     {
+      "data_type": "int",
+      "description": "Blue LED GPIO pin",
+      "name": "blue_pin",
+      "required": true
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_calamari_rgb_led_options",
+   "symbol": "SOL_FLOW_NODE_TYPE_CALAMARI_RGB_LED",
+   "url": "http://solettaproject.org/doc/latest/node_types/calamari_rgb_led.html",
+   "version": "1"
+  }
+ ]
+}

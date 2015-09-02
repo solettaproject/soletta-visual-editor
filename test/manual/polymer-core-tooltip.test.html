@@ -1,0 +1,229 @@
+<!--
+ -
+ - @license
+ -
+ - The MIT License (MIT)
+ - 
+ - Copyright (c) 2015 Intel Corporation
+ - 
+ - Permission is hereby granted, free of charge, to any person obtaining a copy
+ - of this software and associated documentation files (the "Software"), to deal
+ - in the Software without restriction, including without limitation the rights
+ - to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ - copies of the Software, and to permit persons to whom the Software is
+ - furnished to do so, subject to the following conditions:
+ - 
+ - The above copyright notice and this permission notice shall be included in
+ - all copies or substantial portions of the Software.
+ - 
+ - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ - IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ - FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ - AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ - LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ - THE SOFTWARE.
+ -
+ - Authors:
+ -   Elliot Smith <elliot.smith@intel.com>
+ -   Max Waterman <max.waterman@intel.com>
+ -
+ -->
+
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Polymer core-tooltip</title>
+  <script src="../../bower_components/webcomponentsjs/webcomponents.js"></script>
+  <link rel="import" href="../../bower_components/polymer/polymer.html">
+  <link rel="import" href="../../bower_components/core-tooltip/core-tooltip.html">
+  <link rel="import" href="../../bower_components/core-icon/core-icon.html">
+  <link rel="import" href="../../app/elements/slv-icons-svg.html">
+
+  <style>
+    .list-item {
+      display: flex;
+      -webkit-display: flex;
+      -moz-display: flex;
+      flex-direction: row;
+      -webkit-flex-direction: row;
+      -moz-flex-direction: row;
+      align-items: center;
+      -webkit-align-items: center;
+      -moz-align-items: center;
+      width: 50%;
+      height: 40px;
+      color: white;
+    }
+
+    .content {
+      flex: 1 0 auto;
+      -webkit-flex: 1 0 auto;
+      -moz-flex: 1 0 auto;
+      margin-left: 20px;
+    }
+
+    .tooltip-icon {
+      width: 40px;
+    }
+
+    .odd {
+      background-color: #333;
+    }
+
+    .even {
+      background-color: #999;
+    }
+  </style>
+
+  <style>
+    /* tooltip style overrides */
+
+    /* tooltip: background colour, positioning */
+    core-tooltip /deep/ .core-tooltip {
+      background-color: #313131;
+      margin-left: 8px;
+      padding: 0;
+      white-space: normal !important;
+      line-height: 20px !important;
+      width: 374px;
+      margin-top: 60px;
+      max-height: 300px;
+    }
+
+    /* prevent background peeping out from corners */
+    core-tooltip /deep/ .core-tooltip {
+      border-radius: 5px !important;
+    }
+
+    /* arrow styling and positioning */
+    core-tooltip /deep/ .core-tooltip::after {
+      border-width: 12px !important;
+      margin-top: -68px;
+      border-right-color: #0abcf7 !important;
+    }
+
+    /* background colour of the body of the tooltip, borders, padding */
+    [tip] {
+      background-color: #313131;
+      border: 16px solid #0abcf7;
+      border-radius: 4px;
+      padding: 4px;
+      overflow-y: auto;
+      max-height: 300px;
+    }
+
+    /* text inside the tooltip */
+    [tip] * {
+      color: #fefeff;
+      font-size: 13px;
+    }
+
+    /* tooltip heading */
+    [tip] [data-role="heading"] {
+      font-size: 18px;
+      margin-top: 0;
+    }
+
+    [tip] [data-role="description"] {
+      margin-bottom: 20px;
+      margin-top: -4px;
+    }
+
+    [tip] [data-role="ports-heading"] {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    [tip] [data-role="ports-list"] {
+      list-style-type: none;
+      margin-left: -40px;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  </style>
+
+  <style no-shim>
+    /* these styles should match the ones in the previous <style>
+       element, but with different selectors */
+
+    /* tooltip: background colour, positioning */
+    core-tooltip[data-host="slv-tooltip"] .core-tooltip {
+      background-color: #313131;
+      margin-left: 8px;
+      padding: 0;
+      white-space: normal !important;
+      line-height: 20px !important;
+      width: 374px;
+      margin-top: 60px;
+      max-height: 300px;
+    }
+
+    /* prevent background peeping out from corners */
+    core-tooltip[data-host="slv-tooltip"] .core-tooltip {
+      border-radius: 5px !important;
+    }
+
+    /* arrow styling and positioning */
+    core-tooltip[data-host="slv-tooltip"] .core-tooltip::after {
+      border-width: 12px !important;
+      margin-top: -68px;
+      border-right-color: #0abcf7 !important;
+    }
+  </style>
+</head>
+<body unresolved>
+
+  <h1>Because the online demo doesn't work...</h1>
+
+  <div class="list-item odd">
+    <div class="content">Component name 1</div>
+
+    <core-tooltip data-host="slv-tooltip" position="right">
+      <div class="tooltip-icon">
+        <core-icon icon="slv-icons-svg:clear"></core-icon>
+      </div>
+
+      <div tip>
+        <h1 data-role="heading">float/module</h1>
+        <p data-role="description">Arithmetic modulo operation with floats.<p>
+
+        <h2 data-role="ports-heading">Input ports:</h2>
+        <ul data-role="ports-list">
+          <li data-role="port-detail">
+            - IN0(float): First port of modulo operation.
+          </li>
+          <li data-role="port-detail">
+            - IN1(float): Second port of modulo operation.
+          </li>
+        </ul>
+
+        <h2 data-role="ports-heading">Output ports:</h2>
+        <ul data-role="ports-list">
+          <li data-role="port-detail">
+            - IN0(float): First port of modulo operation.
+          </li>
+          <li data-role="port-detail">
+            - IN1(float): Second port of modulo operation.
+          </li>
+        </ul>
+      </div>
+    </core-tooltip>
+  </div>
+
+  <div class="list-item even">
+    <div class="content">Component name 2</div>
+    <div class="tooltip-icon">
+      <core-icon icon="slv-icons-svg:clear"></core-icon>
+    </div>
+  </div>
+
+  <div class="list-item odd">
+    <div class="content">Component name 3</div>
+    <div class="tooltip-icon">
+      <core-icon icon="slv-icons-svg:clear"></core-icon>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!--
+ -
+ - @license
+ -
+ - The MIT License (MIT)
+ -
+ - Copyright (c) 2015 Intel Corporation
+ -
+ - Permission is hereby granted, free of charge, to any person obtaining a copy
+ - of this software and associated documentation files (the "Software"), to deal
+ - in the Software without restriction, including without limitation the rights
+ - to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ - copies of the Software, and to permit persons to whom the Software is
+ - furnished to do so, subject to the following conditions:
+ -
+ - The above copyright notice and this permission notice shall be included in
+ - all copies or substantial portions of the Software.
+ -
+ - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ - IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ - FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ - AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ - LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ - THE SOFTWARE.
+ -
+ - Authors:
+ -   Elliot Smith <elliot.smith@intel.com>
+ -   Max Waterman <max.waterman@intel.com>
+ -
+ -->
+
+<!--
+Pseudo-menu element to activate the property editing panel.
+("Pseudo" because the actual element it controls is not inside
+this element. The reason for this is that the property editing
+panel has to interact with the "add node" button and the minimap
+area during its slide in/out animations. This would be much more
+difficult if the property editing panel was outside the layout
+element containing the "add node" button and the minimap.)
+
+Three signals are fired by this element:
+
+* nodeSelected (the selected node has changed)
+* nodeEditable (requests that the property editor be opened for the
+currently-selected node)
+* nodeNotEditable (requests that the property editor be closed)
+
+It is initially disabled until a node with editable member variables is
+selected.
+
+When a suitable node is selected, and if no suitable node has been selected
+previously, the element enables itself, toggles its appearance, fires
+nodeEditable (requesting that the property editor be opened).
+
+After the first selection, the user is responsible for clicking
+this element to open/close the property editor; at this point, this
+element just fires nodeSelected signals if an editable node is selected.
+
+If a non-editable node is selected, this element disables itself
+and fires nodeNotEditable.
+
+When this element is clicked (after the first node selection), and if
+it is enabled, it toggles its appearance and fires the nodeEditable
+signal for the currently-selected node.
+-->
+<link rel="import" href="../../bower_components/core-icon/core-icon.html">
+<link rel="import" href="./slv-icons-svg.html">
+
+<polymer-element name="slv-property-panel-menu">
+  <template>
+    <style>
+    .slv-property-panel-menu {
+      width: 100%;
+      height: 100%;
+      background-color: #292929;
+      cursor: pointer;
+    }
+
+    .slv-property-panel-menu * {
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+    }
+
+    .slv-property-panel-menu [data-role="text"] {
+      color: #aaa;
+      font-size: 16px;
+      padding-left: 24px;
+    }
+
+    /* open/close arrow */
+    .slv-property-panel-menu [data-role="arrow-icon"] {
+      position: absolute;
+      height: 100%;
+      right: 34px;
+      top: 0;
+    }
+
+    /* open/close arrow colour */
+    .slv-property-panel-menu [data-role="arrow-icon"] path {
+      fill: #41b6d4 !important;
+    }
+
+    /* arrow open/close rotation */
+    .slv-property-panel-menu[data-state="closed"] [data-role="arrow-icon"] {
+      transform: rotateZ(0deg);
+      -webkit-transform: rotateZ(0deg);
+      -moz-transform: rotateZ(0deg);
+    }
+
+    .slv-property-panel-menu[data-state="open"] [data-role="arrow-icon"] {
+      transform: rotateZ(180deg);
+      -webkit-transform: rotateZ(180deg);
+      -moz-transform: rotateZ(180deg);
+    }
+    </style>
+
+    <div class="slv-property-panel-menu" disabled="{{ disabled }}"
+         on-click="{{ toggle }}" data-state="{{ state }}"
+         horizontal layout center>
+      <div data-role="text">Node properties</div>
+      <core-icon data-role="arrow-icon"
+                 icon="slv-icons-svg:arrow"></core-icon>
+    </div>
+  </template>
+
+  <script>
+    window.slvPropertyPanelMenuReady = Promise.all([
+      System.import('js-signals')
+    ])
+    .then(function (imports) {
+      'use strict';
+
+      var signals = imports.shift();
+
+      Polymer('slv-property-panel-menu', {
+        publish: {
+          // whether the click is enabled or disabled
+          disabled: {
+            value: true,
+            reflect: true
+          },
+
+          // whether the menu is in an 'open' or 'closed' state
+          state: {
+            value: 'closed',
+            reflect: true
+          }
+        },
+
+        // currently-selected node
+        node: null,
+
+        // ComponentLibrary instance
+        library: null,
+
+        // set to true the first time the nodeSelected signal is dispatched
+        nodeSelectedDispatched: null,
+
+        signals: null,
+
+        created: function () {
+          this.nodeSelectedDispatched = false;
+
+          this.signals = {
+            // dispatched with the selected node
+            nodeSelected: new signals.Signal(),
+
+            // dispatched when the members editor should open
+            open: new signals.Signal(),
+
+            // dispatched when the members editor should close
+            close: new signals.Signal(),
+
+            // dispatched when menu is activated but no node is
+            // selected
+            noNodeNotEditable: new signals.Signal(),
+
+            // dispatched when menu is activated but multiple nodes
+            // are selected
+            multipleNodesNotEditable: new signals.Signal(),
+
+            // dispatched if the node is not editable for some
+            // other reason (e.g. it has an invalid component)
+            nodeNotEditable: new signals.Signal()
+          };
+        },
+
+        setSelectedNodes: function (nodes) {
+          if (!this.library) {
+            // we can't tell if the node is editable or not
+            // without a library
+            this.node = null;
+            return;
+          }
+
+          if (nodes.length === 0) {
+            // we can't edit if there are no selected nodes
+            this.node = null;
+            this.signals.noNodeNotEditable.dispatch();
+            return;
+          }
+
+          if (nodes.length > 1) {
+            // we can't edit multiple nodes at once
+            this.node = null;
+            this.signals.multipleNodesNotEditable.dispatch();
+            return;
+          }
+
+          // one node: OK
+          this.node = nodes[0];
+
+          // if the node is editable, enable the element
+          var component = null;
+          if (this.node && this.node.component) {
+            component = this.library.get(this.node.component);
+          }
+
+          if (component) {
+            this.disabled = false;
+
+            // if we haven't fired nodeEditable before, fire it now
+            // and switch to the "open" state (to show the property
+            // editor)
+            if (!this.nodeSelectedDispatched) {
+              this.open();
+            }
+
+            // fire nodeSelected (NB this doesn't open the property
+            // editor automatically)
+            this.signals.nodeSelected.dispatch(this.node);
+            this.nodeSelectedDispatched = true;
+          }
+          // else if the node is unset or not editable, disable the element,
+          // and fire nodeNotEditable
+          else {
+            this.disabled = true;
+            this.signals.nodeNotEditable.dispatch();
+          }
+        },
+
+        /**
+         * Update the properties of the node associated with the
+         * members editor.
+         *
+         * This is to cope with situations where a node is updated
+         * outside the members editor (e.g. its component was replaced,
+         * or its member variables were edited outside the property
+         * editor by a redo/undo etc.)
+         *
+         * @param {object} node    NoFlo node object
+         */
+        updateNode: function (node) {
+          if (this.node && node.id === this.node.id) {
+            this.setSelectedNodes([node]);
+          }
+        },
+
+        setLibrary: function (library) {
+          this.library = library;
+        },
+
+        toggle: function () {
+          if (this.state === 'open') {
+            this.close();
+          }
+          else {
+            this.open();
+          }
+        },
+
+        open: function () {
+          this.signals.open.dispatch();
+          this.state = 'open';
+        },
+
+        close: function () {
+          this.signals.close.dispatch();
+          this.state = 'closed';
+        }
+      });
+    });
+  </script>
+</polymer-element>

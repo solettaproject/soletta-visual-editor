@@ -1,0 +1,304 @@
+<!--
+ -
+ - @license
+ -
+ - The MIT License (MIT)
+ -
+ - Copyright (c) 2015 Intel Corporation
+ -
+ - Permission is hereby granted, free of charge, to any person obtaining a copy
+ - of this software and associated documentation files (the "Software"), to deal
+ - in the Software without restriction, including without limitation the rights
+ - to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ - copies of the Software, and to permit persons to whom the Software is
+ - furnished to do so, subject to the following conditions:
+ -
+ - The above copyright notice and this permission notice shall be included in
+ - all copies or substantial portions of the Software.
+ -
+ - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ - IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ - FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ - AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ - LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ - THE SOFTWARE.
+ -
+ - Authors:
+ -   Elliot Smith <elliot.smith@intel.com>
+ -   Max Waterman <max.waterman@intel.com>
+ -
+ -->
+
+<!--
+Provides layout for an application which has a slide down panel,
+a slide left panel for the "add node" button, a nav element, and an
+editor (i.e. SLV - this isn't generic).
+
+The different elements are inserted into this layout using classes:
+
+- fill: fill the whole of the layout (as a background); used for the
+graph
+- right-panel: the panel containing the "add node" button
+- slide-down-panel: property editor panel (slides down from header)
+- nav: put into the bottom-right corner; used for the graph navigation
+-->
+<polymer-element name="slv-layout" fit>
+  <template>
+    <style>
+      #container {
+        display: block;
+        position: absolute;
+        overflow: hidden;
+        height: 100%;
+        width: 100%;
+      }
+
+      #fill {
+        display: block;
+        position: absolute;
+        overflow: hidden;
+        height: 100%;
+        width: 100%;
+      }
+
+      #right-panel {
+        display: block;
+        position: absolute;
+        overflow: hidden;
+        height: 100%;
+        top: 0;
+        right: 0;
+        z-index: 1;
+
+        background-color: rgba(0, 0, 0, 0);
+        width: 128px;
+        pointer-events: none;
+      }
+
+      #right-panel[state="in"] {
+        transition: right 0.25s ease-out;
+        -webkit-transition: right 0.25s ease-out;
+        -moz-transition: right 0.25s ease-out;
+      }
+
+      #right-panel[state="out"] {
+        transition: right 0.25s ease-in;
+        -webkit-transition: right 0.25s ease-in;
+        -moz-transition: right 0.25s ease-in;
+      }
+
+      ::content .right-panel * {
+        pointer-events: auto;
+      }
+
+      #slide-down-panel {
+        /* hide until positioned */
+        display: none;
+
+        position: absolute;
+        overflow: hidden;
+        height: calc(100% - 136px);
+        right: 0;
+        width: 336px;
+        z-index: 1;
+      }
+
+      #slide-down-panel[state="in"] {
+        transition: top 0.25s ease-in;
+        -webkit-transition: top 0.25s ease-in;
+        -moz-transition: top 0.25s ease-in;
+      }
+
+      #slide-down-panel[state="out"] {
+        transition: top 0.25s ease-out;
+        -webkit-transition: top 0.25s ease-out;
+        -moz-transition: top 0.25s ease-out;
+      }
+
+      ::content .slide-down-panel {
+        /* 136px == height of nav panel */
+        height: 100%;
+
+        width: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        background-color: #3e3e3e;
+      }
+
+      #nav {
+        display: block;
+        position: absolute;
+        overflow: hidden;
+        right: 0px;
+        bottom: 0px;
+      }
+    </style>
+
+    <div id="container">
+      <div id="fill">
+        <content select=".fill"></content>
+      </div>
+
+      <div id="slide-down-panel" state="{{ state }}">
+        <content select=".slide-down-panel"></content>
+      </div>
+
+      <div id="right-panel" state="{{ state }}">
+        <content select=".right-panel"></content>
+      </div>
+
+      <div id="nav">
+        <content select=".nav"></content>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    window.slvLayoutReady = Promise.all([
+      System.import('js-signals')
+    ])
+    .then(function (imports) {
+      'use strict';
+
+      var signals = imports[0];
+
+      Polymer('slv-layout', {
+        publish: {
+          // in == property panel is slid in, out == property panel is slid out
+          state: {
+            value: 'in',
+            reflect: true
+          }
+        },
+
+        // function to call when current animation ends
+        transitionEndHandler: null,
+
+        onTransitionEnd: function () {
+          if (this.transitionEndHandler) {
+            this.transitionEndHandler();
+          }
+        },
+
+        created: function () {
+          this.signals = {
+            resize: new signals.Signal()
+          };
+        },
+
+        domReady: function () {
+          var self = this;
+
+          // animation end handlers
+          var slideDownPanel = this.$['slide-down-panel'];
+          var rightPanel = this.$['right-panel'];
+
+          var fn = this.onTransitionEnd.bind(this);
+
+          slideDownPanel.addEventListener('webkitTransitionEnd', fn);
+          slideDownPanel.addEventListener('transitionend', fn);
+          rightPanel.addEventListener('webkitTransitionEnd', fn);
+          rightPanel.addEventListener('transitionend', fn);
+
+          // let other elements know when the container changes size
+          var resize = function () {
+            self.positionSlideDownPanel(self.state);
+            self.signals.resize.dispatch(self.getSize());
+          };
+
+          window.addEventListener('resize', resize);
+
+          resize();
+        },
+
+        /**
+         * Return the size of the whole layout; used to enable the
+         * editor to size its wrapped the-graph instance.
+         */
+        getSize: function () {
+          var width = this.$.container.offsetWidth;
+          var height = this.$.container.offsetHeight;
+          return { width: width, height: height };
+        },
+
+        slideOutPanel: function () {
+          var self = this;
+
+          this.transitionEndHandler = function () {
+            self.positionSlideDownPanel('out');
+            self.state = 'out';
+          };
+
+          // slide the button out to the left
+          this.positionRightPanel('out');
+        },
+
+        slideInPanel: function () {
+          var self = this;
+
+          this.transitionEndHandler = function () {
+            self.positionRightPanel('in');
+            self.state = 'in';
+          };
+
+          // slide up panel
+          this.positionSlideDownPanel('in');
+        },
+
+        togglePanel: function () {
+          if (this.state === 'in') {
+            this.slideOutPanel();
+          }
+          else {
+            this.slideInPanel();
+          }
+        },
+
+        positionRightPanel: function (state) {
+          var rightPanel = this.$['right-panel'];
+
+          if (state === 'out') {
+            // slide the button out to the left
+            var slideDownPanel = this.$['slide-down-panel'];
+            var slideDownPanelWidth = slideDownPanel.offsetWidth;
+            rightPanel.style.right = slideDownPanelWidth + 'px';
+          }
+          else if (state === 'in') {
+            rightPanel.style.right = 0;
+          }
+        },
+
+        // runs after the button animation; also resets the scroll
+        // position on the slide down panel
+        positionSlideDownPanel: function (state) {
+          var slideDownPanel = this.$['slide-down-panel'];
+
+          if (state === 'in') {
+            slideDownPanel.style.display = 'block';
+
+            // position the slide down menu offscreen
+            var slideDownPanelHeight = slideDownPanel.offsetHeight;
+            slideDownPanel.style.top = -slideDownPanelHeight + 'px';
+            this.resetSlideDownPanelScroll();
+          }
+          else if (state === 'out') {
+            // position the slide down menu onscreen
+            slideDownPanel.style.display = 'block';
+
+            this.async(function () {
+              slideDownPanel.style.top = 0;
+              this.resetSlideDownPanelScroll();
+            });
+          }
+        },
+
+        // reset the scroll position on the slide down panel
+        resetSlideDownPanelScroll: function () {
+          var panelContent = this.querySelector('.slide-down-panel');
+          panelContent.scrollTop = 0;
+        }
+      });
+    });
+  </script>
+</polymer-element>

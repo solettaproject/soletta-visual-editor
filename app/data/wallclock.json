@@ -1,0 +1,109 @@
+{
+ "wallclock": [
+  {
+   "author": "Intel Corporation",
+   "category": "timer",
+   "description": "Provides int packets on a timely manner (after each system clock hour changes)",
+   "license": "BSD 3-Clause",
+   "name": "wallclock/hour",
+   "options_symbol": "sol_flow_node_type_wallclock_hour_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "An int range packet when wallclock hour ticks.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_WALLCLOCK_HOUR",
+   "url": "http://solettaproject.org/doc/latest/node_types/wallclock_hour.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "timer",
+   "description": "Provides int packets on a timely manner (after each system clock minute changes)",
+   "license": "BSD 3-Clause",
+   "name": "wallclock/minute",
+   "options_symbol": "sol_flow_node_type_wallclock_minute_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "An int range packet when wallclock minute ticks.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_WALLCLOCK_MINUTE",
+   "url": "http://solettaproject.org/doc/latest/node_types/wallclock_minute.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "timer",
+   "description": "Provides int packets on a timely manner (after each system clock month day changes)",
+   "license": "BSD 3-Clause",
+   "name": "wallclock/monthday",
+   "options_symbol": "sol_flow_node_type_wallclock_monthday_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "An int range packet when wallclock month day ticks.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_WALLCLOCK_MONTHDAY",
+   "url": "http://solettaproject.org/doc/latest/node_types/wallclock_monthday.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "timer",
+   "description": "Provides int packets on a timely manner (after each system clock second changes)",
+   "license": "BSD 3-Clause",
+   "name": "wallclock/second",
+   "options_symbol": "sol_flow_node_type_wallclock_second_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "An int range packet when wallclock second ticks.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_WALLCLOCK_SECOND",
+   "url": "http://solettaproject.org/doc/latest/node_types/wallclock_second.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "timer",
+   "description": "Provides int packets on a timely manner (after each system clock week day changes)",
+   "license": "BSD 3-Clause",
+   "name": "wallclock/weekday",
+   "options_symbol": "sol_flow_node_type_wallclock_weekday_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "An int range packet when wallclock week day ticks.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_WALLCLOCK_WEEKDAY",
+   "url": "http://solettaproject.org/doc/latest/node_types/wallclock_weekday.html",
+   "version": "1"
+  }
+ ]
+}

@@ -1,0 +1,72 @@
+{
+  "udev": [
+    {
+      "author": null,
+      "category": "output/sw",
+      "description": "Provides boolean packets after a device attach or dettach",
+      "license": null,
+      "name": "udev/boolean",
+      "options": {
+        "members": [
+          {
+            "data_type": "string",
+            "default": null,
+            "description": "The device's syspath that should be monitored",
+            "name": "address",
+            "required": true
+          }
+        ],
+        "required": false,
+        "version": 1
+      },
+      "out_ports": [
+        {
+          "data_type": "boolean",
+          "description": "A boolean packet when udev changes. If it's attached true, otherwise false.",
+          "max_connections": 0,
+          "name": null,
+          "required": false
+        }
+      ],
+      "url": "http://soletta.org/doc/latest/components/udev.html",
+      "version": null
+    }
+  ],
+
+  "builtin": [
+    {
+      "author": null,
+      "category": "logical/boolean",
+      "description": "Boolean And",
+      "in_ports": [
+        {
+          "data_type": "boolean",
+          "description": "First port of AND operation.",
+          "max_connections": 0,
+          "name": null,
+          "required": false
+        },
+        {
+          "data_type": "boolean",
+          "description": "Second port of AND operation.",
+          "max_connections": 0,
+          "name": null,
+          "required": false
+        }
+      ],
+      "license": null,
+      "name": "boolean/and",
+      "out_ports": [
+        {
+          "data_type": "boolean",
+          "description": "True if both in0 and in1 are true.",
+          "max_connections": 0,
+          "name": null,
+          "required": false
+        }
+      ],
+      "url": "http://soletta.org/doc/latest/node_types/boolean/and.html",
+      "version": null
+    }
+  ]
+}

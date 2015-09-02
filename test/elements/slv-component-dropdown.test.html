@@ -1,0 +1,132 @@
+<!--
+ -
+ - @license
+ -
+ - The MIT License (MIT)
+ - 
+ - Copyright (c) 2015 Intel Corporation
+ - 
+ - Permission is hereby granted, free of charge, to any person obtaining a copy
+ - of this software and associated documentation files (the "Software"), to deal
+ - in the Software without restriction, including without limitation the rights
+ - to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ - copies of the Software, and to permit persons to whom the Software is
+ - furnished to do so, subject to the following conditions:
+ - 
+ - The above copyright notice and this permission notice shall be included in
+ - all copies or substantial portions of the Software.
+ - 
+ - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ - IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ - FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ - AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ - LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ - THE SOFTWARE.
+ -
+ - Authors:
+ -   Elliot Smith <elliot.smith@intel.com>
+ -   Max Waterman <max.waterman@intel.com>
+ -
+ -->
+
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>slv-component-dropdown</title>
+
+  <script src="../../bower_components/webcomponentsjs/webcomponents.min.js"></script>
+  <script src="../../node_modules/web-component-tester/browser.js"></script>
+  <script src="../../bower_components/es6-module-loader/dist/es6-module-loader.js"></script>
+  <script src="../../bower_components/systemjs/dist/system.js"></script>
+
+  <script>
+  System.config({
+    baseURL: '../../app/js',
+    paths: {
+      'lodash': '../../bower_components/lodash/lodash.js',
+      'js-signals': '../../bower_components/js-signals/dist/signals.js'
+    },
+    meta: {
+      '../../bower_components/js-signals/dist/signals.js': {
+        format: 'global',
+        exports: 'signals'
+      }
+    }
+  });
+  </script>
+
+  <!-- element under test -->
+  <link rel="import" href="../../../app/elements/slv-component-dropdown.html">
+</head>
+<body>
+  <slv-component-dropdown id="componentselector1"></slv-component-dropdown>
+  <slv-component-dropdown id="componentselector2"></slv-component-dropdown>
+  <slv-component-dropdown id="componentselector3"></slv-component-dropdown>
+
+  <script>
+  describe('<slv-component-dropdown>', function () {
+    var Component;
+
+    beforeEach(function (done) {
+      Promise.all([
+        System.import('Component'),
+        slvComponentDropdownReady
+      ])
+      .then(function (imports) {
+        Component = imports[0];
+        done();
+      });
+    });
+
+    it('should return null when no item is selected', function () {
+      var elt1 = document.getElementById('componentselector1');
+      assert.equal(elt1.getSelectedComponentName(), null);
+    });
+
+    it('should return the label of the selected item when queried', function () {
+      var name = 'foo';
+
+      var c1 = Component.create({
+        name: name,
+        category: 'bar',
+        description: 'foo'
+      });
+
+      var elt2 = document.getElementById('componentselector2');
+      elt2.library = [ c1 ];
+      elt2.setSelectedComponent(name);
+
+      var actual = elt2.getSelectedComponentName();
+      expect(actual).to.equal(name);
+    });
+
+    it('should send a selected signal when button is pressed', function (done) {
+      var name = 'foo';
+
+      var c1 = Component.create({
+        name: name,
+        category: 'bar',
+        description: 'foo'
+      });
+
+      var elt3 = document.getElementById('componentselector3');
+      elt3.library = [ c1 ];
+      elt3.setSelectedComponent(name);
+
+      // connect to the signal
+      elt3.signals.selected.add(function (sentName) {
+        console.log('button was clicked');
+        expect(sentName).to.equal(name);
+        done();
+      });
+
+      elt3.$.button.click();
+    });
+
+  });
+  </script>
+</body>
+</html>

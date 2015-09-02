@@ -1,0 +1,193 @@
+{
+ "process": [
+  {
+   "author": "Intel Corporation",
+   "category": "input/sw",
+   "description": "Current Process STDIN",
+   "license": "BSD 3-Clause",
+   "name": "process/stdin",
+   "options_symbol": "sol_flow_node_type_process_stdin_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "blob",
+     "description": "Binary data chunks (blobs) read. This is not buffered and no extra processing is done, you get what arrived on stdin, as it arrived.",
+     "name": "OUT",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "boolean",
+     "description": "True if STDIN is closed",
+     "name": "CLOSED",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_PROCESS_STDIN",
+   "url": "http://solettaproject.org/doc/latest/node_types/process_stdin.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "output/sw",
+   "description": "Current Process STDOUT",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "blob",
+     "description": "Binary data chunks (blobs) read. No extra processing is done, what arrived is written in stdout.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "process/stdout",
+   "options_symbol": "sol_flow_node_type_process_stdout_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "True if STDOUT is closed",
+     "name": "CLOSED",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_PROCESS_STDOUT",
+   "url": "http://solettaproject.org/doc/latest/node_types/process_stdout.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "output/sw",
+   "description": "Current Process STDERR",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "blob",
+     "description": "Binary data chunks (blobs) read. No extra processing is done, what arrived is written in stderr.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "process/stderr",
+   "options_symbol": "sol_flow_node_type_process_stderr_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "True if STDERR is closed",
+     "name": "CLOSED",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_PROCESS_STDERR",
+   "url": "http://solettaproject.org/doc/latest/node_types/process_stderr.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "output/sw",
+   "description": "Spawn and monitor a subprocess",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "any",
+     "description": "Start the child process",
+     "name": "START",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "any",
+     "description": "Stop the child process sending SIGTERM",
+     "name": "STOP",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "int",
+     "description": "Send the specified signal to the child process",
+     "name": "SIGNAL",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 3,
+     "data_type": "blob",
+     "description": "Data chunk that will be passed to the subprocess's stdin.",
+     "name": "STDIN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "process/subprocess",
+   "options": {
+    "members": [
+     {
+      "data_type": "string",
+      "description": "The command that will be executed",
+      "name": "command",
+      "required": true
+     },
+     {
+      "data_type": "boolean",
+      "default": true,
+      "description": "Select if the process should automatically start (true) or should start only after a packet come into the START port",
+      "name": "start",
+      "required": false
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_process_subprocess_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "It will delivery a packet when the child process stops or terminates containing its exit code, similar to waitpid(2).",
+     "name": "STATUS",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "blob",
+     "description": "Binary data chunks (blobs) read. This is not buffered and no extra processing is done, you get what arrived from subprocess's stdout, as it arrived.",
+     "name": "STDOUT",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "blob",
+     "description": "Binary data chunks (blobs) read. This is not buffered and no extra processing is done, you get what arrived from subprocess's stderr, as it arrived.",
+     "name": "STDERR",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 3,
+     "data_type": "int",
+     "description": "Send the pid of the child process.",
+     "name": "PID",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_PROCESS_SUBPROCESS",
+   "url": "http://solettaproject.org/doc/latest/node_types/process_subprocess.html",
+   "version": "1"
+  }
+ ]
+}

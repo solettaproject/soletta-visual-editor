@@ -1,0 +1,82 @@
+{
+ "led-strip": [
+  {
+   "author": "Intel Corporation",
+   "category": "output/hw",
+   "description": "LPD8806 RGB led strip controller.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Pixel position to have its colour set. See node description to understand details of how pixel colours are set.",
+     "name": "PIXEL",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "rgb",
+     "description": "Colour of current pixel position. See node description to understand details of how pixel colours are set.",
+     "name": "COLOR",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "any",
+     "description": "Flushes current colour setting to device, effectively applying them.",
+     "name": "FLUSH",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "led-strip/lpd8806",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 0
+      },
+      "description": "SPI Bus number.",
+      "name": "bus",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 0
+      },
+      "description": "SPI chip to operate.",
+      "name": "chip_select",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 32
+      },
+      "description": "Pixel count. How many LEDs are on the strip.",
+      "name": "pixel_count",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_led_strip_lpd8806_options",
+   "symbol": "SOL_FLOW_NODE_TYPE_LED_STRIP_LPD8806",
+   "version": "1"
+  }
+ ]
+}

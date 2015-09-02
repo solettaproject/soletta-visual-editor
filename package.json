@@ -1,0 +1,51 @@
+{
+  "name": "SLV",
+  "version": "0.1.4",
+  "description": "Visual editor for Soletta programs.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/solettaproject/soletta-visual-editor.git"
+  },
+  "contributors": [
+    {
+      "name": "Elliot Smith",
+      "url": "https://github.com/townxelliot"
+    },
+    {
+      "name": "Max Waterman",
+      "url": "https://github.com/davidmaxwaterman"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/solettaproject/soletta-visual-editor/issues"
+  },
+  "homepage": "https://github.com/solettaproject/soletta-visual-editor",
+  "devDependencies": {
+    "chai": "^2.1.1",
+    "es6-module-loader": "^0.16.6",
+    "fbp": "^1.1.2",
+    "grunt": "^0.4.5",
+    "grunt-contrib-copy": "^0.8.0",
+    "grunt-contrib-jshint": "^0.11.0",
+    "grunt-http-server": "^1.2.0",
+    "grunt-mochaccino": "^0.1.7",
+    "grunt-vulcanize": "^0.6.4",
+    "lodash": "^3.5.0",
+    "mocha": "^2.2.1",
+    "shelljs": "^0.4.0",
+    "sinon": "^1.13.0",
+    "web-component-tester": "^2.2.6",
+    "grunt-lint-inline": "^0.4.4",
+    "grunt-contrib-uglify": "^0.9.1",
+    "systemjs": "^0.16.10",
+    "traceur": "0.0.89"
+  }
+}

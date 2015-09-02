@@ -1,0 +1,328 @@
+{
+ "boolean": [
+  {
+   "author": "Intel Corporation",
+   "category": "logical/boolean",
+   "description": "Boolean And",
+   "in_ports": [
+    {
+     "array_size": 2,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Two ports for logical operation AND. Indexed from 0 to 1.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "boolean/and",
+   "options_symbol": "sol_flow_node_type_boolean_and_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "True if both IN[0] and IN[1] are true.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_BOOLEAN_AND",
+   "url": "http://solettaproject.org/doc/latest/node_types/boolean/and.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "logical/boolean",
+   "description": "Receives boolean packets from different connections and returns the number of them in TRUE and FALSE state",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Input port",
+     "name": "IN",
+     "required": true
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "boolean/counter",
+   "options_symbol": "sol_flow_node_type_boolean_counter_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Number of connections in TRUE state",
+     "name": "TRUE",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "int",
+     "description": "Number of connections in FALSE state",
+     "name": "FALSE",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_BOOLEAN_COUNTER",
+   "url": "http://solettaproject.org/doc/latest/node_types/boolean/counter.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "logical/boolean",
+   "description": "Receives a boolean packet and forwards it through the TRUE or FALSE ports depending on its value.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "First port of AND operation.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "boolean/filter",
+   "options_symbol": "sol_flow_node_type_boolean_filter_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Emits a packet with value TRUE when it recives a TRUE value on the IN port",
+     "name": "TRUE",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "boolean",
+     "description": "Emits a packet with value FALSE when it recives a FALSE value on the IN port",
+     "name": "FALSE",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_BOOLEAN_FILTER",
+   "url": "http://solettaproject.org/doc/latest/node_types/boolean/filter.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "logical/boolean",
+   "description": "Boolean Not",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Where to receive the input of NOT operation.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "boolean/not",
+   "options_symbol": "sol_flow_node_type_boolean_not_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "True if 'IN' is false, false otherwise.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_BOOLEAN_NOT",
+   "url": "http://solettaproject.org/doc/latest/node_types/boolean/not.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "logical/boolean",
+   "description": "Boolean Or",
+   "in_ports": [
+    {
+     "array_size": 2,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Two ports for logical operation OR. Indexed from 0 to 1.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "boolean/or",
+   "options_symbol": "sol_flow_node_type_boolean_or_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "True if either IN[0] or IN[1] is true.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_BOOLEAN_OR",
+   "url": "http://solettaproject.org/doc/latest/node_types/boolean/or.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "logical/boolean",
+   "description": "Receives an empty packet and toggle the boolean output.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "any",
+     "description": "Where to receive the toggle trigger",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "boolean/toggle",
+   "options": {
+    "members": [
+     {
+      "data_type": "boolean",
+      "default": false,
+      "description": "the initial state, defaults to false.",
+      "name": "initial_state",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_boolean_toggle_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Current toggle state.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_BOOLEAN_TOGGLE",
+   "url": "http://solettaproject.org/doc/latest/node_types/boolean/toggle.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "logical/boolean",
+   "description": "Boolean XOR - exclusive or",
+   "in_ports": [
+    {
+     "array_size": 2,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Two ports for logical operation XOR. Indexed from 0 to 1.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "boolean/xor",
+   "options_symbol": "sol_flow_node_type_boolean_xor_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "True whenever both inputs differ (one is true, the other is false). False if IN[0] and IN[1] are the same.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_BOOLEAN_XOR",
+   "url": "http://solettaproject.org/doc/latest/node_types/boolean/xor.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "logical/boolean",
+   "description": "Apply desired computation when buffer fills or timeout happens.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Input port.",
+     "name": "IN",
+     "required": true
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "int",
+     "description": "Receives an int packet to set the timeout time to be used.",
+     "name": "TIMEOUT",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "any",
+     "description": "Reset buffer and timer to its initial state.",
+     "name": "RESET",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "boolean/buffer",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "description": "Number of samples that the buffer should hold.",
+      "name": "samples",
+      "required": true
+     },
+     {
+      "data_type": "int",
+      "default": {
+       "max": "INT32_MAX",
+       "min": "INT32_MIN",
+       "step": 1,
+       "val": 0
+      },
+      "description": "Timeout time in milliseconds. Default is zero which means that timeout is disabled.",
+      "name": "timeout",
+      "required": false
+     },
+     {
+      "data_type": "string",
+      "default": "all_true",
+      "description": "Operation to be applied in the buffer elements to compute the output.",
+      "name": "operation",
+      "required": false
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_boolean_buffer_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "Output port.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_BOOLEAN_BUFFER",
+   "url": "http://solettaproject.org/doc/latest/node_types/boolean/buffer.html",
+   "version": "1"
+  }
+ ]
+}

@@ -1,0 +1,113 @@
+{
+ "app": [
+  {
+   "author": "Intel Corporation",
+   "category": "app",
+   "description": "Send command line arguments.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "int",
+     "description": "Argument index.",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "app/argc-argv",
+   "options_symbol": "sol_flow_node_type_app_argc_argv_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "string",
+     "description": "Argument at position defined by packet received on port 'IN'.",
+     "name": "OUT",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "int",
+     "description": "Number of arguments.",
+     "name": "ARGC",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_APP_ARGC_ARGV",
+   "url": "http://solettaproject.org/doc/latest/node_types/app/argc-argv.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "app",
+   "description": "Send command line argument at specific position.",
+   "license": "BSD 3-Clause",
+   "name": "app/argv",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "description": "Argument position.",
+      "name": "index",
+      "required": true
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_app_argv_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "string",
+     "description": "Command line argument at position defined by option 'index'.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_APP_ARGV",
+   "url": "http://solettaproject.org/doc/latest/node_types/app/argv.html",
+   "version": "1"
+  },
+  {
+   "author": "Intel Corporation",
+   "category": "app",
+   "description": "Quit the app.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "any",
+     "description": "Just quit with success code (0).",
+     "name": "QUIT",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "int",
+     "description": "Quit with code received by packet.",
+     "name": "CODE",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 2,
+     "data_type": "error",
+     "description": "Quit with error received by packet.",
+     "name": "ERROR",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "app/quit",
+   "options_symbol": "sol_flow_node_type_app_quit_options",
+   "symbol": "SOL_FLOW_NODE_TYPE_APP_QUIT",
+   "url": "http://solettaproject.org/doc/latest/node_types/app/quit.html",
+   "version": "1"
+  }
+ ]
+}

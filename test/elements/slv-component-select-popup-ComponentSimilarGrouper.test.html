@@ -1,0 +1,181 @@
+<!--
+ -
+ - @license
+ -
+ - The MIT License (MIT)
+ - 
+ - Copyright (c) 2015 Intel Corporation
+ - 
+ - Permission is hereby granted, free of charge, to any person obtaining a copy
+ - of this software and associated documentation files (the "Software"), to deal
+ - in the Software without restriction, including without limitation the rights
+ - to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ - copies of the Software, and to permit persons to whom the Software is
+ - furnished to do so, subject to the following conditions:
+ - 
+ - The above copyright notice and this permission notice shall be included in
+ - all copies or substantial portions of the Software.
+ - 
+ - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ - IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ - FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ - AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ - LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ - THE SOFTWARE.
+ -
+ - Authors:
+ -   Elliot Smith <elliot.smith@intel.com>
+ -   Max Waterman <max.waterman@intel.com>
+ -
+ -->
+
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>slv-component-select-popup</title>
+
+  <script src="../../bower_components/webcomponentsjs/webcomponents.min.js"></script>
+  <script src="../../node_modules/web-component-tester/browser.js"></script>
+  <script src="../../bower_components/es6-module-loader/dist/es6-module-loader.js"></script>
+  <script src="../../bower_components/systemjs/dist/system.js"></script>
+
+  <script>
+  System.config({
+    baseURL: '../../app/js',
+    paths: {
+      'lodash': '../../bower_components/lodash/lodash.js',
+      'js-signals': '../../bower_components/js-signals/dist/signals.js',
+      'mutatingami': '../../test/mutatingami/mutatingami.js'
+    },
+    meta: {
+      '../../bower_components/js-signals/dist/signals.js': {
+        format: 'global',
+        exports: 'signals'
+      }
+    }
+  });
+  </script>
+
+  <!-- element under test -->
+  <link rel="import" href="../../app/elements/slv-component-select-popup.html">
+</head>
+<body>
+  <slv-component-select-popup id="componentselector1"></slv-component-select-popup>
+
+  <script>
+  describe('<slv-component-select-popup> - ComponentSimilarGrouper', function () {
+
+    var components = [
+      {
+        name: 'boolean/and',
+        category: 'logical/boolean',
+        inports: [
+          {name: 'IN1', type: 'boolean'},
+          {name: 'IN2', type: 'boolean'}
+        ],
+        outports: [
+          {name: 'OUT', type: 'boolean'}
+        ]
+      },
+      {
+        name: 'boolean/or',
+        category: 'logical/boolean',
+        inports: [
+          {name: 'I1', type: 'boolean'},
+          {name: 'I2', type: 'boolean'}
+        ],
+        outports: [
+          {name: 'O', type: 'boolean'}
+        ]
+      },
+      {
+        name: 'converter/boolean',
+        category: 'converters',
+        inports: [
+          {name: 'N1', type: 'boolean'},
+          {name: 'N2', type: 'boolean'}
+        ],
+        outports: [
+          {name: 'T', type: 'boolean'}
+        ]
+      }
+    ];
+
+    var ComponentLibrary;
+    var ComponentSimilarGrouper;
+    var MutatingAmI;
+
+    beforeEach(function (done) {
+      Promise.all([
+        System.import('ComponentLibrary'),
+        System.import('ComponentSimilarGrouper'),
+        System.import('mutatingami'),
+        slvComponentSelectPopupReady
+      ])
+      .then(function (imports) {
+        ComponentLibrary = imports[0];
+        ComponentSimilarGrouper = imports[1];
+        MutatingAmI = imports[2];
+        done();
+      });
+    });
+
+    it('should show components similar to the one selected', function (done) {
+      var dialog = document.getElementById('componentselector1');
+
+      var library = ComponentLibrary();
+      library.add(components);
+
+      var grouper = ComponentSimilarGrouper({library: library});
+      dialog.setComponentGrouper(grouper);
+
+      // component to compare other components with, using
+      // ports + category to determine similarity ("boolean/and")
+      grouper.setTarget(components[0]);
+
+      // wait for the dialog to be visible (if you try to query
+      // its content or select items from it before this, you
+      // get odd errors about the overlay)
+      var watcher = MutatingAmI.Watcher({forceRaf: true});
+      var selector = 'html /deep/ [data-role="submenu"]';
+
+      watcher.watch(document.body, selector, 5000, function (err, elts) {
+        if (err) {
+          done(err);
+        }
+        else {
+          expect(elts.length).to.equal(2);
+
+          // boolean/or should be in the ports + category submenu
+          var portsAndCategorySubmenu = elts[0];
+
+          var portsAndCategoryItems =
+            portsAndCategorySubmenu.querySelectorAll('paper-item');
+
+          var value = portsAndCategoryItems[0].getAttribute('data-value');
+
+          expect(portsAndCategoryItems.length).to.equal(1);
+          expect(value).to.equal('boolean/or');
+
+          // converter/boolean should be in the ports submenu
+          var portsSubmenu = elts[1];
+          var portsSubmenuItems = portsSubmenu.querySelectorAll('paper-item');
+
+          value = portsSubmenuItems[0].getAttribute('data-value');
+
+          expect(portsSubmenuItems.length).to.equal(1);
+          expect(value).to.equal('converter/boolean');
+          expect(value).not.to.equal('foo');
+
+          done();
+        }
+      });
+
+      dialog.open();
+    });
+  });
+  </script>
+</body>
+</html>

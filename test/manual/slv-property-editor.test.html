@@ -1,0 +1,141 @@
+<!--
+ -
+ - @license
+ -
+ - The MIT License (MIT)
+ - 
+ - Copyright (c) 2015 Intel Corporation
+ - 
+ - Permission is hereby granted, free of charge, to any person obtaining a copy
+ - of this software and associated documentation files (the "Software"), to deal
+ - in the Software without restriction, including without limitation the rights
+ - to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ - copies of the Software, and to permit persons to whom the Software is
+ - furnished to do so, subject to the following conditions:
+ - 
+ - The above copyright notice and this permission notice shall be included in
+ - all copies or substantial portions of the Software.
+ - 
+ - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ - IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ - FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ - AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ - LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ - THE SOFTWARE.
+ -
+ - Authors:
+ -   Elliot Smith <elliot.smith@intel.com>
+ -   Max Waterman <max.waterman@intel.com>
+ -
+ -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>slv-property-editor</title>
+    <meta charset="utf-8">
+
+    <!-- Bower Libraries -->
+    <script src="../../bower_components/webcomponentsjs/webcomponents.js"></script>
+
+    <!-- NoFlo custom elements -->
+    <link rel="import" href="../../bower_components/polymer/polymer.html">
+
+    <!-- System -->
+    <script src="../../bower_components/es6-module-loader/dist/es6-module-loader.js"></script>
+    <script src="../../bower_components/systemjs/dist/system.js"></script>
+    <script>
+    System.config({
+      baseURL: '../../app/js',
+      paths: {
+        'js-signals': '../../bower_components/js-signals/dist/signals.js',
+        'lodash': '../../bower_components/lodash/lodash.js'
+      },
+      meta: {
+        '../../bower_components/js-signals/dist/signals.js': {
+          format: 'global',
+          exports: 'signals'
+        }
+      }
+    });
+    </script>
+
+    <!-- SLV custom elements -->
+    <link rel="import" href="../../app/elements/slv-property-editor.html">
+
+  </head>
+  <body fullbleed>
+    <p>Test the property editor popup.</p>
+
+    <slv-property-editor id="propertyeditor">
+    </slv-property-editor>
+
+    <button id="edit-string">Edit string</button>
+    <button id="edit-boolean">Edit boolean</button>
+    <button id="edit-int">Edit int</button>
+    <button id="edit-float">Edit float</button>
+    <button id="edit-any">Edit any</button>
+    <button id="edit-uneditable">Edit "uneditable"</button>
+
+    <h2>Value entered:</h2>
+    <pre id="output">
+    </pre>
+
+    <script>
+    document.addEventListener('polymer-ready', function () {
+      var output = document.getElementById('output');
+
+      var propertyEditor = document.getElementById('propertyeditor');
+      propertyEditor.signals.value.add(function (value) {
+        output.innerHTML = value + '\n' + output.innerHTML;
+      });
+
+      var editStringButton = document.getElementById('edit-string');
+      editStringButton.addEventListener('click', function () {
+        propertyEditor.propertyName = 'IN1';
+        propertyEditor.propertyType = 'string';
+        propertyEditor.propertyValue = 'hello world';
+        propertyEditor.open();
+      });
+
+      var editBooleanButton = document.getElementById('edit-boolean');
+      editBooleanButton.addEventListener('click', function () {
+        propertyEditor.propertyName = 'IN1';
+        propertyEditor.propertyType = 'boolean';
+        propertyEditor.propertyValue = false;
+        propertyEditor.open();
+      });
+
+      var editIntButton = document.getElementById('edit-int');
+      editIntButton.addEventListener('click', function () {
+        propertyEditor.propertyName = 'IN1';
+        propertyEditor.propertyType = 'int';
+        propertyEditor.propertyValue = 10;
+        propertyEditor.open();
+      });
+
+      var editFloatButton = document.getElementById('edit-float');
+      editFloatButton.addEventListener('click', function () {
+        propertyEditor.propertyName = 'IN1';
+        propertyEditor.propertyType = 'float';
+        propertyEditor.propertyValue = 10.0;
+        propertyEditor.open();
+      });
+
+      var editAnyButton = document.getElementById('edit-any');
+      editAnyButton.addEventListener('click', function () {
+        propertyEditor.propertyName = 'IN1';
+        propertyEditor.propertyType = 'any';
+        propertyEditor.open();
+      });
+
+      var editUneditableButton = document.getElementById('edit-uneditable');
+      editUneditableButton.addEventListener('click', function () {
+        propertyEditor.propertyType = 'blob';
+        propertyEditor.open();
+      });
+    });
+    </script>
+  </body>
+</html>

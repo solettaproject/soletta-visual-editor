@@ -1,0 +1,202 @@
+<!--
+ -
+ - @license
+ -
+ - The MIT License (MIT)
+ - 
+ - Copyright (c) 2015 Intel Corporation
+ - 
+ - Permission is hereby granted, free of charge, to any person obtaining a copy
+ - of this software and associated documentation files (the "Software"), to deal
+ - in the Software without restriction, including without limitation the rights
+ - to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ - copies of the Software, and to permit persons to whom the Software is
+ - furnished to do so, subject to the following conditions:
+ - 
+ - The above copyright notice and this permission notice shall be included in
+ - all copies or substantial portions of the Software.
+ - 
+ - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ - IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ - FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ - AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ - LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ - THE SOFTWARE.
+ -
+ - Authors:
+ -   Elliot Smith <elliot.smith@intel.com>
+ -   Max Waterman <max.waterman@intel.com>
+ -
+ -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>slv-members-editor-popup</title>
+    <meta charset="utf-8">
+
+    <script src="../../bower_components/webcomponentsjs/webcomponents.js"></script>
+    <link rel="import" href="../../bower_components/polymer/polymer.html">
+
+    <script src="../../bower_components/es6-module-loader/dist/es6-module-loader.js"></script>
+    <script src="../../bower_components/systemjs/dist/system.js"></script>
+    <script>
+    System.config({
+      baseURL: '../../app/js',
+      paths: {
+        'js-signals': '../../bower_components/js-signals/dist/signals.js',
+        'lodash': '../../bower_components/lodash/lodash.js'
+      },
+      meta: {
+        '../../bower_components/js-signals/dist/signals.js': {
+          format: 'global',
+          exports: 'signals'
+        }
+      }
+    });
+    </script>
+
+    <!-- SLV custom elements -->
+    <link rel="import" href="../../app/elements/slv-members-editor-popup.html">
+
+  </head>
+  <body fullbleed>
+    <p>Edit two nodes with the same component but different values.</p>
+
+    <slv-members-editor-popup id="editor">
+    </slv-members-editor-popup>
+
+    <button id="button1">Open for node 1</button>
+    <button id="button2">Open for node 2</button>
+
+    <h1>Output:</h1>
+
+    <pre id="output">
+    </pre>
+
+    <script>
+    document.addEventListener('polymer-ready', function () {
+      System.import('ComponentLibrary').then(function (ComponentLibrary) {
+        var button1 = document.getElementById('button1');
+        var button2 = document.getElementById('button2');
+        var editor = document.getElementById('editor');
+        var output = document.getElementById('output');
+
+        editor.signals.membersUpdated.add(function (nodeId, members) {
+          output.innerHTML = 'member variables for node ' + nodeId + '\n' +
+                             JSON.stringify(members, null, 2);
+        });
+
+        var defs = [
+          {
+            "type": "boolean",
+            "default": false,
+            "description": "the initial state, defaults to false.",
+            "name": "initial_state",
+            "required": false
+          },
+
+          {
+            "type": "string",
+            "default": "spong",
+            "description": "prefix messages with given string.",
+            "name": "prefix",
+            "required": false
+          },
+
+          {
+            "type": "byte",
+            "description": "value of constant",
+            "name": "value",
+            "required": true
+          },
+
+          {
+            "type": "float",
+            "default": {
+              "max": 1000,
+              "min": -1000,
+              "step": 2,
+              "val": 3.6
+            },
+            "description": "DRange value of output when input is false.",
+            "name": "false_value1",
+            "required": false
+          },
+
+          {
+            "type": "int",
+            "default": {
+              "max": 2000,
+              "min": -2000,
+              "step": 1,
+              "val": 10
+            },
+            "description": "IRange value of output when input is false.",
+            "name": "false_value2",
+            "required": false
+          }
+        ];
+
+        var meta1 = {
+          label: 'node1',
+          initial_state: true,
+          value: "0xff",
+          false_value2: {
+            max: 200,
+            min: 0,
+            step: 1,
+            val: 25
+          }
+        };
+
+        var meta2 = {
+          label: 'node2',
+          initial_state: false,
+          value: "124",
+          false_value2: {
+            max: 300,
+            min: 100,
+            step: 2,
+            val: 50
+          }
+        };
+
+        var component = {
+          name: 'foo',
+          members: defs
+        };
+
+        var library = ComponentLibrary();
+        library.add(component);
+
+        var node1 = {
+          id: 'node1',
+          component: 'foo',
+          metadata: meta1
+        };
+
+        var node2 = {
+          id: 'node2',
+          label: 'node2',
+          component: 'foo',
+          metadata: meta2
+        };
+
+        editor.setLibrary(library);
+
+        button1.addEventListener('click', function () {
+          editor.setNode(node1);
+          editor.open();
+        });
+
+        button2.addEventListener('click', function () {
+          editor.setNode(node2);
+          editor.open();
+        });
+      });
+    });
+    </script>
+  </body>
+</html>

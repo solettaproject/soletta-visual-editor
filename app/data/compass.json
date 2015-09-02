@@ -1,0 +1,50 @@
+{
+ "compass": [
+  {
+   "author": "Intel Corporation",
+   "category": "input/hw",
+   "description": "Generic compass that takes direction-vectors of an accelerometer and a magnetometer and outputs heading towards Magnetic North Pole, in degrees.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "direction-vector",
+     "description": "Accelerometer readings.",
+     "name": "ACCELEROMETER",
+     "required": true
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "direction-vector",
+     "description": "Magnetometer readings.",
+     "name": "MAGNETOMETER",
+     "required": true
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "compass/accelerometer-magnetometer",
+   "options_symbol": "sol_flow_node_type_compass_accelerometer_magnetometer_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "direction-vector",
+     "description": "Heading relative to Magnetic North Pole.",
+     "name": "VECTOR",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "float",
+     "description": "Heading relative to Magnetic North Pole, in degrees.",
+     "name": "HEADING",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_COMPASS_ACCELEROMETER_MAGNETOMETER",
+   "version": "1"
+  }
+ ]
+}

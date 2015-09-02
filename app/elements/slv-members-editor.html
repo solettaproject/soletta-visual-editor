@@ -1,0 +1,686 @@
+<!--
+ -
+ - @license
+ -
+ - The MIT License (MIT)
+ -
+ - Copyright (c) 2015 Intel Corporation
+ -
+ - Permission is hereby granted, free of charge, to any person obtaining a copy
+ - of this software and associated documentation files (the "Software"), to deal
+ - in the Software without restriction, including without limitation the rights
+ - to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ - copies of the Software, and to permit persons to whom the Software is
+ - furnished to do so, subject to the following conditions:
+ -
+ - The above copyright notice and this permission notice shall be included in
+ - all copies or substantial portions of the Software.
+ -
+ - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ - IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ - FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ - AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ - LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ - THE SOFTWARE.
+ -
+ - Authors:
+ -   Elliot Smith <elliot.smith@intel.com>
+ -   Max Waterman <max.waterman@intel.com>
+ -
+ -->
+
+<!--
+Editor for member variables on a node; note that this doesn't actually
+change the values on the node, just sends signals to notify
+listeners when the values are edited.
+-->
+<link rel="import" href="../../bower_components/core-label/core-label.html">
+<link rel="import" href="../../bower_components/core-icon/core-icon.html">
+<link rel="import" href="./slv-boolean-button.html">
+<link rel="import" href="./slv-input.html">
+<link rel="import" href="./slv-icons-svg.html">
+<link rel="import" href="./slv-member-tooltip.html">
+
+<polymer-element name="slv-members-editor">
+  <template>
+    <style>
+      h1 {
+        font-size: 13px;
+        color: #41b6d4;
+        background-color: #313131;
+        margin: 33px 0 0 0;
+        padding: 7px 0 7px 24px;
+        line-height: 100%;
+        text-transform: uppercase;
+        display: flex;
+        display: -webkit-flex;
+        display: -moz-flex;
+        flex-direction: row;
+        -webkit-flex-direction: row;
+        -moz-flex-direction: row;
+        align-items: center;
+        -webkit-align-items: center;
+        -moz-align-items: center;
+        justify-content: flex-start;
+        -webkit-justify-content: flex-start;
+        -moz-justify-content: flex-start;
+      }
+
+      .heading-text {
+        display: inline-block;
+      }
+
+      .heading-info-icon {
+        display: inline-block;
+        margin-left: auto;
+        margin-right: 8px;
+      }
+
+      .heading-info-icon /deep/ path {
+        fill: #acb3b7 !important;
+      }
+
+      .heading-info-icon:hover /deep/ path {
+        fill: #39b8d8 !important;
+      }
+
+      .component-name {
+        margin-top: 0 !important;
+      }
+
+      .component-description {
+        margin: 20px 24px;
+        font-size: 13px;
+        color: #acb3b7;
+      }
+
+      .invalid-selection-icon {
+        width: 86px;
+        height: 86px;
+      }
+
+      .invalid-selection-icon * {
+        fill: #292929;
+      }
+
+      .invalid-selection-text {
+        margin-top: 8px;
+        font-size: 21px;
+        width: 50%;
+        color: #292929;
+        text-align: center;
+      }
+
+      .label {
+        display: block;
+        font-size: 13px;
+        margin: 18px 0 5px 24px;
+        color: #acb3b7;
+      }
+
+      /* for styling int/float fields with "default" object, which have
+         4 inputs */
+      .half-width {
+        /* half of the parent's width, minus half of the
+           gaps between the 2 inputs on the row (16px to the left,
+           16px to the right, and 16px between) */
+        width: calc(50% - 24px);
+        margin-right: 16px;
+      }
+
+      .field {
+        margin: 0 16px 0 16px;
+      }
+
+      .small-field {
+        height: 40px;
+        width: 100%;
+      }
+
+      .field.no-label {
+        margin: 32px 16px 0 16px;
+      }
+
+      .fieldset {
+        margin: 0;
+        padding: 0;
+        border: none;
+        width: 100%;
+        display: flex;
+        display: -webkit-flex;
+        display: -moz-flex;
+        flex-direction: row;
+        -webkit-flex-direction: row;
+        -moz-flex-direction: row;
+        flex-wrap: wrap;
+        -webkit-flex-wrap: wrap;
+        -moz-flex-wrap: wrap;
+      }
+    </style>
+
+    <template if="{{ !invalidSelectionReason }}">
+      <h1 class="component-name">
+        {{ componentName }}
+      </h1>
+
+      <core-label class="label" for="nodeLabel">
+        Instance name
+      </core-label>
+
+      <div class="field">
+        <slv-input id="nodeLabel" val="{{ nodeLabel }}"
+                    on-blur="{{ save }}">
+        </slv-input>
+      </div>
+
+      <template repeat="{{ member, index in members }}">
+        <h1>
+          <core-label class="heading-text" for="member-{{ member.name }}">
+            {{ member.name }}
+          </core-label>
+
+          <core-icon class="heading-info-icon" icon="slv-icons-svg:info"
+                     data-member-name="{{ member.name }}"
+                     on-mouseout="{{ hideTooltip }}"
+                     on-mouseover="{{ showTooltip }}">
+          </core-icon>
+        </h1>
+
+        <!-- string, byte, int/float with single value, rgb -->
+        <template if="{{ (member.type === 'rgb' || member.type === 'string' || member.type === 'byte' || member.type === 'int' || member.type === 'float') && (!member.default || member.default.val === undefined) }}">
+          <div class="field no-label">
+            <slv-input id="member-{{ member.name }}"
+                        data-member="{{ member.name }}"
+                        on-blur="{{ save }}"
+                        val="{{ member.value }}">
+            </slv-input>
+          </div>
+        </template>
+
+        <!-- boolean -->
+        <template if="{{ member.type === 'boolean' }}">
+          <div class="field no-label">
+            <slv-boolean-button id="member-{{ member.name }}"
+                                 data-member="{{ member.name }}"
+                                 on-blur="{{ save }}"
+                                 val="{{ member.value }}">
+            </slv-boolean-button>
+          </div>
+        </template>
+
+        <!-- int/float with object for its value -->
+        <template if="{{ (member.type === 'float' || member.type === 'int') && (member.default && member.default.val !== undefined) }}">
+          <div id="member-{{ member.name }}" data-member="{{ member.name }}"
+               class="fieldset">
+            <div class="half-width">
+              <core-label class="label" for="member-{{ member.name }}-val">
+                Value
+              </core-label>
+              <slv-input id="member-{{ member.name }}-val"
+                          class="field small-field"
+                          data-member-part="val"
+                          on-blur="{{ save }}"
+                          val="{{ member.value.val }}">
+              </slv-input>
+            </div>
+
+            <div class="half-width">
+              <core-label class="label" for="member-{{ member.name }}-step">
+                Step
+              </core-label>
+              <slv-input id="member-{{ member.name }}-step"
+                          class="field small-field"
+                          data-member-part="step"
+                          on-blur="{{ save }}"
+                          val="{{ member.value.step }}">
+              </slv-input>
+            </div>
+
+            <div class="half-width">
+              <core-label class="label" for="member-{{ member.name }}-max">
+                Maximum
+              </core-label>
+              <slv-input id="member-{{ member.name }}-max"
+                          class="field small-field"
+                          data-member-part="max"
+                          on-blur="{{ save }}"
+                          val="{{ member.value.max }}">
+              </slv-input>
+            </div>
+
+            <div class="half-width">
+              <core-label class="label" for="member-{{ member.name }}-min">
+                Minimum
+              </core-label>
+              <slv-input id="member-{{ member.name }}-min"
+                          class="field small-field"
+                          data-member-part="min"
+                          on-blur="{{ save }}"
+                          val="{{ member.value.min }}">
+              </slv-input>
+            </div>
+          </div>
+        </template>
+
+      </template>
+
+      <template if="{{ componentDescription }}">
+        <h1>Node info</h1>
+        <p class="component-description">{{ componentDescription }}</p>
+      </template>
+    </template>
+
+    <template if="{{ invalidSelectionReason }}">
+      <div fit vertical layout center-center>
+        <!-- invalid: icon -->
+        <template if="{{ invalidSelectionReason === 'no-node-selected' }}">
+          <core-icon class="invalid-selection-icon"
+                     icon="slv-icons-svg:no-node-selected">
+          </core-icon>
+        </template>
+
+        <template if="{{ invalidSelectionReason === 'multiple-nodes-selected' }}">
+          <core-icon class="invalid-selection-icon"
+                     icon="slv-icons-svg:multiple-nodes-selected">
+          </core-icon>
+        </template>
+
+        <template if="{{ invalidSelectionReason === 'node-has-no-component' }}">
+          <core-icon class="invalid-selection-icon"
+                     icon="slv-icons-svg:node-has-no-component">
+          </core-icon>
+        </template>
+
+        <!-- invalid: text -->
+        <div class="invalid-selection-text">
+          <template if="{{ invalidSelectionReason === 'no-node-selected' }}">
+            No node selected
+          </template>
+
+          <template if="{{ invalidSelectionReason === 'multiple-nodes-selected' }}">
+            Multiple nodes selected
+          </template>
+
+          <template if="{{ invalidSelectionReason === 'node-has-no-component' }}">
+            No properties available
+          </template>
+        </div>
+      </div>
+    </template>
+  </template>
+
+  <script>
+    window.slvMembersEditorReady = Promise.all([
+      System.import('lodash'),
+      System.import('js-signals')
+    ]).then(function (imports) {
+      'use strict';
+
+      var _ = imports[0];
+      var signals = imports[1];
+
+      // keep DBL_MAX, -DBL_MAX, INT32_MAX and INT32_MIN
+      // min/max, or convert to a number if numeric
+      //
+      // type: int or float
+      // val: number or string representing a min/max value
+      var parseBoundary = function (type, val) {
+        // try to convert to a number
+        var parsed = val;
+
+        if (type === 'int') {
+          parsed = parseInt(val, 10);
+        }
+        else if (type === 'float') {
+          parsed = parseFloat(val, 10);
+        }
+
+        // if value could not be converted to a number, it's one
+        // of the non-numeric strings like INT32_MAX etc.
+        if (isNaN(parsed)) {
+          return val;
+        }
+        else {
+          return parsed;
+        }
+      };
+
+      Polymer('slv-members-editor', {
+        signals: null,
+
+        /**
+         * Array of member variables, alphabetical by name, and
+         * with values assigned to them, e.g.
+         * [{ name: 'initial_state', type: 'boolean',
+         *    description: '...', value: 'ohyes', required: false }, ...]
+         * Note that boolean member variables have 'ohyes' or 'ohno' as
+         * their value, due to Polymer radio-button-groups not behaving
+         * properly; these are converted back to true/false before the
+         * membersUpdated signal is dispatched.
+         * Also note that byte values are delivered as strings; if
+         * they need to be converted to integer values, we can do
+         * this at the point of FBP export.
+         */
+        members: null,
+
+        /**
+         * Members object which was last saved; if save() is called
+         * but the members object hasn't changed, no save is performed.
+         */
+        lastSavedMembers: null,
+
+        /**
+         * ID of node currently being edited
+         */
+        nodeId: null,
+
+        /**
+         * Label of node being edited
+         */
+        nodeLabel: null,
+
+        /**
+         * Name of the component associated with the node being edited
+         */
+        componentName: null,
+
+        /**
+         * Description of the component associated with the node
+         * being edited
+         */
+        componentDescription: null,
+
+        /**
+         * ComponentLibrary used to lookup the component to edit
+         * when a node is set.
+         */
+        library: null,
+
+        /**
+         * Tooltip to show member variable description
+         */
+        tooltip: null,
+
+        eventDelegates: {
+          keydown: 'onKeyDown'
+        },
+
+        /**
+         * Set to the reason why the node selection state is invalid
+         * (i.e. the members editor can't show the member variables
+         * for the node which should be edited):
+         *   'no-node-selected': no node selected
+         *   'multiple-nodes-selected': multiple nodes selected
+         *   'node-has-no-component': node has no component, so it
+         *   can't be edited
+         * If this is null, the selection is valid and the members
+         * editor can show members to be edited.
+         */
+        invalidSelectionReason: null,
+
+        created: function () {
+          this.signals = {
+            // dispatched with nodeId, nodeLabel, name/value pairs for member
+            // variables in the node
+            membersUpdated: new signals.Signal()
+          };
+
+          // we start off with no node selected; if the members
+          // editor is opened before a node is selected, user will
+          // see the "no node selected" icon
+          this.invalidSelectionReason = 'no-node-selected';
+        },
+
+        domReady: function () {
+          if (!this.tooltip) {
+            // create a tooltip to show member variable description
+            this.tooltip = document.createElement('slv-member-tooltip');
+            this.tooltip.stayInside(document.documentElement);
+            document.documentElement.appendChild(this.tooltip);
+          }
+        },
+
+        /**
+         * Get member variables and their current values.
+         *
+         * @returns {object[]} Array of member objects, e.g.
+         *
+         * [
+         *   {
+         *     type: "boolean",
+         *     default: false,
+         *     description: "the initial state, defaults to false.",
+         *     name: "initial_state",
+         *     required: false,
+         *     value: true
+         *   },
+         *   ...
+         * ]
+         *
+         * int/float members can have an object for a value, e.g.
+         *
+         * {
+         *   min: 0,
+         *   max: 10,
+         *   val: 5,
+         *   step: 1
+         * }
+         */
+        getMembers: function () {
+          // first "cleanse" members data: ensure type for each
+          // is correct, convert booleans to true/false
+          var members = _.reduce(this.members, function (memo, member) {
+            var fixedMember = JSON.parse(JSON.stringify(member));
+            var value;
+
+            if (fixedMember.type === 'int') {
+              if (fixedMember.default && fixedMember.default.val !== undefined) {
+                value = {};
+                value.max = parseBoundary(fixedMember.type, fixedMember.value.max);
+                value.min = parseBoundary(fixedMember.type, fixedMember.value.min);
+                value.step = parseInt(fixedMember.value.step, 10);
+                value.val = parseInt(fixedMember.value.val, 10);
+                fixedMember.value = value;
+              }
+              else {
+                fixedMember.value = parseInt(fixedMember.value, 10);
+              }
+            }
+            else if (fixedMember.type === 'float') {
+              if (fixedMember.default && fixedMember.default.val !== undefined) {
+                value = {};
+                value.max = parseBoundary(fixedMember.type, fixedMember.value.max);
+                value.min = parseBoundary(fixedMember.type, fixedMember.value.min);
+                value.step = parseFloat(fixedMember.value.step, 10);
+                value.val = parseFloat(fixedMember.value.val, 10);
+                fixedMember.value = value;
+              }
+              else {
+                fixedMember.value = parseFloat(fixedMember.value, 10);
+              }
+            }
+
+            memo.push(fixedMember);
+
+            return memo;
+          }, []);
+
+          return members;
+        },
+
+        /**
+         * Set the member variables to be edited by providing
+         * member variables and values for them. The editable fields are
+         * derived from the Component; the values for those fields
+         * are derived from the node metadata (if they are set) or from
+         * the Component's defaults (if they are not set on the node).
+         *
+         * @param {object[]} memberDefinitions    Member variables to be
+         * edited, e.g. from Component.members; each item in the array
+         * matches the Component.members item format (see Component.js)
+         * @param {object} values    Current values to be used for the
+         * member variables being edited (e.g. as in noflo node.metadata),
+         * as name/value pairs; if a value isn't set for a member, the
+         * Component's default is used
+         */
+        setMembers: function (memberDefinitions, componentName, values) {
+          var deepClone = true;
+
+          // NB we use clones here to avoid affecting the original objects,
+          // otherwise we can mangle the content of the Component
+          var members = _.reduce(memberDefinitions, function (memo, def) {
+            var value = _.clone(values[def.name], deepClone);
+
+            if (_.isUndefined(value) && !_.isUndefined(def.default)) {
+              value = _.clone(def.default, deepClone);
+            }
+
+            var obj = {
+              name: def.name,
+              type: def.type,
+              description: def.description || '',
+              required: !!def.required,
+              'default': def.default,
+              value: value
+            };
+
+            memo.push(obj);
+
+            return memo;
+          }, []);
+
+          if (members.length > 0) {
+            members = _.sortBy(members, 'name');
+          }
+
+          this.componentName = componentName;
+
+          this.members = members;
+        },
+
+        /**
+         * Update the values of members for the current node,
+         * and its component.
+         * This prevents the template being completely redrawn and
+         * losing any input focus (which is what happens when
+         * you call setMembers())
+         *
+         * @param {object} values    Current values to be used for the
+         * member variables being edited (e.g. as in noflo node.metadata),
+         * as name/value pairs
+         */
+        updateMembers: function (values, componentName) {
+          var deepClone = true;
+
+          _.each(this.members, function (member) {
+            member.value = _.clone(values[member.name], deepClone);
+          });
+
+          this.componentName = componentName;
+          this.nodeLabel = values.label;
+        },
+
+        setLibrary: function (library) {
+          this.library = library;
+        },
+
+        setInvalidNoNodeSelected: function () {
+          this.invalidSelectionReason = 'no-node-selected';
+        },
+
+        setInvalidMultipleNodesSelected: function () {
+          this.invalidSelectionReason = 'multiple-nodes-selected';
+        },
+
+        setInvalidNodeHasNoComponent: function () {
+          this.invalidSelectionReason = 'node-has-no-component';
+        },
+
+        showTooltip: function (e) {
+          var memberName = e.target.getAttribute('data-member-name');
+
+          var member = _.find(this.members, function (candidate) {
+            return candidate.name === memberName;
+          });
+
+          if (!member) {
+            return;
+          }
+
+          this.tooltip.positionAt(e.target);
+          this.tooltip.setMember(member);
+          this.tooltip.show();
+        },
+
+        hideTooltip: function () {
+          this.tooltip.hide();
+        },
+
+        /**
+         * Set the node used to display the editable
+         * member variables.
+         *
+         * @param {object} node    Node object with metadata containing
+         * the values of the member variables being edited
+         */
+        setNode: function (node) {
+          if (!this.library) {
+            console.error('no library set');
+            return;
+          }
+
+          this.invalidSelectionReason = null;
+
+          // node is already being edited, so just update the
+          // member variables
+          if (node.id === this.nodeId) {
+            this.updateMembers(node.metadata, node.component);
+          }
+          // node changed, so refresh the whole members editor
+          else {
+            var component = this.library.get(node.component);
+
+            if (!component) {
+              console.error('no component for this node');
+              return;
+            }
+
+            this.componentName = component.name || '';
+            this.componentDescription = component.description || '';
+
+            this.nodeId = node.id;
+            this.nodeLabel = node.metadata.label || '';
+
+            this.setMembers(component.members, node.component, node.metadata);
+          }
+        },
+
+        save: function () {
+          var membersRaw = this.getMembers();
+          var deepClone = true;
+
+          // reduce to name/value pairs
+          var members = _.reduce(membersRaw, function (memo, member) {
+            memo[member.name] = _.clone(member.value, deepClone);
+            return memo;
+          }, {});
+
+          this.signals.membersUpdated.dispatch(
+            this.nodeId,
+            this.nodeLabel,
+            members
+          );
+        },
+
+        // handle key presses on slv-input/slv-boolean etc.;
+        // if return is pressed, do a save
+        onKeyDown: function (e) {
+          if (e.keyCode === 13 && document.activeElement) {
+            document.activeElement.blur();
+          }
+        }
+      });
+    });
+  </script>
+</polymer-element>

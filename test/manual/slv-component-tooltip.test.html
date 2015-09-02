@@ -1,0 +1,184 @@
+<!--
+ -
+ - @license
+ -
+ - The MIT License (MIT)
+ - 
+ - Copyright (c) 2015 Intel Corporation
+ - 
+ - Permission is hereby granted, free of charge, to any person obtaining a copy
+ - of this software and associated documentation files (the "Software"), to deal
+ - in the Software without restriction, including without limitation the rights
+ - to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ - copies of the Software, and to permit persons to whom the Software is
+ - furnished to do so, subject to the following conditions:
+ - 
+ - The above copyright notice and this permission notice shall be included in
+ - all copies or substantial portions of the Software.
+ - 
+ - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ - IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ - FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ - AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ - LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ - THE SOFTWARE.
+ -
+ - Authors:
+ -   Elliot Smith <elliot.smith@intel.com>
+ -   Max Waterman <max.waterman@intel.com>
+ -
+ -->
+
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Polymer core-tooltip</title>
+  <script src="../../bower_components/webcomponentsjs/webcomponents.js"></script>
+  <link rel="import" href="../../bower_components/polymer/polymer.html">
+  <link rel="import" href="../../bower_components/core-tooltip/core-tooltip.html">
+  <link rel="import" href="../../bower_components/core-icon/core-icon.html">
+  <link rel="import" href="../../app/elements/slv-icons-svg.html">
+
+  <link rel="import" href="../../app/elements/slv-component-tooltip.html">
+
+  <style>
+    .list-item {
+      display: flex;
+      -webkit-display: flex;
+      -moz-display: flex;
+      flex-direction: row;
+      -webkit-flex-direction: row;
+      -moz-flex-direction: row;
+      align-items: center;
+      -webkit-align-items: center;
+      -moz-align-items: center;
+      width: 50%;
+      height: 40px;
+      color: white;
+    }
+
+    .content {
+      flex: 1 0 auto;
+      -webkit-flex: 1 0 auto;
+      -moz-flex: 1 0 auto;
+      margin-left: 20px;
+    }
+
+    .tooltip-icon {
+      display: flex;
+      display: -webkit-flex;
+      display: -moz-flex;
+      justify-content: center;
+      -webkit-justify-content: center;
+      -moz-justify-content: center;
+      align-items: center;
+      -webkit-align-items: center;
+      -moz-align-items: center;
+      width: 40px;
+      height: 40px;
+    }
+
+    .odd {
+      background-color: #333;
+    }
+
+    .even {
+      background-color: #999;
+    }
+  </style>
+</head>
+<body unresolved>
+
+  <h1>slv-component-tooltip</h1>
+
+  <slv-component-tooltip id="test-tooltip">
+  </slv-component-tooltip>
+
+  <div class="list-item odd">
+    <div class="content">Component name 1</div>
+    <div class="tooltip-icon">
+      <core-icon icon="slv-icons-svg:clear" id="one"></core-icon>
+    </div>
+  </div>
+
+  <div class="list-item even">
+    <div class="content">Component name 2</div>
+    <div class="tooltip-icon">
+      <core-icon icon="slv-icons-svg:clear" id="two"></core-icon>
+    </div>
+  </div>
+
+  <div class="list-item odd">
+    <div class="content">Component name 3</div>
+    <div class="tooltip-icon">
+      <core-icon icon="slv-icons-svg:clear" id="three"></core-icon>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('polymer-ready', function () {
+      // manually set the component for the tooltip we're testing
+      var tooltip = document.getElementById('test-tooltip');
+
+      var component = {
+        name: 'boolean/and',
+        category: 'logical/boolean',
+        description: 'Boolean And',
+        inports: [
+          {
+            "type": "boolean",
+            "description": "First port of AND operation.",
+            "name": "IN0",
+            "required": true
+          },
+          {
+            "type": "boolean",
+            "description": "Second port of AND operation.",
+            "name": "IN1",
+            "required": true
+          }
+        ],
+        outports: [
+          {
+            "type": "boolean",
+            "description": "True if both IN0 and IN1 are true.",
+            "name": "OUT",
+            "required": false
+          }
+        ],
+        members: [
+          {
+            type: "boolean",
+            default: false,
+            description: "the initial state, defaults to false.",
+            name: "initial_state",
+            required: false
+          }
+        ]
+      };
+
+      tooltip.setComponent(component);
+
+      var show = function (e) {
+        e.stopPropagation();
+        tooltip.positionAt(e.target);
+        tooltip.show();
+      };
+
+      var hide = function () {
+        tooltip.hide();
+      };
+
+      document.getElementById('one').addEventListener('mouseover', show);
+      document.getElementById('one').addEventListener('mouseout', hide);
+      document.getElementById('two').addEventListener('mouseover', show);
+      document.getElementById('two').addEventListener('mouseout', hide);
+      document.getElementById('three').addEventListener('mouseover', show);
+      document.getElementById('three').addEventListener('mouseout', hide);
+    });
+  </script>
+
+</body>
+</html>

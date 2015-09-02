@@ -1,0 +1,58 @@
+{
+ "console": [
+  {
+   "author": "Intel Corporation",
+   "category": "output/sw",
+   "description": "Console Output",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "any",
+     "description": "Prints the packet to console",
+     "name": "IN",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "console",
+   "options": {
+    "members": [
+     {
+      "data_type": "string",
+      "default": null,
+      "description": "prefix messages with given string.",
+      "name": "prefix",
+      "required": false
+     },
+     {
+      "data_type": "string",
+      "default": null,
+      "description": "suffix messages with given string.",
+      "name": "suffix",
+      "required": false
+     },
+     {
+      "data_type": "boolean",
+      "default": true,
+      "description": "If true will output to stdout, otherwise stderr.",
+      "name": "output_on_stdout",
+      "required": false
+     },
+     {
+      "data_type": "boolean",
+      "default": true,
+      "description": "If true will force flush after messages are printed.",
+      "name": "flush",
+      "required": false
+     }
+    ],
+    "required": false,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_console_options",
+   "symbol": "SOL_FLOW_NODE_TYPE_CONSOLE",
+   "url": "http://solettaproject.org/doc/latest/node_types/console.html"
+  }
+ ]
+}

@@ -1,0 +1,92 @@
+<!--
+ -
+ - @license
+ -
+ - The MIT License (MIT)
+ - 
+ - Copyright (c) 2015 Intel Corporation
+ - 
+ - Permission is hereby granted, free of charge, to any person obtaining a copy
+ - of this software and associated documentation files (the "Software"), to deal
+ - in the Software without restriction, including without limitation the rights
+ - to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ - copies of the Software, and to permit persons to whom the Software is
+ - furnished to do so, subject to the following conditions:
+ - 
+ - The above copyright notice and this permission notice shall be included in
+ - all copies or substantial portions of the Software.
+ - 
+ - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ - IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ - FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ - AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ - LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ - THE SOFTWARE.
+ -
+ - Authors:
+ -   Elliot Smith <elliot.smith@intel.com>
+ -   Max Waterman <max.waterman@intel.com>
+ -
+ -->
+
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>slv-image-button</title>
+
+  <link rel="import" href="../../bower_components/polymer/polymer.html">
+
+  <!-- System -->
+  <script src="../../bower_components/es6-module-loader/dist/es6-module-loader.js"></script>
+  <script src="../../bower_components/systemjs/dist/system.js"></script>
+  <script>
+  System.config({
+    baseURL: '../../app/js'
+  });
+  </script>
+
+  <style>
+  #addcomponent {
+    width: 97px;
+    height: 97px;
+  }
+
+  #addcomponent core-icon {
+    position: absolute;
+    width: 42px;
+    height: 42px;
+    top: 18px;
+    left: 27px;
+  }
+  #addcomponent .text {
+    display: block;
+    position: absolute;
+    top: 65px;
+    left: 0;
+    width: 100%;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+  }
+  </style>
+
+  <link rel="import" href="../../bower_components/core-icon/core-icon.html">
+  <link rel="import" href="../../bower_components/core-icons/core-icons.html">
+
+  <!-- element under test -->
+  <link rel="import" href="../../app/elements/slv-image-button.html">
+</head>
+<body>
+  <h1>Manual test for slv-image-button</h1>
+
+  <slv-image-button id="addcomponent"
+                     normal="../../app/assets/btn_add_node_normal.png"
+                     hover="../../app/assets/btn_add_node_hover.png"
+                     press="../../app/assets/btn_add_node_pressed.png">
+    <core-icon icon="add"></core-icon>
+    <div class="text">Add node</div>
+  </slv-image-button>
+</body>
+</html>

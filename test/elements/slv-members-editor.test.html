@@ -1,0 +1,264 @@
+<!--
+ -
+ - @license
+ -
+ - The MIT License (MIT)
+ -
+ - Copyright (c) 2015 Intel Corporation
+ -
+ - Permission is hereby granted, free of charge, to any person obtaining a copy
+ - of this software and associated documentation files (the "Software"), to deal
+ - in the Software without restriction, including without limitation the rights
+ - to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ - copies of the Software, and to permit persons to whom the Software is
+ - furnished to do so, subject to the following conditions:
+ -
+ - The above copyright notice and this permission notice shall be included in
+ - all copies or substantial portions of the Software.
+ -
+ - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ - IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ - FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ - AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ - LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ - THE SOFTWARE.
+ -
+ - Authors:
+ -   Elliot Smith <elliot.smith@intel.com>
+ -   Max Waterman <max.waterman@intel.com>
+ -
+ -->
+
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>slv-members-editor</title>
+
+  <script src="../../bower_components/webcomponentsjs/webcomponents.min.js"></script>
+  <script src="../../bower_components/web-component-tester/browser.js"></script>
+  <script src="../../bower_components/es6-module-loader/dist/es6-module-loader.js"></script>
+  <script src="../../bower_components/systemjs/dist/system.js"></script>
+  <script>
+  System.config({
+    baseURL: '../../app/js',
+    paths: {
+      'lodash': '../../bower_components/lodash/lodash.js',
+      'js-signals': '../../bower_components/js-signals/dist/signals.js'
+    }
+  });
+  </script>
+
+  <!-- element under test -->
+  <link rel="import" href="../../app/elements/slv-members-editor.html">
+</head>
+<body>
+  <slv-members-editor id="editor"></slv-members-editor>
+
+  <script>
+  describe('<slv-members-editor>', function () {
+
+    it('should get/set members', function (done) {
+      var members = [
+        {
+          "type": "boolean",
+          "default": false,
+          "description": "the initial state, defaults to false.",
+          "name": "initial_state",
+          "required": false
+        },
+
+        {
+          "type": "string",
+          "default": "spong",
+          "description": "prefix messages with given string.",
+          "name": "prefix",
+          "required": false
+        },
+
+        {
+          "type": "byte",
+          "description": "value of constant",
+          "name": "value",
+          "required": true
+        },
+
+        {
+          "type": "float",
+          "default": {
+            "max": 200,
+            "min": -250,
+            "step": 2,
+            "val": 3.6
+          },
+          "description": "DRange value of output when input is false.",
+          "name": "false_value1",
+          "required": false
+        },
+
+        {
+          "type": "int",
+          "default": {
+            "max": "INT32_MAX",
+            "min": "INT32_MIN",
+            "step": 1,
+            "val": 10
+          },
+          "description": "IRange value of output when input is false.",
+          "name": "false_value2",
+          "required": false
+        },
+
+        {
+          "type": "int",
+          "default": 890,
+          "description": "XRange value of output when input is false.",
+          "name": "false_value3",
+          "required": false
+        }
+      ];
+
+      var stubLibrary = {
+        get: function () {
+          return {
+            members: members
+          };
+        }
+      };
+
+      var metadata = {
+        label: 'goo',
+        initial_state: true,
+        value: "0xff",
+        false_value2: {
+          max: "INT32_MAX",
+          min: "INT32_MIN",
+          step: 5,
+          val: 25
+        }
+      };
+
+      var node = {
+        id: 'xxx',
+        metadata: metadata
+      };
+
+      var editor = document.getElementById('editor');
+      editor.setLibrary(stubLibrary);
+
+      var expected = [
+        {
+          "type": "boolean",
+          "description": "the initial state, defaults to false.",
+          "name": "initial_state",
+          "required": false,
+          "value": true,
+          "default": false
+        },
+
+        {
+          "type": "string",
+          "description": "prefix messages with given string.",
+          "name": "prefix",
+          "required": false,
+          "value": "spong",
+          "default": "spong"
+        },
+
+        {
+          "type": "byte",
+          "description": "value of constant",
+          "name": "value",
+          "required": true,
+          "value": "0xff"
+        },
+
+        {
+          "type": "float",
+          "description": "DRange value of output when input is false.",
+          "name": "false_value1",
+          "required": false,
+          "value": {
+            "max": 200,
+            "min": -250,
+            "step": 2,
+            "val": 3.6
+          },
+          "default": {
+            "max": 200,
+            "min": -250,
+            "step": 2,
+            "val": 3.6
+          }
+        },
+
+        {
+          "type": "int",
+          "description": "IRange value of output when input is false.",
+          "name": "false_value2",
+          "required": false,
+          "value": {
+            "max": "INT32_MAX",
+            "min": "INT32_MIN",
+            "step": 5,
+            "val": 25
+          },
+          "default": {
+            "max": "INT32_MAX",
+            "min": "INT32_MIN",
+            "step": 1,
+            "val": 10
+          }
+        },
+
+        {
+          "type": "int",
+          "default": 890,
+          "description": "XRange value of output when input is false.",
+          "name": "false_value3",
+          "required": false,
+          "value": 890
+        }
+      ];
+
+      var expectedMembers = {
+        'initial_state': true,
+        'prefix': 'spong',
+        'value': '0xff',
+        'false_value1': {
+          "max": 200,
+          "min": -250,
+          "step": 2,
+          "val": 3.6
+        },
+        'false_value2': {
+          "max": "INT32_MAX",
+          "min": "INT32_MIN",
+          "step": 5,
+          "val": 25
+        },
+        'false_value3': 890
+      };
+
+
+      editor.signals.membersUpdated.add(function (nodeId, nodeLabel, updated) {
+        expect(nodeId).to.equal('xxx');
+        expect(nodeLabel).to.equal('goo');
+
+        _.forEach(updated, function (value, key) {
+          expect(updated[key]).to.eql(expectedMembers[key]);
+        });
+
+        expect(editor.getMembers()).to.eql(_.sortBy(expected, 'name'));
+        done();
+      });
+
+      editor.setNode(node);
+      editor.save();
+    });
+
+  });
+  </script>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!--
+ -
+ - @license
+ -
+ - The MIT License (MIT)
+ - 
+ - Copyright (c) 2015 Intel Corporation
+ - 
+ - Permission is hereby granted, free of charge, to any person obtaining a copy
+ - of this software and associated documentation files (the "Software"), to deal
+ - in the Software without restriction, including without limitation the rights
+ - to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ - copies of the Software, and to permit persons to whom the Software is
+ - furnished to do so, subject to the following conditions:
+ - 
+ - The above copyright notice and this permission notice shall be included in
+ - all copies or substantial portions of the Software.
+ - 
+ - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ - IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ - FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ - AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ - LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ - THE SOFTWARE.
+ -
+ - Authors:
+ -   Elliot Smith <elliot.smith@intel.com>
+ -   Max Waterman <max.waterman@intel.com>
+ -
+ -->
+
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>slv-editor - FactoryDecorator</title>
+
+  <script>
+  window.KLAY_CONFIG = {
+    workerScript: '../../bower_components/klayjs/klay.js'
+  };
+  </script>
+
+  <script src="../../node_modules/web-component-tester/browser.js"></script>
+
+  <!-- Bower Libraries -->
+  <script src="../../bower_components/webcomponentsjs/webcomponents.js"></script>
+  <script src="../../bower_components/react/react-with-addons.js"></script>
+  <script src="../../bower_components/klayjs-noflo/klay-noflo.js"></script>
+  <script src="../../bower_components/hammerjs/hammer.min.js"></script>
+  <script src="../../bower_components/ease-djdeath/index.js"></script>
+  <script src="../../bower_components/react.animate-djdeath/react.animate.js"></script>
+
+  <!-- Browserified Libraries -->
+  <script src="../../bower_components/the-graph/build/noflo.js"></script>
+
+  <!-- NoFlo custom elements -->
+  <link rel="import" href="../../bower_components/polymer/polymer.html">
+
+  <script src="../../bower_components/es6-module-loader/dist/es6-module-loader.js"></script>
+  <script src="../../bower_components/systemjs/dist/system.js"></script>
+
+  <script>
+  System.config({
+    baseURL: '../../../app/js',
+    paths: {
+      'lodash': '../../bower_components/lodash/lodash.js',
+      'js-signals': '../../bower_components/js-signals/dist/signals.js',
+      'mutatingami': '../../test/mutatingami/mutatingami.js'
+    },
+    meta: {
+      '../../bower_components/js-signals/dist/signals.js': {
+        format: 'global',
+        exports: 'signals'
+      }
+    }
+  });
+  </script>
+
+  <!-- element under test -->
+  <link rel="import" href="../../app/elements/slv-editor.html">
+</head>
+<body>
+  <slv-editor id="editor"></slv-editor>
+
+  <script>
+  // this tests whether ports are correctly decorated by the
+  // FactoryDecorator
+  describe('<slv-editor> - FactoryDecorator', function () {
+    var Component;
+    var MutatingAmI;
+    var GraphBuilder;
+    var ComponentLibrary;
+
+    beforeEach(function (done) {
+      Promise.all([
+        System.import('Component'),
+        System.import('mutatingami'),
+        System.import('GraphBuilder'),
+        System.import('ComponentLibrary'),
+        slvEditorReady
+      ])
+      .then(function (imports) {
+        Component = imports[0];
+        MutatingAmI = imports[1];
+        GraphBuilder = imports[2];
+        ComponentLibrary = imports[3];
+        done();
+      });
+    });
+
+    it('should mark connected ports', function (done) {
+      var editor = document.getElementById('editor');
+      var graphBuilder = GraphBuilder();
+
+      graphBuilder.signals.addEdgeError.add(function (err) {
+        done(err);
+      });
+
+      graphBuilder.signals.addNodeError.add(function (err) {
+        done(err);
+      });
+
+      var booleanAnd = Component.create({
+        name: 'boolean/and',
+        category: 'foo',
+        description: 'bar',
+        inports: [
+          {
+            name: 'in1',
+            type: 'boolean',
+            max_connections: 0,
+            required: true
+          }
+        ],
+        outports: [
+          {
+            name: 'out1',
+            type: 'boolean',
+            max_connections: 0,
+            required: false
+          }
+        ],
+      });
+
+      var library = ComponentLibrary();
+      library.add([booleanAnd]);
+
+      graphBuilder.setLibrary(library);
+      editor.setLibrary(library);
+
+      editor.signals.graphInitialised.add(function (graph) {
+        graphBuilder.setGraph(graph);
+
+        // selector for the connected marker on node3's in1 port
+        var selector = '* /deep/ g[name="node3"] g[title="in1"] ' +
+                       'path.port-arc.slv-edge-attached';
+
+        var watcher = MutatingAmI.Watcher({forceRaf: true});
+
+        watcher.watch(editor, selector, 2000, function (err, elts) {
+          if (err) {
+            done(err);
+          }
+          else {
+            expect(elts.length).to.equal(1);
+            done();
+          }
+        });
+
+        graphBuilder.addNode('boolean/and', null, 'node1');
+        graphBuilder.addNode('boolean/and', null, 'node2');
+        graphBuilder.addNode('boolean/and', null, 'node3');
+
+        graphBuilder.addEdge('node1', 'out1', 'node3', 'in1');
+      });
+
+      editor.resetGraph();
+    });
+  });
+  </script>
+</body>
+</html>

@@ -1,0 +1,347 @@
+<!--
+ -
+ - @license
+ -
+ - The MIT License (MIT)
+ -
+ - Copyright (c) 2015 Intel Corporation
+ -
+ - Permission is hereby granted, free of charge, to any person obtaining a copy
+ - of this software and associated documentation files (the "Software"), to deal
+ - in the Software without restriction, including without limitation the rights
+ - to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ - copies of the Software, and to permit persons to whom the Software is
+ - furnished to do so, subject to the following conditions:
+ -
+ - The above copyright notice and this permission notice shall be included in
+ - all copies or substantial portions of the Software.
+ -
+ - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ - IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ - FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ - AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ - LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ - THE SOFTWARE.
+ -
+ - Authors:
+ -   Elliot Smith <elliot.smith@intel.com>
+ -   Max Waterman <max.waterman@intel.com>
+ -
+ -->
+
+<!--
+Tooltip for displaying component details to the side of some content.
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<polymer-element name="slv-tooltip">
+  <template>
+    <style>
+      :host {
+        position: absolute;
+        z-index: 2000;
+        box-shadow: 13px 23px 30px 0px rgba(0, 1, 1, 0.32);
+        -webkit-box-shadow: 13px 23px 30px 0px rgba(0, 1, 1, 0.32);
+        -moz-box-shadow: 13px 23px 30px 0px rgba(0, 1, 1, 0.32);
+        border-radius: 5px;
+      }
+
+      * {
+        color: #fefeff;
+        font-size: 13px;
+      }
+
+      #tip {
+        background-color: #0abcf7;
+        border: 16px solid #0abcf7;
+        border-radius: 4px;
+        padding: 4px;
+        overflow-y: auto;
+        width: 326px;
+        max-height: 600px;
+      }
+
+      #tip.show {
+        display: block;
+      }
+
+      #tip.hide {
+        display: none;
+      }
+
+      [data-role="arrow"] {
+        position: absolute;
+        border-top: 16px solid transparent;
+	      border-bottom: 16px solid transparent;
+	      border-right: 16px solid #0abcf7;
+      }
+
+      .arrow-flip[data-role="arrow"] {
+        transform: rotateZ(180deg);
+        -webkit-transform: rotateZ(180deg);
+        -moz-transform: rotateZ(180deg);
+      }
+    </style>
+
+    <div id="tip" data-role="tip" class="hide">
+
+      <div id="arrow" data-role="arrow">
+      </div>
+
+      <content select="*"></content>
+    </div>
+
+  </template>
+
+  <script>
+    window.slvTooltipReady = Promise.all([
+      System.import('js-signals')
+    ])
+   .then(function (imports) {
+     'use strict';
+
+      var signals = imports[0];
+
+      // calculate where the corners of the tooltip would be
+      // for a given anchor element and arrow position
+      //
+      // arrowSidePosition: the arrow can be positioned on the 'right'
+      // or 'left' of the tooltip
+      // arrowVerticalPosition: the arrow can be placed in the 'top',
+      // 'middle' or 'bottom' of the side
+      //
+      // the tooltip's width is fixed, but its height is dynamic
+      // depending on its content
+      var getTooltipPosition = function (anchorBox, tooltipWidth,
+      tooltipHeight, arrowWidth, arrowHeight, arrowSidePosition,
+      arrowVerticalPosition) {
+        // if the arrow is at the top or bottom, it is offset this
+        // many pixels from the nearest horizontal edge of the tooltip
+        var offset = 12;
+
+        var anchorCenterY = anchorBox.top + (anchorBox.height / 2);
+        var anchorRightX = anchorBox.left + anchorBox.width;
+        var anchorLeftX = anchorBox.left;
+
+        var arrowHorizontalOffset = -14;
+
+        var tooltipLeftX;
+        var tooltipRightX;
+        var tooltipTopY;
+        var tooltipBottomY;
+        var arrowVerticalOffset;
+
+        if (arrowSidePosition === 'right') {
+          tooltipRightX = anchorLeftX - arrowWidth;
+          tooltipLeftX = tooltipRightX - tooltipWidth;
+        }
+        else if (arrowSidePosition === 'left') {
+          tooltipLeftX = anchorRightX + arrowWidth;
+          tooltipRightX = tooltipLeftX + tooltipWidth;
+        }
+
+        if (arrowVerticalPosition === 'top') {
+          tooltipTopY = anchorCenterY - arrowHeight - offset;
+          tooltipBottomY = tooltipTopY + tooltipHeight;
+          arrowVerticalOffset = offset;
+        }
+        else if (arrowVerticalPosition === 'middle') {
+          tooltipTopY = anchorCenterY - (tooltipHeight / 2);
+          tooltipBottomY = tooltipTopY + tooltipHeight;
+          arrowVerticalOffset = (tooltipHeight / 2) - arrowHeight;
+          arrowVerticalPosition = 'top';
+        }
+        else if (arrowVerticalPosition === 'bottom') {
+          tooltipBottomY = anchorCenterY + arrowHeight + offset;
+          tooltipTopY = tooltipBottomY - tooltipHeight;
+          arrowVerticalOffset = offset;
+        }
+
+        return {
+          tooltipLeftX: tooltipLeftX,
+          tooltipRightX: tooltipRightX,
+          tooltipTopY: tooltipTopY,
+          tooltipBottomY: tooltipBottomY,
+          arrowVerticalPosition: arrowVerticalPosition,
+          arrowVerticalOffset: arrowVerticalOffset,
+          arrowSidePosition: arrowSidePosition,
+          arrowHorizontalOffset: arrowHorizontalOffset
+        };
+      };
+
+      // returns true if candidatePosition is within the bounds
+      // of the window; candidatePosition looks like this:
+      /*
+        {
+          tooltipLeftX: tooltipLeftX,
+          tooltipRightX: tooltipRightX,
+          tooltipTopY: tooltipTopY,
+          tooltipBottomY: tooltipBottomY,
+          arrowVerticalPosition: arrowVerticalPosition,
+          arrowVerticalOffset: arrowVerticalOffset,
+          arrowSidePosition: arrowSidePosition,
+          arrowHorizontalOffset: arrowHorizontalOffset
+        }
+      */
+      // the tooltip* properties are the ones we're interested in
+      var isGoodPosition = function (parentNode, candidatePosition) {
+        var screenMaxY = parentNode.offsetHeight;
+        var screenMaxX = parentNode.offsetWidth;
+
+        return (candidatePosition.tooltipLeftX >= 0 &&
+                candidatePosition.tooltipTopY >= 0 &&
+                candidatePosition.tooltipBottomY <= screenMaxY &&
+                candidatePosition.tooltipRightX <= screenMaxX);
+      };
+
+      // find the best position for the tooltip so that it stays
+      // within the window; prefer left-bottom
+      var findTooltipPosition = function (parentNode, anchorBox,
+      tooltipWidth, tooltipHeight, arrowWidth, arrowHeight) {
+        var arrowSidePositions = ['left', 'right'];
+        var arrowVerticalPositions = ['bottom', 'top', 'middle'];
+
+        var goodPosition = false;
+        var foundPosition = null;
+        var side;
+        var vertical;
+
+        // try each side position with each vertical position in turn
+        // until we find one which is within the window;
+        // if no position is good, returns the last one tried
+        for (var j = 0; j < arrowVerticalPositions.length; j++) {
+          vertical = arrowVerticalPositions[j];
+
+          for (var i = 0; i < arrowSidePositions.length; i++) {
+            side = arrowSidePositions[i];
+
+            foundPosition = getTooltipPosition(anchorBox, tooltipWidth,
+              tooltipHeight, arrowWidth, arrowHeight, side, vertical);
+
+            goodPosition = isGoodPosition(parentNode, foundPosition);
+
+            if (goodPosition) {
+              break;
+            }
+          }
+
+          if (goodPosition) {
+            break;
+          }
+        }
+
+        return foundPosition;
+      };
+
+      Polymer('slv-tooltip', {
+        signals: null,
+
+        /**
+         * DOM element the tooltip is currently associated with
+         */
+        elt: null,
+
+        /**
+         * DOM element the tooltip should be positioned inside;
+         * if not set, defaults to document.documentElement.
+         */
+        stayInsideElt: null,
+
+        created: function () {
+          this.signals = {
+            shown: new signals.Signal(),
+            hidden: new signals.Signal()
+          };
+
+          this.stayInsideElt = document.documentElement;
+        },
+
+        /**
+         * Keep the tooltip within the DOM element <elt> when
+         * it is displayed.
+         */
+        stayInside: function (elt) {
+          this.stayInsideElt = elt;
+        },
+
+        show: function () {
+          this.$.tip.classList.remove('hide');
+          this.$.tip.classList.add('show');
+
+          if (this.elt) {
+            this.async(function () {
+              var anchorBox = this.elt.getBoundingClientRect();
+
+              var tooltipHeight = this.offsetHeight;
+              var tooltipWidth = this.offsetWidth;
+
+              var arrowStyles = window.getComputedStyle(this.$.arrow);
+              var arrowHeight = parseInt(arrowStyles.borderRightWidth, 10);
+              var arrowWidth = arrowHeight;
+
+              // try to find a suitable position
+              var tooltipPosition = findTooltipPosition(
+                this.stayInsideElt,
+                anchorBox,
+                tooltipWidth,
+                tooltipHeight,
+                arrowWidth,
+                arrowHeight
+              );
+
+              // apply the position to the tooltip and arrow
+              this.style.top = tooltipPosition.tooltipTopY + 'px';
+              this.style.left = tooltipPosition.tooltipLeftX + 'px';
+
+              this.$.arrow.style.top = null;
+              this.$.arrow.style.bottom = null;
+              this.$.arrow.style[tooltipPosition.arrowVerticalPosition] =
+                tooltipPosition.arrowVerticalOffset + 'px';
+
+              this.$.arrow.style.right = null;
+              this.$.arrow.style.left = null;
+              this.$.arrow.style[tooltipPosition.arrowSidePosition] =
+                tooltipPosition.arrowHorizontalOffset + 'px';
+
+              // flip the arrow if it's on the right-hand side of
+              // the tooltip
+              if (tooltipPosition.arrowSidePosition === 'right') {
+                this.$.arrow.classList.add('arrow-flip');
+              }
+              else {
+                this.$.arrow.classList.remove('arrow-flip');
+              }
+            });
+          }
+
+          this.async(function () {
+            this.signals.shown.dispatch();
+          });
+        },
+
+        hide: function () {
+          this.$.tip.classList.remove('show');
+          this.$.tip.classList.add('hide');
+
+          this.async(function () {
+            this.signals.hidden.dispatch();
+          });
+        },
+
+        isShown: function () {
+          return this.$.tip.classList.contains('show');
+        },
+
+        /**
+         * Position the tooltip at the specified DOM element.
+         * NB this does not show the element.
+         */
+        positionAt: function (elt) {
+          this.elt = elt;
+        }
+      });
+    });
+  </script>
+</polymer-element>

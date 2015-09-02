@@ -1,0 +1,54 @@
+{
+ "gyroscope": [
+  {
+   "author": "Intel Corporation",
+   "category": "input/hw",
+   "description": "L3G4200D gyroscope input node, meant for i2c reading primitives testing. After each tick in its TICK port, a new reading is output on each of its output ports.",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "any",
+     "description": "Packets sent in here will trigger a gyroscope reading and produce packets on each of the the output ports.",
+     "name": "TICK",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "gyroscope/l3g4200d",
+   "options": {
+    "members": [
+     {
+      "data_type": "int",
+      "description": "I2C bus number",
+      "name": "i2c_bus",
+      "required": true
+     },
+     {
+      "data_type": "boolean",
+      "default": false,
+      "description": "Output in rad/s, instead of deg/s",
+      "name": "output_radians",
+      "required": false
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_gyroscope_l3g4200d_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "direction-vector",
+     "description": "Angular speed in all X/Y/Z axes, in the selected output unit",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_GYROSCOPE_L3G4200D",
+   "url": "http://solettaproject.org/doc/latest/components/gyroscope/l3g4200d.html",
+   "version": "1"
+  }
+ ]
+}

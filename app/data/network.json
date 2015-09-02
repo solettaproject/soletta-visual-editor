@@ -1,0 +1,37 @@
+{
+ "network": [
+  {
+   "author": "Intel Corporation",
+   "category": "output/sw",
+   "description": "Provides boolean packets after connect or disconnect from network",
+   "license": "BSD 3-Clause",
+   "name": "network/boolean",
+   "options": {
+    "members": [
+     {
+      "data_type": "string",
+      "description": "Which interface should be monitored (can be a regexp)",
+      "name": "address",
+      "required": true
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_network_boolean_options",
+   "out_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "boolean",
+     "description": "A boolean packet when network changes. If it's connect true, otherwise false.",
+     "name": "OUT",
+     "required": false
+    }
+   ],
+   "symbol": "SOL_FLOW_NODE_TYPE_NETWORK_BOOLEAN",
+   "url": "http://solettaproject.org/doc/latest/components/network.html",
+   "version": "1"
+  }
+ ]
+}

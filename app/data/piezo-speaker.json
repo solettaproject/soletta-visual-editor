@@ -1,0 +1,65 @@
+{
+ "piezo-speaker": [
+  {
+   "author": "Intel Corporation",
+   "category": "output/hw",
+   "description": "Receives string packages (or load-time configurations) with tunes to be played by a piezo buzzer/speaker over PWM",
+   "in_ports": [
+    {
+     "array_size": 0,
+     "base_port_idx": 0,
+     "data_type": "string",
+     "description": "The tablature string to play on the node. The syntax for it is <note_array|beats_array|base_tempo_in_us>, as in 'ccggaa|111122|300' -- that plays do do sol sol la la in such a way that the first four notes last 300 ms and the last two hold for 600 ms. Possible individual notes are 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'C', and beats can only be on the 1-9 range.",
+     "name": "TUNE",
+     "required": false
+    },
+    {
+     "array_size": 0,
+     "base_port_idx": 1,
+     "data_type": "boolean",
+     "description": "Start/stop buzzing",
+     "name": "ENABLED",
+     "required": false
+    }
+   ],
+   "license": "BSD 3-Clause",
+   "name": "piezo-speaker/sound",
+   "options": {
+    "members": [
+     {
+      "data_type": "string",
+      "default": "",
+      "description": "Pre-set tune to buzz with",
+      "name": "tune",
+      "required": false
+     },
+     {
+      "data_type": "int",
+      "description": "PWM pin number",
+      "name": "pin",
+      "required": true
+     },
+     {
+      "data_type": "int",
+      "description": "PWM chip number",
+      "name": "chip",
+      "required": true
+     },
+     {
+      "data_type": "boolean",
+      "default": true,
+      "description": "Whether to loop indefinetely on the input tune",
+      "name": "loop",
+      "required": false
+     }
+    ],
+    "required": true,
+    "version": 1
+   },
+   "options_symbol": "sol_flow_node_type_piezo_speaker_sound_options",
+   "symbol": "SOL_FLOW_NODE_TYPE_PIEZO_SPEAKER_SOUND",
+   "url": "http://solettaproject.org/doc/latest/components/piezo-speaker.html",
+   "version": "1"
+  }
+ ]
+}

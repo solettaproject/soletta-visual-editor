@@ -1,0 +1,152 @@
+<!--
+ -
+ - @license
+ -
+ - The MIT License (MIT)
+ -
+ - Copyright (c) 2015 Intel Corporation
+ -
+ - Permission is hereby granted, free of charge, to any person obtaining a copy
+ - of this software and associated documentation files (the "Software"), to deal
+ - in the Software without restriction, including without limitation the rights
+ - to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ - copies of the Software, and to permit persons to whom the Software is
+ - furnished to do so, subject to the following conditions:
+ -
+ - The above copyright notice and this permission notice shall be included in
+ - all copies or substantial portions of the Software.
+ -
+ - THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ - IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ - FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ - AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ - LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ - OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ - THE SOFTWARE.
+ -
+ - Authors:
+ -   Elliot Smith <elliot.smith@intel.com>
+ -   Max Waterman <max.waterman@intel.com>
+ -
+ -->
+
+<!--
+open a project file
+-->
+
+<link rel="import" href="slv-save-confirm.html">
+<link rel="import" href="slv-file-upload.html">
+
+<polymer-element name="slv-project-open" accept=".json" extends="slv-file-upload">
+  <template>
+    <shadow></shadow>
+
+    <slv-save-confirm
+      id="dialog"
+      on-cancel="{{ onCancel }}"
+      on-discard="{{ onDiscard }}"
+      on-save="{{ onSave }}">
+    </slv-save-confirm>
+  </template>
+
+  <script>
+  /* ignore "missing 'use strict' statement" errors; we have to disable
+     strict mode for Polymer elements which call this.super()
+     - see https://github.com/yeoman/generator-polymer/issues/80 */
+  /* jshint strict:false */
+
+  window.slvProjectOpenReady = Promise.all([
+    System.import('js-signals'),
+    window.slvSaveConfirmReady,
+    window.slvFileUploadReady
+  ])
+  .then(function (imports) {
+    var signals = imports.shift();
+
+    Polymer('slv-project-open', {
+
+      created: function () {
+        this.super();
+
+        this.signals.newComponentDefinitions = new signals.Signal();
+        this.signals.newGraph = new signals.Signal();
+      },
+
+      /**
+       * When clicked, open the file chooser.
+       * If project hasn't been saved, then ask user first.
+       */
+      onClick: function () {
+        if (this.projectSave.isSaved()) {
+          // continue with opening project
+          this.openFileChooser();
+        } else {
+          // ask user to save current project
+          this.$.dialog.open();
+        }
+      },
+
+      fileChanged: function () {
+        var self = this;
+
+        if (this.file) {
+          var reader = new FileReader();
+
+          reader.onload = function (e) {
+            var project = JSON.parse(e.target.result);
+
+            window.noflo.graph.loadJSON(project.graph, function (nofloGraph) {
+              self.signals.newGraph.dispatch(nofloGraph, {autoLayout: false});
+
+              self.signals.newComponentDefinitions.dispatch(project.library);
+            });
+          };
+
+          reader.readAsText(this.file);
+
+          this.super();
+        }
+      },
+
+      setLibrary: function (library) {
+        this.library = library;
+      },
+
+      setEditor: function (editor) {
+        this.editor = editor;
+      },
+
+      setProjectSave: function (projectSave) {
+        this.projectSave = projectSave;
+      },
+
+      /**
+       * User wants to cancel upload process, so just close the dialog.
+       */
+      onCancel: function () {
+        this.$.dialog.close();
+      },
+
+      /**
+       * User wants to discard current project, so just open file chooser.
+       */
+      onDiscard: function () {
+        // force it to open even if user selects same file as before
+        this.$.fileinput.value = '';
+        this.projectSave.setSaved(true); // pretend doc is saved
+        this.$.dialog.close();
+        this.openFileChooser();
+      },
+
+      /**
+       * User wants to save project first, so click project save button.
+       */
+      onSave: function () {
+        this.$.dialog.close();
+        this.projectSave.click();
+      }
+
+    });
+  });
+  </script>
+</polymer-element>
