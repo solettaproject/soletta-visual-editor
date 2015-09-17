@@ -23,7 +23,7 @@
         {
           "data_type": "boolean",
           "description": "A boolean packet when udev changes. If it's attached true, otherwise false.",
-          "max_connections": 0,
+          "array_size": 0,
           "name": null,
           "required": false
         }
@@ -42,14 +42,14 @@
         {
           "data_type": "boolean",
           "description": "First port of AND operation.",
-          "max_connections": 0,
+          "array_size": 0,
           "name": null,
           "required": false
         },
         {
           "data_type": "boolean",
           "description": "Second port of AND operation.",
-          "max_connections": 0,
+          "array_size": 0,
           "name": null,
           "required": false
         }
@@ -60,7 +60,7 @@
         {
           "data_type": "boolean",
           "description": "True if both in0 and in1 are true.",
-          "max_connections": 0,
+          "array_size": 0,
           "name": null,
           "required": false
         }

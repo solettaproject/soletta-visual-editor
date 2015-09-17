@@ -78,7 +78,7 @@ describe('ComponentLoader', function () {
               'type': 'boolean',
               'description': 'A boolean packet when udev changes. If it\'s attached true, otherwise false.',
               'required': false,
-              'max_connections': 0
+              'array_size': 0
             }
           ],
           'members': [
@@ -102,14 +102,14 @@ describe('ComponentLoader', function () {
               'type': 'boolean',
               'description': 'First port of AND operation.',
               'required': false,
-              'max_connections': 0
+              'array_size': 0
             },
             {
               'name': 'in2',
               'type': 'boolean',
               'description': 'Second port of AND operation.',
               'required': false,
-              'max_connections': 0
+              'array_size': 0
             }
           ],
           'outports': [
@@ -118,7 +118,7 @@ describe('ComponentLoader', function () {
               'type': 'boolean',
               'description': 'True if both in0 and in1 are true.',
               'required': false,
-              'max_connections': 0
+              'array_size': 0
             }
           ]
         })

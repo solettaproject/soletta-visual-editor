@@ -172,7 +172,7 @@ describe('Component', function () {
           type: 'int',
           required: false,
           description: '',
-          max_connections: 0
+          array_size: 0
         },
 
         {
@@ -180,7 +180,7 @@ describe('Component', function () {
           type: 'boolean',
           required: false,
           description: 'foo',
-          max_connections: 0
+          array_size: 0
         }
       ],
 
@@ -190,7 +190,7 @@ describe('Component', function () {
           type: 'int',
           description: '',
           required: false,
-          max_connections: 0
+          array_size: 0
         },
 
         {
@@ -198,7 +198,7 @@ describe('Component', function () {
           type: 'boolean',
           description: 'bar',
           required: false,
-          max_connections: 0
+          array_size: 0
         }
       ],
 
@@ -264,7 +264,7 @@ describe('Component', function () {
           type: 'int',
           description: '',
           required: false,
-          max_connections: 0
+          array_size: 0
         },
 
         {
@@ -272,7 +272,7 @@ describe('Component', function () {
           type: 'boolean',
           description: '',
           required: false,
-          max_connections: 0
+          array_size: 0
         },
 
         {
@@ -280,7 +280,7 @@ describe('Component', function () {
           type: 'boolean',
           description: '',
           required: false,
-          max_connections: 0
+          array_size: 0
         },
 
         {
@@ -288,7 +288,7 @@ describe('Component', function () {
           type: 'int',
           description: '',
           required: false,
-          max_connections: 0
+          array_size: 0
         }
       ],
 
@@ -361,7 +361,7 @@ describe('Component', function () {
           type: 'int',
           description: '',
           required: true,
-          max_connections: 0
+          array_size: 0
         },
 
         {
@@ -369,7 +369,7 @@ describe('Component', function () {
           type: 'boolean',
           description: '',
           required: false,
-          max_connections: 0
+          array_size: 0
         },
 
         {
@@ -377,7 +377,7 @@ describe('Component', function () {
           type: 'boolean',
           description: '',
           required: false,
-          max_connections: 0
+          array_size: 0
         }
       ],
 
@@ -387,7 +387,7 @@ describe('Component', function () {
           type: 'int',
           description: '',
           required: true,
-          max_connections: 0
+          array_size: 0
         },
 
         {
@@ -395,7 +395,7 @@ describe('Component', function () {
           type: 'boolean',
           description: '',
           required: false,
-          max_connections: 0
+          array_size: 0
         },
 
         {
@@ -403,7 +403,7 @@ describe('Component', function () {
           type: 'boolean',
           description: '',
           required: false,
-          max_connections: 0
+          array_size: 0
         }
       ]
     };
@@ -416,9 +416,9 @@ describe('Component', function () {
     _.keys(actual).sort().should.eql(_.keys(expected).sort());
   });
 
-  it('should respect max_connections property on ports, defaulting to 0', function () {
+  it('should respect array_size property on ports, defaulting to 0', function () {
     var solComponent = {
-      name: 'maxconns',
+      name: 'arrysz',
       category: 'bar',
       description: 'goo',
 
@@ -427,14 +427,14 @@ describe('Component', function () {
           name: 'in1',
           data_type: 'int',
           required: true,
-          max_connections: 1
+          array_size: 1
         },
 
         {
           name: 'in2',
           data_type: 'boolean',
           required: false
-          // max_connections should be 0
+          // array_size should be 0
         }
       ],
 
@@ -443,20 +443,20 @@ describe('Component', function () {
           name: 'out1',
           data_type: 'int',
           required: true,
-          max_connections: 2
+          array_size: 2
         },
 
         {
           name: 'out2',
           data_type: 'boolean',
-          required: false
-          // max_connections should be 0
+          required: false,
+          // array_size should be 0
         }
       ]
     };
 
     var expected = {
-      name: 'maxconns',
+      name: 'arrysz',
       category: 'bar',
       description: 'goo',
       members: [],
@@ -467,7 +467,7 @@ describe('Component', function () {
           type: 'int',
           description: '',
           required: true,
-          max_connections: 1
+          array_size: 1
         },
 
         {
@@ -475,7 +475,7 @@ describe('Component', function () {
           type: 'boolean',
           description: '',
           required: false,
-          max_connections: 0
+          array_size: 0
         }
       ],
 
@@ -485,7 +485,7 @@ describe('Component', function () {
           type: 'int',
           description: '',
           required: true,
-          max_connections: 2
+          array_size: 2
         },
 
         {
@@ -493,7 +493,7 @@ describe('Component', function () {
           type: 'boolean',
           description: '',
           required: false,
-          max_connections: 0
+          array_size: 0
         }
       ]
     };

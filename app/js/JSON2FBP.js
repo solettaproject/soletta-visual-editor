@@ -147,6 +147,38 @@ define(['lodash'], function (_) {
     return memberTypes;
   };
 
+  /**
+   * Add a port index to the port name
+   * only if array_size > 0
+   */
+  var addPortIndex = function (processName, component, connection, portType, portIndices) {
+    var port = connection[portType];
+    var portName = port.port;
+    var newPortName = portName.toUpperCase();
+    var componentDefinition = library.map[component];
+    var componentPorts = componentDefinition[(portType==='src')?'outports':'inports'];
+    var componentPort = componentPorts && componentPorts.filter(function(element) {
+      return element.name === portName;
+    })[0];
+    
+    if (componentPort && componentPort.array_size > 0) {
+      var alreadyStartedCounting = (portIndices[processName] && portIndices[processName][portName] && portIndices[processName][portName][portType]);
+      if (!alreadyStartedCounting) {
+        portIndices[processName] = portIndices[processName] || {};
+        portIndices[processName][portName] = portIndices[processName][portName] || {};
+        portIndices[processName][portName][portType] = 0;
+      }
+
+      var thisIndex = portIndices[processName][portName][portType];
+
+      newPortName = newPortName + "[" + thisIndex + "]";
+
+      portIndices[processName][portName][portType]++;
+    }
+
+    return newPortName;
+  };
+
   var convert = function (rawGraph) {
     var metadata = _extractMetadata(rawGraph);
     var json = rawGraph.toJSON();
@@ -154,6 +186,7 @@ define(['lodash'], function (_) {
     var processes = json.processes;
     var fbp = '';
     var detailDone = {};
+    var portIndices = {};
 
     connections.forEach(function (connection, i) {
       // from https://github.com/noflo/fbp#readme
@@ -167,14 +200,14 @@ define(['lodash'], function (_) {
       var component1 = processes[processA].component.replace(/ /, '_', 'g');
       var memberTypes1 = makeNameTypeMap(component1);
       var metadata1 = stringifyMetadata(metadata[processA], memberTypes1);
-      var portX = connection.src.port.toUpperCase();
+      var portX = addPortIndex(processA, component1, connection, 'src', portIndices);
 
       var processB = connection.tgt.process;
       var sanitizedProcessB = processB.replace(/[^a-zA-Z0-9_]/, '_', 'g');
       var component2 = processes[processB].component.replace(/ /, '_', 'g');
       var memberTypes2 = makeNameTypeMap(component2);
-      var metadata2 = stringifyMetadata(metadata[processB], memberTypes2);
-      var portY = connection.tgt.port.toUpperCase();
+      var metadata2 = stringifyMetadata(metadata[processB], memberTypes2, portIndices);
+      var portY = addPortIndex(processB, component2, connection, 'tgt', portIndices);
       
       var detailA = detailDone[processA]?'':'(' + component1 + ((metadata1.length>0)?':'+metadata1:'') + ')';
       var detailB = detailDone[processB]?'':'(' + component2 + ((metadata2.length>0)?':'+metadata2:'') + ')';

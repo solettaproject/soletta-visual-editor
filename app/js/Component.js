@@ -82,11 +82,11 @@ define(['lodash'], function (_) {
    *   category: <category of component>,
    *   inports: [
    *     { name: <name>, type: <type>, required: <boolean>,
-   *       max_connections: <integer> }, ...
+   *       array_size: <integer> }, ...
    *   ],
    *   outports: [
    *     { name: <name>, type: <type>, required: <boolean>,
-   *        max_connections: <integer> }, ...
+   *        array_size: <integer> }, ...
    *   ],
    *   members: [
    *     {
@@ -250,7 +250,7 @@ define(['lodash'], function (_) {
         type: port.data_type || 'any',
         required: !!port.required,
         description: port.description || '',
-        max_connections: port.max_connections || 0
+        array_size: port.array_size || 0
       });
     }
 
@@ -263,7 +263,7 @@ define(['lodash'], function (_) {
         type: port.data_type || 'any',
         required: !!port.required,
         description: port.description || '',
-        max_connections: port.max_connections || 0
+        array_size: port.array_size || 0
       });
     }
 

@@ -63,11 +63,11 @@ describe('ComponentLibrary', function () {
         description: 'foofoo',
         category: 'theusual',
         inports: [
-          { name: 'in1', type: 'string', required: true, max_connections: 0 },
-          { name: 'in2', type: 'int', required: false, max_connections: 1 }
+          { name: 'in1', type: 'string', required: true, array_size: 0 },
+          { name: 'in2', type: 'int', required: false, array_size: 1 }
         ],
         outports: [
-          { name: 'out1', type: 'boolean', required: true, max_connections: 0 },
+          { name: 'out1', type: 'boolean', required: true, array_size: 0 },
         ]
       });
 
@@ -76,11 +76,11 @@ describe('ComponentLibrary', function () {
         description: 'barbar',
         category: 'theusual',
         inports: [
-          { name: 'value1', type: 'string', required: false, max_connections: 1 },
-          { name: 'value2', type: 'int', required: true, max_connections: 0 }
+          { name: 'value1', type: 'string', required: false, array_size: 1 },
+          { name: 'value2', type: 'int', required: true, array_size: 0 }
         ],
         outports: [
-          { name: 'return1', type: 'boolean', required: false, max_connections: 1 }
+          { name: 'return1', type: 'boolean', required: false, array_size: 1 }
         ]
       });
 
@@ -89,11 +89,11 @@ describe('ComponentLibrary', function () {
         category: 'humanbein',
         description: 'thing',
         inports: [
-          { name: 'in1', type: 'string', required: true, max_connections: 0 },
-          { name: 'in2', type: 'int', required: false, max_connections: 1 }
+          { name: 'in1', type: 'string', required: true, array_size: 0 },
+          { name: 'in2', type: 'int', required: false, array_size: 1 }
         ],
         outports: [
-          { name: 'out1', type: 'string', required: true, max_connections: 0 }
+          { name: 'out1', type: 'string', required: true, array_size: 0 }
         ]
       });
 
@@ -102,11 +102,11 @@ describe('ComponentLibrary', function () {
         category: 'humanbein',
         description: 'another thing',
         inports: [
-          { name: 'in1', type: 'boolean', required: true, max_connections: 0 },
-          { name: 'in2', type: 'int', required: false, max_connections: 1 }
+          { name: 'in1', type: 'boolean', required: true, array_size: 0 },
+          { name: 'in2', type: 'int', required: false, array_size: 1 }
         ],
         outports: [
-          { name: 'out1', type: 'string', required: true, max_connections: 0 }
+          { name: 'out1', type: 'string', required: true, array_size: 0 }
         ]
       });
 
@@ -115,11 +115,11 @@ describe('ComponentLibrary', function () {
         category: 'musical',
         description: 'yet another thing',
         inports: [
-          { name: 'value1', type: 'string', required: false, max_connections: 1 },
-          { name: 'value2', type: 'any', required: true, max_connections: 1 }
+          { name: 'value1', type: 'string', required: false, array_size: 1 },
+          { name: 'value2', type: 'any', required: true, array_size: 1 }
         ],
         outports: [
-          { name: 'return1', type: 'boolean', required: false, max_connections: 0 }
+          { name: 'return1', type: 'boolean', required: false, array_size: 0 }
         ]
       });
 

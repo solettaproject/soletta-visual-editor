@@ -752,15 +752,9 @@ var tests = [
       'groups':[],
       'processes':{
         'node1':{
-          'component':'constant/int',
+          'component':'constant/string',
           'metadata':{
-            'label':'node1',
-            'value':{
-              'max':0,
-              'min':0,
-              'step':0,
-              'val':0
-            }
+            'label':'node1'
           }
         },
         'node3':{
@@ -805,7 +799,7 @@ var tests = [
       'nodes': [
         {
           'id': 'node1',
-          'component': 'constant/int',
+          'component': 'constant/string',
           'metadata': {
             'label':'node1',
             'value':{
@@ -828,7 +822,7 @@ var tests = [
     },
     fbpInvalid: true, // don't check fbp because it's not valid fbp - quotes aren't valid fbp
     output:
-      'node1(constant/int:value=max:"was here") OUT -> IN node3(console:prefix="prefix",suffix="",output_on_stdout=true,flush=true)'
+      'node1(constant/string:value=max:"was here") OUT -> IN node3(console:prefix="prefix",suffix="",output_on_stdout=true,flush=true)'
   },
 
   {
@@ -1035,6 +1029,366 @@ var tests = [
     output:
       'some_component(an/int:value=INT32_MAX) OUT -> IN another_component(console)'
   },
+  
+  {
+    assertion: 'should convert nodes with multiple connections per port',
+    json: {
+      'properties':{},
+      'inports':{},
+      'outports':{},
+      'groups':[],
+      'processes':{
+        'adder':{
+          'component':'int/addition'
+        },
+        'const1':{
+          'component':'constant/int',
+          'metadata':{
+            'value': 1
+          }
+        },
+        'const2':{
+          'component':'constant/int',
+          'metadata':{
+            'value': 2
+          }
+        }
+      },
+      'connections':[
+        {
+          'src':{
+            'process':'const1',
+            'port':'OUT'
+          },
+          'tgt':{
+            'process':'adder',
+            'port':'IN'
+          }
+        },
+        {
+          'src':{
+            'process':'const2',
+            'port':'OUT'
+          },
+          'tgt':{
+            'process':'adder',
+            'port':'IN'
+          }
+        }
+      ]
+    },
+    input: {
+      'name': '',
+      'properties': {},
+      'edges': [
+        {
+          'from': {
+            'process': 'const1',
+            'port': 'OUT'
+          },
+          'to': {
+            'process': 'adder',
+            'port': 'IN'
+          }
+        },
+        {
+          'from': {
+            'process': 'const2',
+            'port': 'OUT'
+          },
+          'to': {
+            'process': 'adder',
+            'port': 'IN'
+          }
+        }
+      ],
+      'nodes': [
+        {
+          'id': 'const1',
+          'component': 'constant/int',
+          'metadata': {
+            'value': 1
+          }
+        },
+        {
+          'id': 'const2',
+          'component': 'constant/int',
+          'metadata': {
+            'value': 2
+          }
+        },
+        {
+          'id': 'adder',
+          'component': 'int/addition'
+        }
+      ]
+    },
+    output:
+      'const1(constant/int:value=1) OUT -> IN[0] adder(int/addition)\n' +
+      'const2(constant/int:value=2) OUT -> IN[1] adder'
+  },
+  
+  {
+    assertion: 'should convert multiple instances of components with array ports each starting from 0',
+    json: {
+      'properties':{},
+      'inports':{},
+      'outports':{},
+      'groups':[],
+      'processes':{
+        'adder1':{
+          'component':'int/addition'
+        },
+        'adder2':{
+          'component':'int/addition'
+        },
+        'const1':{
+          'component':'constant/int',
+          'metadata':{
+            'value': 1
+          }
+        },
+        'const2':{
+          'component':'constant/int',
+          'metadata':{
+            'value': 2
+          }
+        }
+      },
+      'connections':[
+        {
+          'src':{
+            'process':'const1',
+            'port':'OUT'
+          },
+          'tgt':{
+            'process':'adder1',
+            'port':'IN'
+          }
+        },
+        {
+          'src':{
+            'process':'const2',
+            'port':'OUT'
+          },
+          'tgt':{
+            'process':'adder2',
+            'port':'IN'
+          }
+        }
+      ]
+    },
+    input: {
+      'name': '',
+      'properties': {},
+      'edges': [
+        {
+          'from': {
+            'process': 'const1',
+            'port': 'OUT'
+          },
+          'to': {
+            'process': 'adder1',
+            'port': 'IN'
+          }
+        },
+        {
+          'from': {
+            'process': 'const2',
+            'port': 'OUT'
+          },
+          'to': {
+            'process': 'adder2',
+            'port': 'IN'
+          }
+        }
+      ],
+      'nodes': [
+        {
+          'id': 'const1',
+          'component': 'constant/int',
+          'metadata': {
+            'value': 1
+          }
+        },
+        {
+          'id': 'const2',
+          'component': 'constant/int',
+          'metadata': {
+            'value': 2
+          }
+        },
+        {
+          'id': 'adder1',
+          'component': 'int/addition'
+        },
+        {
+          'id': 'adder2',
+          'component': 'int/addition'
+        }
+      ]
+    },
+    output:
+      'const1(constant/int:value=1) OUT -> IN[0] adder1(int/addition)\n' +
+      'const2(constant/int:value=2) OUT -> IN[0] adder2(int/addition)'
+  },
+  /**
+   * some compoments might have input ports and output ports with the same name;
+   * this is to test that the indices are incremented independently
+   **/
+  {
+    assertion: 'should convert multiple instances of components with array ports each with nodes having input and output ports with same name, starting from 0',
+    json: {
+      'properties':{},
+      'inports':{},
+      'outports':{},
+      'groups':[],
+      'processes':{
+        'console':{
+          'component':'console'
+        },
+        'adder1':{
+          'component':'int/addition2'
+        },
+        'adder2':{
+          'component':'int/addition2'
+        },
+        'const1':{
+          'component':'constant/int',
+          'metadata':{
+            'value': 1
+          }
+        },
+        'const2':{
+          'component':'constant/int',
+          'metadata':{
+            'value': 2
+          }
+        }
+      },
+      'connections':[
+        {
+          'src':{
+            'process':'adder1',
+            'port':'SAME'
+          },
+          'tgt':{
+            'process':'console',
+            'port':'IN'
+          }
+        },
+        {
+          'src':{
+            'process':'adder2',
+            'port':'SAME'
+          },
+          'tgt':{
+            'process':'console',
+            'port':'IN'
+          }
+        },
+        {
+          'src':{
+            'process':'const1',
+            'port':'OUT'
+          },
+          'tgt':{
+            'process':'adder1',
+            'port':'SAME'
+          }
+        },
+        {
+          'src':{
+            'process':'const2',
+            'port':'OUT'
+          },
+          'tgt':{
+            'process':'adder2',
+            'port':'SAME'
+          }
+        }
+      ]
+    },
+    input: {
+      'name': '',
+      'properties': {},
+      'edges': [
+        {
+          'from': {
+            'process': 'adder1',
+            'port': 'SAME'
+          },
+          'to': {
+            'process': 'console',
+            'port': 'IN'
+          }
+        },
+        {
+          'from': {
+            'process': 'adder2',
+            'port': 'SAME'
+          },
+          'to': {
+            'process': 'console',
+            'port': 'IN'
+          }
+        },
+        {
+          'from': {
+            'process': 'const1',
+            'port': 'OUT'
+          },
+          'to': {
+            'process': 'adder1',
+            'port': 'SAME'
+          }
+        },
+        {
+          'from': {
+            'process': 'const2',
+            'port': 'OUT'
+          },
+          'to': {
+            'process': 'adder2',
+            'port': 'SAME'
+          }
+        }
+      ],
+      'nodes': [
+        {
+          'id': 'console',
+          'component': 'console'
+        },
+        {
+          'id': 'const1',
+          'component': 'constant/int',
+          'metadata': {
+            'value': 1
+          }
+        },
+        {
+          'id': 'const2',
+          'component': 'constant/int',
+          'metadata': {
+            'value': 2
+          }
+        },
+        {
+          'id': 'adder1',
+          'component': 'int/addition'
+        },
+        {
+          'id': 'adder2',
+          'component': 'int/addition'
+        }
+      ]
+    },
+    output:
+      'adder1(int/addition2) SAME[0] -> IN console(console)\n' +
+      'adder2(int/addition2) SAME[0] -> IN console\n' +
+      'const1(constant/int:value=1) OUT -> SAME[0] adder1\n' +
+      'const2(constant/int:value=2) OUT -> SAME[0] adder2'
+  },
 
 ];
 
@@ -1060,6 +1414,15 @@ describe('JSON2FBP', function () {
         members: []
       },
       'console': {
+        "in_ports": [
+         {
+          "array_size": 0,
+          "data_type": "any",
+          "description": "Prints the packet to console",
+          "name": "IN",
+          "required": false
+         }
+        ],
         members: [
           { name: 'prefix', type: 'string' },
           { name: 'suffix', type: 'string' },
@@ -1077,8 +1440,15 @@ describe('JSON2FBP', function () {
         ]
       },
       'constant/int': {
+        inports: [],
+        outports: [
+          {
+            'name': 'OUT',
+            'array_size': 0
+          },
+        ],
         members: [
-          { name: 'value', type: 'string' }
+          { name: 'value', type: 'int' }
         ]
       },
       'constant/string': {
@@ -1089,6 +1459,37 @@ describe('JSON2FBP', function () {
           { name: 'value', type: 'int' }
         ]
       },
+
+      'int/addition': {
+        outports: [
+          {
+            name: 'OUT'
+          }
+        ],
+        inports: [
+          {
+            name: 'IN',
+            array_size: 32
+          }
+        ],
+        members: []
+      },
+
+      'int/addition2': {
+        outports: [
+          {
+            name: 'SAME',
+            array_size: 32
+          }
+        ],
+        inports: [
+          {
+            name: 'SAME',
+            array_size: 32
+          }
+        ],
+        members: []
+      }
 
     }
   };
