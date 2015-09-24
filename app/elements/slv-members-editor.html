@@ -170,6 +170,7 @@ listeners when the values are edited.
 
       <div class="field">
         <slv-input id="nodeLabel" val="{{ nodeLabel }}"
+                    hasFocus="{{ needFocus }}"
                     on-blur="{{ save }}">
         </slv-input>
       </div>
@@ -192,6 +193,7 @@ listeners when the values are edited.
           <div class="field no-label">
             <slv-input id="member-{{ member.name }}"
                         data-member="{{ member.name }}"
+                        hasFocus="{{ needFocus }}"
                         on-blur="{{ save }}"
                         val="{{ member.value }}">
             </slv-input>
@@ -220,6 +222,7 @@ listeners when the values are edited.
               <slv-input id="member-{{ member.name }}-val"
                           class="field small-field"
                           data-member-part="val"
+                          hasFocus="{{ needFocus }}"
                           on-blur="{{ save }}"
                           val="{{ member.value.val }}">
               </slv-input>
@@ -232,6 +235,7 @@ listeners when the values are edited.
               <slv-input id="member-{{ member.name }}-step"
                           class="field small-field"
                           data-member-part="step"
+                          hasFocus="{{ needFocus }}"
                           on-blur="{{ save }}"
                           val="{{ member.value.step }}">
               </slv-input>
@@ -244,6 +248,7 @@ listeners when the values are edited.
               <slv-input id="member-{{ member.name }}-max"
                           class="field small-field"
                           data-member-part="max"
+                          hasFocus="{{ needFocus }}"
                           on-blur="{{ save }}"
                           val="{{ member.value.max }}">
               </slv-input>
@@ -256,6 +261,7 @@ listeners when the values are edited.
               <slv-input id="member-{{ member.name }}-min"
                           class="field small-field"
                           data-member-part="min"
+                          hasFocus="{{ needFocus }}"
                           on-blur="{{ save }}"
                           val="{{ member.value.min }}">
               </slv-input>
@@ -421,6 +427,8 @@ listeners when the values are edited.
 
         created: function () {
           this.signals = {
+            needKeyboardFocus: new signals.Signal(),
+
             // dispatched with nodeId, nodeLabel, name/value pairs for member
             // variables in the node
             membersUpdated: new signals.Signal()
@@ -507,6 +515,12 @@ listeners when the values are edited.
           }, []);
 
           return members;
+        },
+
+        needFocus: false,
+
+        needFocusChanged: function (oldValue, newValue) {
+          this.signals.needKeyboardFocus.dispatch(newValue);
         },
 
         /**

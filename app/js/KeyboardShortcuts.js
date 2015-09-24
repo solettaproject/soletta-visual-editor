@@ -48,6 +48,15 @@ define(['lodash', 'js-signals'], function (_, jssignals) {
     'keyboardInput': new jssignals.Signal()
   };
 
+  var enable = function () {
+    _installKeyboardShortcuts();
+  };
+
+  var disable = function () {
+    Mousetrap.reset();
+    _installed = false;
+  };
+
   var setGraph = function (newGraph) {
     graph = newGraph;
     selectedNodes = [];
@@ -141,6 +150,8 @@ define(['lodash', 'js-signals'], function (_, jssignals) {
   };
 
   return {
+    disable: disable,
+    enable: enable,
     setGraph: setGraph,
     setEditor: setEditor,
     setSelectedEdges: setSelectedEdges,

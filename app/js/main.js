@@ -92,6 +92,15 @@ Promise.all([
     versionedGraphBuilder.setMetadata(nodeId, nodeLabel, members);
   });
 
+  // enable/disable keyboad shortcuts when membersEditor needs focus for text input
+  membersEditor.signals.needKeyboardFocus.add(function (needFocus) {
+    if (needFocus) {
+      KeyboardShortcuts.disable();
+    } else {
+      KeyboardShortcuts.enable();
+    }
+  });
+
   // change the component associated with a node
   editor.signals.componentSelected.add(function (nodeId, componentName) {
     var component = editor.getLibrary().get(componentName);
