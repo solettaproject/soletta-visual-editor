@@ -1,6 +1,6 @@
 {
   "name": "SLV",
-  "version": "0.1.4",
+  "version": "0.0.0",
   "description": "Visual editor for Soletta programs.",
   "main": "index.js",
   "directories": {
